@@ -4,33 +4,16 @@ Created on Thu Jun  7 11:41:44 2018
 
 @author: MichaelEK
 """
-import os
-import types
+
 import pandas as pd
 import numpy as np
 from pdsql import mssql
 from datetime import datetime
-import yaml
+import parameters as param
 pd.options.display.max_columns = 10
 run_time_start = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
 try:
-
-    #####################################
-    ### Read parameters file
-
-    base_dir = os.path.realpath(os.path.dirname(__file__))
-
-    with open(os.path.join(base_dir, 'parameters.yml')) as param:
-        param = yaml.safe_load(param)
-
-    ## Make object to contain the source data
-    db = types.SimpleNamespace()
-
-    for i, p in param['source data'].items():
-        setattr(db, i, mssql.rd_sql(**p))
-
-
 
     #####################################
     ### Read the hydro log

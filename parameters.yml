@@ -3,8 +3,8 @@ source data:
     server: SQL2012PROD04
     database: Accela
     table: Ecan.vAct_Water_TakeWaterWAPAllocation
-    col_names: [RecordNumber, Activity, SW Allocation Block, WAP, Allocation Rate (l/s), From Month, To Month, First Stream Depletion Rate, Second Stream Depletion Rate, Include in SW Allocation?]
-    rename_cols: [RecordNumber, take_type, sw_allo_block, WAP, AllocatedRate, FromMonth, ToMonth, SD1, SD2, Include in SW Allocation?]
+    col_names: [RecordNumber, Activity, SW Allocation Block, WAP, Allocation Rate (l/s), From Month, To Month, First Stream Depletion Rate, Second Stream Depletion Rate, 'Include in SW Allocation?']
+    rename_cols: [RecordNumber, take_type, sw_allo_block, WAP, AllocatedRate, FromMonth, ToMonth, SD1, SD2, Include in SW Allocation]
 
   wap_sd:
     server: SQL2012PROD04
@@ -17,15 +17,15 @@ source data:
     server: SQL2012PROD04
     database: Accela
     table: Ecan.vAct_Water_TakeWaterPermitAuthorisation
-    col_names: [RecordNumber, Activity, Consented Annual Volume (m3/year), Has a lowflow restriction condition?, Consent Max Rate (l/s), Consent Max Vol (m3), Consent Max Consec Days]
+    col_names: [RecordNumber, Activity, Consented Annual Volume (m3/year), 'Has a lowflow restriction condition?', Consent Max Rate (l/s), Consent Max Vol (m3), Consent Max Consec Days]
     rename_cols: [RecordNumber, take_type, ConsentedAnnualVolume, lowflow condition, ConsentedRate, ConsentedMultiDayVolume, ConsentedMultiDayPeriod]
 
   allocated_volume:
     server: SQL2012PROD04
     database: Accela
     table: Ecan.vAct_Water_TakeWaterPermitVolume
-    col_names: [RecordNumber, Activity, Allocation Block, Effective Annual Volume (m3/year), Include in allocation?]
-    rename_cols: [RecordNumber, take_type, gw_allo_block, AllocatedAnnualVolume, Include in allocation?]
+    col_names: [RecordNumber, Activity, Allocation Block, Effective Annual Volume (m3/year), 'Include in allocation?']
+    rename_cols: [RecordNumber, take_type, gw_allo_block, AllocatedAnnualVolume, Include in allocation]
 
   water_use:
     server: SQL2012PROD04
@@ -34,18 +34,18 @@ source data:
     col_names: [RecordNumber, Activity, Water Use, Irrigation Of, Primary Irrigation type, Irrigation Area (ha), Max Rate (l/s), Volume (m3), Consecutive Day Period]
     rename_cols: [RecordNumber, UseType, WaterUse, IrrigationOf, PrimaryIrrigationType, IrrigationArea, Rate, MultiDayVolume, MultiDayPeriod]
 
-  monitor_sites:
-    server: SQL2012PROD04
-    database: Accela
-    table: Ecan.vAct_Water_MonitoringSites
-    col_names: [RecordNumber, Site ID, Site Type]
-    rename_cols: [RecordNumber, SiteID, SiteType]
+  # monitor_sites:
+  #   server: SQL2012PROD04
+  #   database: Accela
+  #   table: Ecan.vAct_Water_MonitoringSites
+  #   col_names: [RecordNumber, Site ID, Site Type]
+  #   rename_cols: [RecordNumber, SiteID, SiteType]
 
   divert:
     server: SQL2012PROD04
     database: Accela
     table: Ecan.vAct_Water_Divertwater_Water
-    col_names: [RecordNumber, Activity, WAP, Max Rate (l/s), Volume (m3), Consecutive Day Period, Has a lowflow restriction condition?]
+    col_names: [RecordNumber, Activity, WAP, Max Rate (l/s), Volume (m3), Consecutive Day Period, 'Has a lowflow restriction condition?']
     rename_cols: [RecordNumber, DivertType, WAP, Rate, MultiDayVolume, MultiDayPeriod, lowflow condition]
 
   joint_permits:
@@ -59,8 +59,8 @@ source data:
     server: SQL2012PROD04
     database: Accela
     table: Ecan.vQA_Relationship_Actuals
-    col_names: [parent RecordNo, Record Number, Relationship, Combined Annual Vol. (m3), Status]
-    rename_cols: [RecordNumber, OtherRecordNumber, Relationship, CombinedAnnualVolume, Status]
+    col_names: [parent RecordNo, child RecordNo]
+    rename_cols: [ParentRecordNumber, ChildRecordNumber]
 
   permit:
     server: SQL2012PROD03
@@ -69,6 +69,6 @@ source data:
     col_names: [B1_ALT_ID, B1_APPL_STATUS, HolderEcanID, fmDate, toDate, ModifiedDate, Longitude, Latitude]
     rename_cols: [RecordNumber, ConsentStatus, EcanID, FromDate, ToDate, ModifiedDate, lon, lat]
 
-Output:
+output:
   server: edwDEV01
   database: ConsentsReporting
