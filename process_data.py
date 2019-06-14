@@ -11,6 +11,9 @@ import numpy as np
 from pdsql import mssql
 from datetime import datetime
 import yaml
+import itertools
+import util
+
 pd.options.display.max_columns = 10
 run_time_start = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -24,12 +27,11 @@ try:
     with open(os.path.join(base_dir, 'parameters.yml')) as param:
         param = yaml.safe_load(param)
 
-    ## Make object to contain the source data
-    db = types.SimpleNamespace()
+    ## Integrety checks
+    use_types_check = np.in1d(list(param['misc']['use_types_codes'].keys()), param['misc']['use_types_priorities']).all()
 
-    for i, p in param['source data'].items():
-        setattr(db, i, mssql.rd_sql(**p))
-
+    if not use_types_check:
+        raise ValueError('use_type_priorities parameter does not encompass all of the use type categories. Please fix the parameters file.')
 
 
     #####################################
@@ -48,209 +50,675 @@ try:
 
     #######################################
     ### Read in source data
-    print('Reading in source data...')
+    print('--Reading in source data...')
 
-    crc_wap = mssql.rd_sql(param.dw_server, param.dw_database, param.wap_allo_table, param.wap_allo_cols, where_in={'RecordStatus': param.status_codes}, rename_cols=param.wap_allo_cols_rename)
+    ## Make object to contain the source data
+    db = types.SimpleNamespace()
 
-    crc_allo = mssql.rd_sql(param.dw_server, param.dw_database, param.allo_table, param.allo_cols, rename_cols=param.allo_cols_rename)
+    for i, p in param['source data'].items():
+        setattr(db, i, mssql.rd_sql(**p))
 
-    crc_rel = mssql.rd_sql(param.dw_server, param.dw_database, param.relations_table, param.relations_cols, rename_cols=param.relations_cols_rename)
+    ######################################
+    ### Populate base tables
+    print('--Update base tables')
 
-    #waps_base = mssql.rd_sql(param.wells_server, param.wells_database, param.well_details_table, param.well_cols, rename_cols=param.well_cols_rename)
-    #
-    #status_code = mssql.rd_sql(param.wells_server, param.wells_database, param.status_codes_table, param.status_codes_cols, rename_cols=param.status_codes_cols_rename)
-    #
-    #wap_type = mssql.rd_sql(param.wells_server, param.wells_database, param.wap_type_table, param.wap_type_cols, rename_cols=param.wap_type_cols_rename)
-    #
-    #waps1 = pd.merge(waps_base, status_code, on='wap_status_code')
-    #waps = pd.merge(waps1, wap_type, on='wap_type_code').drop(['wap_status_code', 'wap_type_code'], axis=1).copy()
+    ## HydroFeature
+    hf1 = pd.DataFrame(param['misc']['HydroFeature'])
+    hf1['ModifiedDate'] = run_time_start
 
-    waps = mssql.rd_sql(param.hydro_server, param.hydro_database, param.site_table, param.site_cols, rename_cols=param.site_cols_rename)
+    hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroFeature')
 
-    sd = mssql.rd_sql(param.wells_server, param.wells_database, param.sd_table, param.sd_cols, rename_cols=param.sd_cols_rename)
+    hf_diff1 = hf1[~hf1.HydroFeature.isin(hf0.HydroFeature)]
 
+    if not hf_diff1.empty:
+        mssql.to_mssql(hf_diff1, param['output']['server'], param['output']['database'], 'HydroFeature')
+        hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroFeature')
 
-    #######################################
-    ### Filter out bad data, correct data, and fill missing data if possible
-    print('Processing data...')
+    ## Activity
+    act1 = param['misc']['Activities']['ActivityType']
+    act2 = pd.DataFrame(list(itertools.product(act1, hf0.HydroFeatureID.tolist())), columns=['ActivityType', 'HydroFeatureID'])
 
-    ## crc_wap
-    crc_wap.loc[:, 'in_sw_allo'] = crc_wap.loc[:, 'in_sw_allo'].str.upper()
-    crc_wap.loc[crc_wap.loc[:, 'in_sw_allo'].isnull(), 'in_sw_allo'] = 'NO'
-    crc_wap.replace({'in_sw_allo': {'YES': True, 'NO': False}}, inplace=True)
-    crc_wap.loc[crc_wap.wap == 'Migration: Not Classified', 'wap'] = np.nan
-    crc_wap.loc[:, 'wap'] = crc_wap.loc[:, 'wap'].str.upper()
-    crc_wap.loc[:, 'wap'] = crc_wap.wap.str.strip()
-    crc_wap.loc[crc_wap.allo_block == 'Migration: Not Classified', 'allo_block'] = 'A'
-    crc_wap.loc[:, 'max_rate_pro_rata'] = pd.to_numeric(crc_wap.loc[:, 'max_rate_pro_rata'], errors='coerce')
-    crc_wap.loc[:, 'max_rate_wap'] = pd.to_numeric(crc_wap.loc[:, 'max_rate_wap'], errors='coerce')
-    crc_wap.loc[:, 'max_vol_pro_rata'] = pd.to_numeric(crc_wap.loc[:, 'max_vol_pro_rata'], errors='coerce')
-    crc_wap.loc[:, 'sd1'] = pd.to_numeric(crc_wap.loc[:, 'sd1'], errors='coerce')
-    crc_wap.loc[:, 'sd2'] = pd.to_numeric(crc_wap.loc[:, 'sd2'], errors='coerce')
-    crc_wap.loc[:, 'return_period'] = pd.to_numeric(crc_wap.loc[:, 'return_period'], errors='coerce')
+    act2['ModifiedDate'] = run_time_start
 
-    crc_wap.loc[:, 'from_month'] = crc_wap.loc[:, 'from_month'].str.upper()
-    mon_index1 = (crc_wap.from_month == 'JUL') | (crc_wap.from_month == 'OCT')
-    crc_wap.loc[~mon_index1, 'from_month'] = 'JUL'
+    act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity')
 
-    crc_wap.loc[:, 'to_month'] = crc_wap.loc[:, 'to_month'].str.upper()
-    mon_index1 = (crc_wap.to_month == 'APR') | (crc_wap.to_month == 'JUN')
-    crc_wap.loc[~mon_index1, 'to_month'] = 'JUN'
+    act_diff1 = act2[~act2[['ActivityType', 'HydroFeatureID']].isin(act0[['ActivityType', 'HydroFeatureID']]).any(axis=1)]
 
-    crc_wap.replace({'from_month': {'JUL': 7, 'OCT': 10}, 'to_month': {'APR': 4, 'JUN': 6}}, inplace=True)
+    if not act_diff1.empty:
+        mssql.to_mssql(act_diff1, param['output']['server'], param['output']['database'], 'Activity')
+        act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity')
 
-    crc_wap.loc[crc_wap.max_vol_pro_rata <= 0, 'max_vol_pro_rata'] = np.nan
-    crc_wap.loc[crc_wap.max_rate_wap <= 0, 'max_rate_wap'] = np.nan
-    crc_wap.loc[crc_wap.max_rate_pro_rata <= 0, 'max_rate_pro_rata'] = np.nan
-    crc_wap.loc[crc_wap.return_period <= 0, 'return_period'] = np.nan
-    crc_wap.loc[crc_wap.max_rate_pro_rata.isnull(), 'max_rate_pro_rata'] = crc_wap.loc[crc_wap.max_rate_pro_rata.isnull(), 'max_rate_wap']
+    # Combine activity and hydro features
+    act_types1 = pd.merge(act0[['ActivityID', 'ActivityType', 'HydroFeatureID']], hf0[['HydroFeatureID', 'HydroFeature']], on='HydroFeatureID')
+    act_types1['ActivityName'] = act_types1['ActivityType'] + ' ' + act_types1['HydroFeature']
+
+    ## AlloBlock
+    ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
+
+    sw_blocks1 = pd.Series(db.wap_allo['sw_allo_block'].unique())
+    gw_blocks1 = pd.Series(db.allocated_volume['allo_block'].unique())
+
+    # Fixes
+    wap_allo1 = db.wap_allo.copy()
+    wap_allo1['sw_allo_block'] = wap_allo1['sw_allo_block'].str.strip()
+    wap_allo1.loc[wap_allo1.sw_allo_block == 'Migration: Not Classified', 'sw_allo_block'] = 'A'
+
+    allo_vol1 = db.allocated_volume.copy()
+    allo_vol1['allo_block'] = allo_vol1['allo_block'].str.strip()
+    allo_vol1.loc[allo_vol1.allo_block == 'Migration: Not Classified', 'allo_block'] = 'A'
+
+    # Determine blocks and what needs to be added
+    sw_blocks1 = set(wap_allo1['sw_allo_block'].unique())
+    gw_blocks1 = set(allo_vol1['allo_block'].unique())
+
+    blocks1 = sw_blocks1.union(gw_blocks1)
+
+    ab1 = pd.DataFrame(list(itertools.product(blocks1, hf0.HydroFeatureID.tolist())), columns=['AllocationBlock', 'HydroFeatureID'])
+
+    ab1['ModifiedDate'] = run_time_start
+
+    ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
+
+    ab_diff1 = ab1[~ab1[['AllocationBlock', 'HydroFeatureID']].isin(ab0[['AllocationBlock', 'HydroFeatureID']]).any(axis=1)]
+
+    if not ab_diff1.empty:
+        mssql.to_mssql(ab_diff1, param['output']['server'], param['output']['database'], 'AlloBlock')
+        ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
+
+    # Combine alloblock and hydro features
+    ab_types1 = pd.merge(ab0[['AlloBlockID', 'AllocationBlock', 'HydroFeatureID']], hf0[['HydroFeatureID', 'HydroFeature']], on='HydroFeatureID').drop('HydroFeatureID', axis=1)
+
+    ## Attributes
+    att1 = pd.DataFrame(param['misc']['Attributes'])
+    att1['ModifiedDate'] = run_time_start
+
+    att0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes')
+
+    att_diff1 = att1[~att1.Attribute.isin(att0.Attribute)]
+
+    if not att_diff1.empty:
+        mssql.to_mssql(att_diff1, param['output']['server'], param['output']['database'], 'Attributes')
+        att0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes')
+
+    ##################################################
+    ### Sites and WAPs
+    print('--Update sites tables')
+
+    ## takes
+    wap_allo1['WAP'] = wap_allo1['WAP'].str.strip().str.upper()
+    wap_allo1.loc[~wap_allo1.WAP.str.contains('[A-Z]+\d\d/\d\d\d\d'), 'WAP'] = np.nan
+    wap1 = wap_allo1['WAP'].unique()
+    wap1 = wap1[~pd.isnull(wap1)]
+
+    ## Diverts
+    div1 = db.divert.copy()
+    div1['WAP'] = div1['WAP'].str.strip().str.upper()
+    div1.loc[~div1.WAP.str.contains('[A-Z]+\d\d/\d\d\d\d'), 'WAP'] = np.nan
+    wap2 = div1['WAP'].unique()
+    wap2 = wap2[~pd.isnull(wap2)]
+
+    ## Combo
+    waps = np.concatenate((wap1, wap2), axis=None)
+
+    ## Check that all WAPs exist in the USM sites table
+    usm_waps1 = db.sites[db.sites.ExtSiteID.isin(waps)].copy()
+    usm_waps1[['NZTMX', 'NZTMY']] = usm_waps1[['NZTMX', 'NZTMY']].astype(int)
+
+    if len(wap1) != len(usm_waps1):
+        miss_waps = set(wap1).difference(set(usm_waps1.ExtSiteID))
+        print('Missing {} WAPs in USM'.format(len(miss_waps)))
+        wap_allo1 = wap_allo1[~wap_allo1.WAP.isin(miss_waps)].copy()
+
+    ## Update ConsentsSites table
+    cs1 = usm_waps1[['ExtSiteID']].copy()
+    cs1['SiteType'] = 'WAP'
+
+    new_sites = mssql.update_from_difference(cs1, param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentsSites', 'pass', '{} sites updated'.format(len(new_sites)))
+
+    cs0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites')
+    cs_waps1 = cs0[cs0.SiteType == 'WAP'].copy()
+    cs_waps2 = pd.merge(cs_waps1, usm_waps1, on='ExtSiteID').drop(['SiteType', 'Geo', 'ModifiedDate'], axis=1)
+    cs_waps3 = pd.merge(cs_waps2, db.wap_sd, on='ExtSiteID').drop('ExtSiteID', axis=1).round()
+
+    new_waps = mssql.update_from_difference(cs_waps3, param['output']['server'], param['output']['database'], 'WAP', on='SiteID', mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'WAP', 'pass', '{} sites updated'.format(len(new_waps)))
+
+    ## Read db table
+    wap0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'WAP')
+
+    ## Make linked WAP-SiteID table
+    wap_site = cs0.drop(['SiteType', 'Geo', 'ModifiedDate'], axis=1).rename(columns={'ExtSiteID': 'WAP'})
+
+    ##################################################
+    ### Permit table
+    print('--Update Permit table')
+
+    ## Clean data
+    permits1 = db.permit.copy()
+    permits1['FromDate'] = pd.to_datetime(permits1['FromDate'], infer_datetime_format=True, errors='coerce')
+    permits1['ToDate'] = pd.to_datetime(permits1['ToDate'], infer_datetime_format=True, errors='coerce')
+    permits1[['NZTMX', 'NZTMY']] = permits1[['NZTMX', 'NZTMY']].round()
+    permits1['RecordNumber'] = permits1['RecordNumber'].str.strip().str.upper()
+    permits1['ConsentStatus'] = permits1['ConsentStatus'].str.strip()
+    permits1['EcanID'] = permits1['EcanID'].str.strip().str.upper()
+
+    ## Filter data
+    permits1 = permits1.drop_duplicates('RecordNumber')
+    permits2 = permits1[(permits1['FromDate'] > '1950-01-01') & (permits1['ToDate'] > '1950-01-01') & (permits1['ToDate'] > permits1['FromDate']) & permits1.NZTMX.notnull() & permits1.NZTMY.notnull() & permits1.ConsentStatus.notnull() & permits1.RecordNumber.notnull() & permits1['EcanID'].notnull()].copy()
+
+    ## Convert datetimes to date
+    permits2['FromDate'] = permits2['FromDate'].dt.date
+    permits2['ToDate'] = permits2['ToDate'].dt.date
+
+    ## Save results
+    new_permits = mssql.update_from_difference(permits2, param['output']['server'], param['output']['database'], 'Permit', on='RecordNumber', mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Permit', 'pass', '{} rows updated'.format(len(new_permits)))
+
+    ## Read db table
+    permits0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Permit')
+
+    ##################################################
+    ### Parent-Child
+    print('--Update Parent-child table')
+
+    ## Clean data
+    pc1 = db.parent_child.copy()
+    pc1['ParentRecordNumber'] = pc1['ParentRecordNumber'].str.strip().str.upper()
+    pc1['ChildRecordNumber'] = pc1['ChildRecordNumber'].str.strip().str.upper()
+    pc1['ParentCategory'] = pc1['ParentCategory'].str.strip()
+    pc1['ChildCategory'] = pc1['ChildCategory'].str.strip()
+
+    ## Filter data
+    pc1 = pc1.drop_duplicates()
+    pc1 = pc1[pc1['ParentRecordNumber'].notnull() & pc1['ChildRecordNumber'].notnull()]
+
+    ## Check foreign keys
+    crc1 = permits0.RecordNumber.unique()
+    pc2 = pc1[pc1.ParentRecordNumber.isin(crc1) & pc1.ChildRecordNumber.isin(crc1)].copy()
+
+    ## Save results
+    new_pc = mssql.update_from_difference(pc2, param['output']['server'], param['output']['database'], 'ParentChild', on=['ParentRecordNumber', 'ChildRecordNumber'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ParentChild', 'pass', '{} rows updated'.format(len(new_pc)))
+
+    ## Read db table
+    pc0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ParentChild')
+
+    #################################################
+    ### Linked Consents
+    print('--Update LinkConsent table')
+
+    ## Clean data
+    lc1 = db.linked_permits.copy()
+    lc1['RecordNumber'] = lc1['RecordNumber'].str.strip().str.upper()
+    lc1['OtherRecordNumber'] = lc1['OtherRecordNumber'].str.strip().str.upper()
+    lc1['Relationship'] = lc1['Relationship'].str.strip()
+    lc1['LinkedStatus'] = lc1['LinkedStatus'].str.strip()
+    lc1['CombinedAnnualVolume'] = pd.to_numeric(lc1['CombinedAnnualVolume'], errors='coerce').round()
+
+    ## Check foreign keys
+    lc2 = lc1[lc1.RecordNumber.isin(crc1) & lc1.OtherRecordNumber.isin(crc1)].copy()
+
+    ## Filter data
+    lc2 = lc2.drop_duplicates(['RecordNumber', 'OtherRecordNumber'])
+    lc2 = lc2[lc2['Relationship'].notnull()]
+    lc3 = lc2[lc2['CombinedAnnualVolume'] > 0].copy()
+
+    ## Save results
+    new_lc = mssql.update_from_difference(lc3, param['output']['server'], param['output']['database'], 'LinkedPermits', on=['RecordNumber', 'OtherRecordNumber'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LinkedPermits', 'pass', '{} rows updated'.format(len(new_lc)))
+
+    ## Read db table
+    lc0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'LinkedPermits')
+
+    #################################################
+    ### AllocatedRatesVolumes
+    print('--Update Allocation tables')
+
+    attr1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes', ['AttributeID', 'Attribute'])
+
+    ## Rates
+    # Clean data
+    wa1 = wap_allo1.copy()
+    wa1['RecordNumber'] = wa1['RecordNumber'].str.strip().str.upper()
+    wa1['take_type'] = wa1['take_type'].str.strip().str.title()
+    wa1['FromMonth'] = wa1['FromMonth'].str.strip().str.title()
+    wa1['ToMonth'] = wa1['ToMonth'].str.strip().str.title()
+    wa1['Include in SW Allocation'] = wa1['Include in SW Allocation'].str.strip().str.title()
+
+    wa1['AllocatedRate'] = pd.to_numeric(wa1['AllocatedRate'], errors='coerce')
+#    wa1['WapRate'] = pd.to_numeric(wa1['WapRate'], errors='coerce')
+    wa1['SD1'] = pd.to_numeric(wa1['SD1'], errors='coerce')
+    wa1['SD2'] = pd.to_numeric(wa1['SD2'], errors='coerce')
+
+    wa1.loc[wa1['FromMonth'] == 'Migration: Not Classified', 'FromMonth'] = 'Jul'
+    wa1.loc[wa1['ToMonth'] == 'Migration: Not Classified', 'ToMonth'] = 'Jun'
+    mon_mapping = {'Jan': 7, 'Feb': 8, 'Mar': 9, 'Apr': 10, 'May': 11, 'Jun': 12, 'Jul': 1, 'Aug': 2, 'Sep': 3, 'Oct': 4, 'Nov': 5, 'Dec': 6}
+    wa1.replace({'FromMonth': mon_mapping, 'ToMonth': mon_mapping}, inplace=True)
+
+    wa1.loc[wa1['Include in SW Allocation'] == 'No', 'Include in SW Allocation'] = False
+    wa1.loc[wa1['Include in SW Allocation'] == 'Yes', 'Include in SW Allocation'] = True
+
+    # Check foreign keys
+    wa2 = wa1[wa1.RecordNumber.isin(crc1)].copy()
+
+    # Filters
+    wa3 = wa2[(wa2.AllocatedRate > 0)].copy()
+    wa3.loc[~wa3['Include in SW Allocation'], ['AllocatedRate', 'SD1', 'SD2']] = 0
+    wa4 = wa3.drop('Include in SW Allocation', axis=1).copy()
 
     # Find the missing WAPs per consent
-    crc_wap_mis1 = crc_wap.loc[crc_wap.wap.isnull(), 'crc'].unique()
-    crc_wap4 = crc_wap[['crc', 'wap']]
+    crc_wap_mis1 = wa4.loc[wa4.WAP.isnull(), 'RecordNumber'].unique()
+    crc_wap4 = wa4[['RecordNumber', 'WAP']].drop_duplicates()
 
     for i in crc_wap_mis1:
-        crc1 = crc_rel[np.in1d(crc_rel.parent_crc, i)].child_crc.values
+        crc2 = pc0[np.in1d(pc0.ParentRecordNumber, i)].ChildRecordNumber.values
         wap1 = []
-        while (len(crc1) > 0) & (len(wap1) == 0):
-            wap1 = crc_wap4.loc[np.in1d(crc_wap4.crc, crc1), 'wap'].values
-            crc1 = crc_rel[np.in1d(crc_rel.parent_crc, crc1)].child_crc.values
+        while (len(crc2) > 0) & (len(wap1) == 0):
+            wap1 = crc_wap4.loc[np.in1d(crc_wap4.RecordNumber, crc2), 'WAP'].values
+            crc2 = pc0[np.in1d(pc0.ParentRecordNumber, crc2)].ChildRecordNumber.values
         if len(wap1) > 0:
-            crc_wap.loc[crc_wap.crc == i, 'wap'] = wap1[0]
+            wa4.loc[wa4.RecordNumber == i, 'WAP'] = wap1[0]
 
-    # Filter basic bad data and correct structure (duplicate index)
-    crc_wap1 = crc_wap[(crc_wap.wap.notnull()) & ((crc_wap.max_rate_wap.notnull()) | crc_wap.max_rate_pro_rata.notnull())].copy()
-    crc_wap1.loc[crc_wap1.use_type.isnull(), 'use_type'] = ''
-#    crc_wap1 = crc_wap1[~crc_wap1.use_type.str.contains(', ')]
-    crc_wap1 = crc_wap1[crc_wap1.from_date.notnull() & crc_wap1.to_date.notnull()]
+    wa4 = wa4[wa4.WAP.notnull()].copy()
 
-#    crc_wap1 = crc_wap1[(crc_wap1.take_type.isin(['Take Surface Water', 'Divert Surface Water']) & (crc_wap1.in_sw_allo)) | (crc_wap1.take_type == 'Take Groundwater')].sort_values('max_rate_wap', ascending=False)
-    crc_wap1 = crc_wap1.sort_values('max_rate_wap', ascending=False)
-    crc_wap1 = crc_wap1.drop_duplicates(['crc', 'take_type', 'allo_block', 'wap']).copy()
+    # Stream depletion processing
+    wa4['SD'] = wa4['SD1']
+    wa4.loc[wa4['SD'] < wa4['SD2'], 'SD'] = wa4.loc[wa4['SD'] < wa4['SD2'], 'SD2']
+    wa5 = wa4.drop(['SD1', 'SD2'], axis=1)
+    wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'SD'] = wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'AllocatedRate']
 
-    crc_wap1.loc[crc_wap1.max_rate_wap.isnull(), 'max_rate_wap'] = crc_wap1.loc[crc_wap1.max_rate_wap.isnull(), 'max_rate_pro_rata']
-    crc_wap1.loc[crc_wap1.max_rate_pro_rata.isnull(), 'max_rate_pro_rata'] = crc_wap1.loc[crc_wap1.max_rate_pro_rata.isnull(), 'max_rate_wap']
+    # Distribute the rates according to the activity
+#    allo_rates1 = wa5.drop('WapRate', axis=1).copy()
+    allo_rates1 = wa5.copy()
+    allo_rates1['Surface Water'] = allo_rates1['AllocatedRate']
+    allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'Surface Water'] = allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'SD']
+    allo_rates1['Groundwater'] = 0
+    allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'Groundwater'] = allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'AllocatedRate'] - allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'SD']
+    allo_rates2 = allo_rates1.drop(['take_type', 'AllocatedRate', 'SD'], axis=1)
+#    allo_rates2.loc[allo_rates2['Surface Water'] <= 0, 'Surface Water'] = np.nan
+#    allo_rates2.loc[allo_rates2['Groundwater'] <= 0, 'Groundwater'] = np.nan
 
-    crc_wap1 = crc_wap1[crc_wap1.wap.isin(waps.wap)].copy()
+    # Distribute the months
+    allo_rates_list = []
+    for val in allo_rates2.itertuples(False, None):
+        mons = range(int(val[3]), int(val[4]) + 1)
+        d1 = [val + (i,) for i in mons]
+        allo_rates_list.extend(d1)
+    col_names1 = allo_rates2.columns.tolist()
+    col_names1.extend(['Month'])
+    allo_rates3 = pd.DataFrame(allo_rates_list, columns=col_names1).drop(['FromMonth', 'ToMonth'], axis=1)
 
+    # Restructure data
+    allo_rates3a = allo_rates3.set_index(['RecordNumber', 'sw_allo_block', 'WAP','Month'])
+    allo_rates4 = allo_rates3a.stack()
+    allo_rates4.name = 'AllocatedRate'
+    allo_rates4 = allo_rates4.reset_index()
+    allo_rates4.rename(columns={'level_4': 'HydroFeature', 'sw_allo_block': 'AllocationBlock'}, inplace=True)
+    allo_rates4 = allo_rates4.drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroFeature', 'WAP', 'Month'])
 
-    ## crc_allo
-    crc_allo.loc[:, 'in_gw_allo'] = crc_allo.loc[:, 'in_gw_allo'].str.upper()
-    crc_allo.loc[crc_allo.loc[:, 'in_gw_allo'].isnull(), 'in_gw_allo'] = 'NO'
-    crc_allo.replace({'in_gw_allo': {'YES': True, 'NO': False}}, inplace=True)
-    crc_allo.loc[crc_allo.allo_block == 'Migration: Not Classified', 'allo_block'] = 'A'
+    ## Allocated Volume
+    av1 = allo_vol1.copy()
 
-    crc_allo.loc[:, 'irr_area'] = pd.to_numeric(crc_allo.loc[:, 'irr_area'], errors='coerce')
-    crc_allo.loc[:, 'feav'] = pd.to_numeric(crc_allo.loc[:, 'feav'], errors='coerce')
+    # clean data
+    av1['RecordNumber'] = av1['RecordNumber'].str.strip().str.upper()
+    av1['take_type'] = av1['take_type'].str.strip().str.title()
+    av1['Include in allocation'] = av1['Include in allocation'].str.strip().str.title()
+    av1.loc[av1['Include in allocation'] == 'No', 'Include in allocation'] = False
+    av1.loc[av1['Include in allocation'] == 'Yes', 'Include in allocation'] = True
+    av1['Include in allocation'] = av1['Include in allocation'].astype(bool)
+    av1['AllocatedAnnualVolume'] = pd.to_numeric(av1['AllocatedAnnualVolume'], errors='coerce')
+#    av1.loc[av1['AllocatedAnnualVolume'] <= 0, 'AllocatedAnnualVolume'] = 0
+    av1 = av1.loc[av1['AllocatedAnnualVolume'] > 0]
 
-    crc_allo.loc[crc_allo.loc[:, 'irr_area'] <= 0, 'irr_area'] = np.nan
-    crc_allo.loc[crc_allo.loc[:, 'feav'] <= 100, 'feav'] = np.nan
+    # Check foreign keys
+    av2 = av1[av1.RecordNumber.isin(allo_rates4.RecordNumber.unique())].copy()
 
-    crc_allo.loc[crc_allo['take_type'].isin(['Take Surface Water', 'Divert Surface Water']) & (crc_allo['in_gw_allo']), 'in_gw_allo'] = False
+    # Distribute SW and GW allocation
+    av2['Groundwater'] = np.nan
+    av2.loc[av2.take_type == 'Take Groundwater', 'Groundwater'] = av2.loc[av2.take_type == 'Take Groundwater', 'AllocatedAnnualVolume']
+    av2['Surface Water'] = np.nan
+    av2.loc[av2.take_type == 'Take Surface Water', 'Surface Water'] = av2.loc[av2.take_type == 'Take Surface Water', 'AllocatedAnnualVolume']
+    av3 = av2.drop(['take_type', 'AllocatedAnnualVolume'], axis=1)
+    av4 = av3.set_index(['RecordNumber', 'allo_block', 'Include in allocation']).stack().reset_index()
+    av4.rename(columns={'level_3': 'HydroFeature', 0: 'AllocatedAnnualVolume', 'allo_block': 'AllocationBlock'}, inplace=True)
 
-    # Filter data and correct structure (duplicate index)
-#    crc_allo1 = crc_allo[((crc_allo.take_type == 'Take Groundwater') & (crc_allo.in_gw_allo)) | crc_allo.take_type.isin(['Take Surface Water', 'Divert Surface Water'])].sort_values('feav', ascending=False)
-    crc_allo1 = crc_allo.sort_values('feav', ascending=False)
-    crc_allo1 = crc_allo1.drop_duplicates(['crc', 'take_type', 'allo_block'])
+    # Calculate missing volumes from rates
+    grp1 = allo_rates4.groupby(['RecordNumber', 'AllocationBlock', 'WAP', 'HydroFeature'])
+#    mon_count = grp1['Month'].count()
+    mon_min = grp1['Month'].min()
+    mon_min.name = 'FromMonth'
+    mon_max = grp1['Month'].max()
+    mon_max.name = 'ToMonth'
+    mon_min_max = pd.concat([mon_min, mon_max], axis=1)
+    mon_min_max1 = mon_min_max.reset_index()
+#    allo_mean = grp1['AllocatedRate'].mean()
+#    allo_sum = (allo_mean.multiply(mon_count, 0) * 60*60*24*30.42*0.001).round()
+#    allo_sum.name = 'AllocatedVolume'
+#    allo_sum1 = allo_sum.reset_index()
 
-    ## Fix use types in the CrcWap table
-#    mis_use_type = crc_wap1[crc_wap1.use_type == ''].copy().drop('use_type', axis=1)
-#    mis_use_type2 = pd.merge(mis_use_type, crc_allo1, on=['crc', 'take_type'], how='left').drop_duplicates(['crc', 'take_type', 'allo_block_x', 'wap'])
-#    crc_wap1[crc_wap1.use_type == ''] = mis_use_type2.use_type.values
+    grp2 = mon_min_max1.groupby(['RecordNumber', 'AllocationBlock', 'HydroFeature'])
+    mon_min_max1['wap_count'] = grp2['WAP'].transform('count')
 
+    # Combine Annual volumes with the WAPs
+    avr1 = pd.merge(av4, mon_min_max1, on=['RecordNumber', 'AllocationBlock', 'HydroFeature'], how='outer', indicator=True)
+    grp3 = mon_min_max1.groupby(['RecordNumber', 'HydroFeature'])
+    mon_min_max1['wap_count'] = grp3['WAP'].transform('count')
+    mis_wap4 = avr1[avr1._merge == 'left_only'].drop(['WAP', '_merge', 'wap_count', 'FromMonth', 'ToMonth'], axis=1)
+    mis_wap5 = pd.merge(mis_wap4, mon_min_max1.drop(['AllocationBlock'], axis=1), on=['RecordNumber', 'HydroFeature'], how='left')
+    avr2 = avr1[avr1._merge != 'left_only'].drop(['_merge'], axis=1)
+    avr3 = pd.concat([avr2, mis_wap5])
 
-    ## Estimate max rates, volumes, and CAVs
-    grp1 = crc_wap1.groupby(param.crc_allo_pk)
-    crc_max_rate = grp1.max_rate_pro_rata.sum()
-    crc_max_rate.name = 'max_rate_crc'
-    crc_max_vol = grp1.max_vol_pro_rata.sum()
-    crc_max_vol.name = 'max_vol'
-    crc_ret_period = grp1.return_period.max()
-    crc_qual = grp1[['crc_date', 'from_date', 'to_date', 'crc_status', 'from_month', 'to_month']].first()
+    ## Create CrcAlloSite table
+    CrcAlloSite1 = pd.merge(avr3, ab_types1, on=['AllocationBlock', 'HydroFeature']).drop(['AllocationBlock', 'HydroFeature'], axis=1).copy()
+    CrcAlloSite2 = pd.merge(CrcAlloSite1, wap_site, on='WAP')
+    CrcAlloSite3 = CrcAlloSite2[['RecordNumber', 'AlloBlockID', 'SiteID', 'FromMonth', 'ToMonth']].copy()
 
-    crc_new1 = pd.concat([crc_max_rate, crc_max_vol, crc_ret_period, crc_qual], axis=1)
+    # Save results
+    new_cas = mssql.update_from_difference(CrcAlloSite3, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate')
 
-    crc_allo2 = pd.merge(crc_new1.reset_index().drop('allo_block', axis=1), crc_allo1, on=['crc', 'take_type'])
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_cas)))
 
-    ## Estimate other cav's and daily vol
-    crc_allo2['daily_vol'] = (crc_allo2['max_vol'] / crc_allo2['return_period']).round(2)
-    crc_allo2.loc[crc_allo2.daily_vol.isnull(), 'daily_vol'] = (crc_allo2.loc[crc_allo2.daily_vol.isnull(), 'max_rate_crc'] * 60*60*24/1000).round(2)
-    oct_index = crc_allo2.feav.isnull() & (crc_allo2.from_month == 10)
-    crc_allo2.loc[oct_index, 'feav'] = crc_allo2.loc[oct_index, 'daily_vol'] * 212
-    crc_allo2.loc[crc_allo2.feav.isnull(), 'feav'] = crc_allo2.loc[crc_allo2.feav.isnull(), 'daily_vol'] * 365
+    # Read db table
+    cas0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'])
 
-    crc_allo2.loc[crc_allo2.loc[:, 'max_vol'] <= 0, 'max_vol'] = np.nan
+    ## Distribute the volumes by WAP
+    avr4 = CrcAlloSite2[CrcAlloSite2['AllocatedAnnualVolume'].notnull() & CrcAlloSite2['Include in allocation']].drop('Include in allocation', axis=1).copy()
+    avr4['AllocatedAnnualVolume'] = (avr4['AllocatedAnnualVolume'] / avr4['wap_count']).round()
+    avr5 = pd.merge(avr4, cas0, on=['RecordNumber', 'AlloBlockID', 'SiteID'])
+    avr6 = avr5[['CrcAlloSiteID', 'AllocatedAnnualVolume']].copy()
 
-    ## Remove columns from crc_wap
-    crc_wap2 = crc_wap1.drop(['max_rate_pro_rata', 'max_vol_pro_rata', 'return_period', 'crc_date', 'from_date', 'to_date', 'crc_status', 'from_month', 'to_month'], axis=1)
+    # Save results
+    new_aav = mssql.update_from_difference(avr6, param['output']['server'], param['output']['database'], 'AllocatedVolume', on=['CrcAlloSiteID'], mod_date_col='ModifiedDate')
 
-    ## Populate missing SD
-    crc_wap3 = pd.merge(crc_wap2, sd, on='wap', how='left').drop(['sd1', 'sd2'], axis=1)
-    neg1 = crc_wap3[['sd1_7', 'sd1_30', 'sd1_150', 'sd2_7', 'sd2_30', 'sd2_150']] <= 0
-    for n in neg1:
-        crc_wap3.loc[neg1[n], n] = np.nan
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedVolume', 'pass', '{} rows updated'.format(len(new_aav)))
 
-    ## Select only the WAPs that are in Wells and visa versa
-    #waps2 = waps[waps.wap.isin(crc_wap3.wap.unique())].copy()
+    ## Process the allocated rates
+    # Assign all the IDs
+    allo_rates4 = allo_rates4[allo_rates4.AllocatedRate > 0]
+    allo_rates5 = pd.merge(allo_rates4, ab_types1, on=['AllocationBlock', 'HydroFeature']).drop(['AllocationBlock', 'HydroFeature'], axis=1)
+    allo_rates6 = pd.merge(allo_rates5, wap_site, on='WAP')
+    allo_rates6 = pd.merge(allo_rates6, cas0, on=['RecordNumber', 'AlloBlockID', 'SiteID'])[['CrcAlloSiteID', 'Month', 'AllocatedRate']]
 
-    ## Make sure that the dataframes have unique indexes
-    crc_allo3 = crc_allo2.drop_duplicates(param.crc_allo_pk)
+    # Save results
+    new_ar = mssql.update_from_difference(allo_rates6, param['output']['server'], param['output']['database'], 'AllocatedRate', on=['CrcAlloSiteID', 'Month'], mod_date_col='ModifiedDate')
 
-    ############################################
-    ### Save data
-    print('Saving data...')
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedRate', 'pass', '{} rows updated'.format(len(new_ar)))
 
-    ## crc_allo
-    crc_allo_new = mssql.update_from_difference(crc_allo3, param.hydro_server, param.hydro_database, param.crc_allo_table, on=param.crc_allo_pk)
+    #################################################
+    ### ConsentedRateVolume
+    print('--Update Consent tables')
 
-    ## crc_wap
-    crc_wap_allo_new = mssql.update_from_difference(crc_wap3, param.hydro_server, param.hydro_database, param.crc_wap_allo_table, on=param.crc_wap_allo_pk)
+    ## Clean data
+    crv1 = db.consented_takes.copy()
+    crv1['RecordNumber'] = crv1['RecordNumber'].str.strip().str.upper()
+    crv1['take_type'] = crv1['take_type'].str.strip().str.title()
+    crv1['LowflowCondition'] = crv1['LowflowCondition'].str.strip().str.upper()
+    crv1['ConsentedAnnualVolume'] = pd.to_numeric(crv1['ConsentedAnnualVolume'], errors='coerce').round()
+    crv1['ConsentedMultiDayVolume'] = pd.to_numeric(crv1['ConsentedMultiDayVolume'], errors='coerce').round()
+    crv1['ConsentedMultiDayPeriod'] = pd.to_numeric(crv1['ConsentedMultiDayPeriod'], errors='coerce').round()
+    crv1['ConsentedRate'] = pd.to_numeric(crv1['ConsentedRate'], errors='coerce')
+
+    crv1.loc[crv1['ConsentedMultiDayVolume'] <= 0, 'ConsentedMultiDayVolume'] = np.nan
+    crv1.loc[crv1['ConsentedMultiDayPeriod'] <= 0, 'ConsentedMultiDayPeriod'] = np.nan
+    crv1.loc[crv1['ConsentedRate'] <= 0, 'ConsentedRate'] = np.nan
+    crv1.loc[crv1['ConsentedAnnualVolume'] <= 0, 'ConsentedAnnualVolume'] = np.nan
+
+    crv1.loc[crv1['LowflowCondition'].isnull(), 'LowflowCondition'] = 'NO'
+    crv1.loc[(crv1['LowflowCondition'] == 'COMPLEX'), 'LowflowCondition'] = 'YES'
+    crv1.loc[crv1['LowflowCondition'] == 'NO', 'LowflowCondition'] = False
+    crv1.loc[crv1['LowflowCondition'] == 'YES', 'LowflowCondition'] = True
+
+    ## Filter data
+    crv2 = crv1[crv1.ConsentedRate.notnull()]
+
+    ## Check foreign keys
+    crv2 = crv2[crv2.RecordNumber.isin(crc1)].copy()
+
+    ## Aggregate take types for counts and min/max month
+    grp4 = wa5.groupby(['RecordNumber', 'take_type', 'WAP'])
+    mon_min = grp4['FromMonth'].min()
+    mon_min.name = 'FromMonth'
+    mon_max = grp4['ToMonth'].max()
+    mon_max.name = 'ToMonth'
+    mon_min_max = pd.concat([mon_min, mon_max], axis=1)
+    mon_min_max1 = mon_min_max.reset_index()
+
+    grp5 = mon_min_max1.groupby(['RecordNumber', 'take_type'])
+    mon_min_max1['wap_count'] = grp5['WAP'].transform('count')
+
+    ## Distribute WAPs to consents
+    crv3 = pd.merge(crv2, mon_min_max1, on=['RecordNumber', 'take_type'])
+    crv3[['ConsentedAnnualVolume', 'ConsentedMultiDayVolume']] = crv3[['ConsentedAnnualVolume', 'ConsentedMultiDayVolume']].divide(crv3['wap_count'], 0).round()
+    crv3['ConsentedRate'] = crv3['ConsentedRate'].divide(crv3['wap_count'], 0).round(2)
+    crv3.drop('wap_count', axis=1, inplace=True)
+
+    ## Convert take types to ActivityID
+    take_types1 = act_types1[act_types1.ActivityType == 'Take'].copy()
+    crv4 = pd.merge(crv3, take_types1[['ActivityID', 'ActivityName']], left_on='take_type', right_on='ActivityName').drop(['take_type', 'ActivityName'], axis=1)
+
+    ## Convert WAPs to SiteIDs
+    crv5 = pd.merge(crv4, wap_site, on='WAP').drop('WAP', axis=1)
+
+    ## Create CrcActSite table
+    act_site1 = crv5[['RecordNumber', 'ActivityID', 'SiteID', 'FromMonth', 'ToMonth']].copy()
+
+    # Save results
+    new_act_site = mssql.update_from_difference(act_site1, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_act_site)))
+
+    # Read db table
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+
+    ## Create ConsentedVolume table
+    crv6 = crv5.drop(['ConsentedRate', 'LowflowCondition', 'FromMonth', 'ToMonth'], axis=1).dropna(how='all', subset=['ConsentedAnnualVolume', 'ConsentedMultiDayVolume'])
+    crv6 = pd.merge(crv6, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
+
+    # Save results
+    new_cv = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedVolume', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedVolume', 'pass', '{} rows updated'.format(len(new_cv)))
+
+    ## Create ConsentedRate table
+    crv6 = crv5.drop(['ConsentedAnnualVolume', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'LowflowCondition', 'FromMonth', 'ToMonth'], axis=1)
+    crv6 = pd.merge(crv6, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
+
+    # Save results
+    new_cr = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRate', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRate', 'pass', '{} rows updated'.format(len(new_cr)))
 
     ###########################################
-    ### Log
+    ### Diverts
 
-    run_time_end = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-    log1 = pd.DataFrame([[run_time_start, run_time_end, '1900-01-01', param.crc_allo_table, param.ext_system, 'pass', str(len(crc_allo_new)) + ' rows were added/updated.']], columns=['RunTimeStart', 'RunTimeEnd', 'DataFromTime', 'HydroTable', 'ExtSystem', 'RunResult', 'Comment'])
-    mssql.to_mssql(log1, param.hydro_server, param.hydro_database, param.log_table)
-    log1 = pd.DataFrame([[run_time_start, run_time_end, '1900-01-01', param.crc_wap_allo_table, param.ext_system, 'pass', str(len(crc_wap_allo_new)) + ' rows were added/updated.']], columns=['RunTimeStart', 'RunTimeEnd', 'DataFromTime', 'HydroTable', 'ExtSystem', 'RunResult', 'Comment'])
-    mssql.to_mssql(log1, param.hydro_server, param.hydro_database, param.log_table)
-    print('success')
+    ## Clean
+    div1 = db.divert.copy()
+    div1['RecordNumber'] = div1['RecordNumber'].str.strip().str.upper()
+    div1['DivertType'] = div1['DivertType'].str.strip().str.title()
+    div1['LowflowCondition'] = div1['LowflowCondition'].str.strip().str.upper()
+    div1['ConsentedMultiDayVolume'] = pd.to_numeric(div1['ConsentedMultiDayVolume'], errors='coerce').round()
+    div1['ConsentedMultiDayPeriod'] = pd.to_numeric(div1['ConsentedMultiDayPeriod'], errors='coerce').round()
+    div1['ConsentedRate'] = pd.to_numeric(div1['ConsentedRate'], errors='coerce').round(2)
+
+    div1.loc[div1['ConsentedMultiDayVolume'] <= 0, 'ConsentedMultiDayVolume'] = np.nan
+    div1.loc[div1['ConsentedMultiDayPeriod'] <= 0, 'ConsentedMultiDayPeriod'] = np.nan
+    div1.loc[div1['ConsentedRate'] <= 0, 'ConsentedRate'] = np.nan
+
+    div1.loc[div1['LowflowCondition'].isnull(), 'LowflowCondition'] = 'NO'
+    div1.loc[(~div1['LowflowCondition'].isin(['NO', 'YES'])), 'LowflowCondition'] = 'YES'
+    div1.loc[div1['LowflowCondition'] == 'NO', 'LowflowCondition'] = False
+    div1.loc[div1['LowflowCondition'] == 'YES', 'LowflowCondition'] = True
+
+    div1['WAP'] = div1['WAP'].str.strip().str.upper()
+    div1.loc[~div1.WAP.str.contains('[A-Z]+\d\d/\d\d\d\d'), 'WAP'] = np.nan
+
+    ## Filter
+    div2 = div1[div1.WAP.notnull()]
+
+    ## Check foreign keys
+    div2 = div2[div2.RecordNumber.isin(crc1)].copy()
+
+    ## Join to get the IDs and filter WAPs
+    div3 = pd.merge(div2, act_types1[['ActivityID', 'ActivityName']], left_on='DivertType', right_on='ActivityName').drop(['DivertType', 'ActivityName'], axis=1)
+    div3 = pd.merge(div3, wap_site, on='WAP').drop('WAP', axis=1)
+
+    ## CrcActSiteID
+    act_div = div3.drop(['ConsentedRate', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'LowflowCondition'], axis=1).copy()
+    act_div['FromMonth'] = 1
+    act_div['ToMonth'] = 12
+
+    # Save results
+    new_act_div = mssql.update_from_difference(act_div, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_act_div)))
+
+    # Read db table
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+
+    ## ConsentedRate
+    divr1 = div3.drop(['ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'LowflowCondition'], axis=1)
+    divr1 = pd.merge(divr1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
+
+    # Save results
+    new_divr1 = mssql.update_from_difference(divr1, param['output']['server'], param['output']['database'], 'ConsentedRate', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRate', 'pass', '{} rows updated'.format(len(new_divr1)))
+
+    ## ConsentedVolume
+    divv1 = div3.drop(['ConsentedRate', 'LowflowCondition'], axis=1).dropna(how='all', subset=['ConsentedMultiDayVolume'])
+    divv1 = pd.merge(divv1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
+
+    # Save results
+    new_divv1 = mssql.update_from_difference(divv1, param['output']['server'], param['output']['database'], 'ConsentedVolume', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedVolume', 'pass', '{} rows updated'.format(len(new_divv1)))
+
+
+    ###########################################
+    ### Water use types
+
+    wu1 = db.water_use.copy()
+
+    ## Clean
+    wu1['RecordNumber'] = wu1['RecordNumber'].str.strip().str.upper()
+    wu1['UseType'] = wu1['UseType'].str.strip().str.title()
+    wu1['ConsentedMultiDayVolume'] = pd.to_numeric(wu1['ConsentedMultiDayVolume'], errors='coerce').round()
+    wu1['ConsentedMultiDayPeriod'] = pd.to_numeric(wu1['ConsentedMultiDayPeriod'], errors='coerce').round()
+    wu1['ConsentedRate'] = pd.to_numeric(wu1['ConsentedRate'], errors='coerce').round(2)
+
+    wu1.loc[wu1['ConsentedMultiDayVolume'] <= 0, 'ConsentedMultiDayVolume'] = np.nan
+    wu1.loc[wu1['ConsentedMultiDayPeriod'] <= 0, 'ConsentedMultiDayPeriod'] = np.nan
+    wu1.loc[wu1['ConsentedRate'] <= 0, 'ConsentedRate'] = np.nan
+
+    spaces_bool = wu1['UseType'].str[3:5] == '  '
+    wu1.loc[spaces_bool, 'UseType'] = wu1.loc[spaces_bool, 'UseType'].str[:3] + wu1.loc[spaces_bool, 'UseType'].str[4:]
+
+    ## Check foreign keys
+    wu2 = wu1[wu1.RecordNumber.isin(crc1)].copy()
+
+    ## Split into WAPs by take type equivelant
+    wu3 = wu2.copy()
+    wu3['take_type'] = wu3['UseType'].str.replace('Use', 'Take')
+    wu4 = pd.merge(wu3, mon_min_max1, on=['RecordNumber', 'take_type'])
+    wu4['ConsentedMultiDayVolume'] = wu4['ConsentedMultiDayVolume'].divide(wu4['wap_count'], 0).round()
+    wu4['ConsentedRate'] = wu4['ConsentedRate'].divide(wu4['wap_count'], 0).round(2)
+    wu4.drop(['wap_count', 'take_type'], axis=1, inplace=True)
+
+    ## Convert Use types to broader categories
+    types_cat = {}
+    for key, value in param['misc']['use_types_codes'].items():
+        for string in value:
+            types_cat[string] = key
+    types_check = np.in1d(wu4.WaterUse.unique(), list(types_cat.keys())).all()
+    if not types_check:
+        raise ValueError('Some use types are missing in the parameters file. Check the use type table and the parameters file.')
+    wu4.WaterUse.replace(types_cat, inplace=True)
+    wu4['WaterUse'] = wu4['WaterUse'].astype('category')
+
+    ## Join to get the IDs and filter WAPs
+    wu5 = pd.merge(wu4, act_types1[['ActivityID', 'ActivityName']], left_on='UseType', right_on='ActivityName').drop(['UseType', 'ActivityName'], axis=1)
+    wu5 = pd.merge(wu5, wap_site, on='WAP').drop('WAP', axis=1)
+
+    ## Drop duplicate uses
+    wu5.WaterUse.cat.set_categories(param['misc']['use_types_priorities'], True, inplace=True)
+    wu5 = wu5.sort_values('WaterUse')
+    wu6 = wu5.drop_duplicates(['RecordNumber', 'ActivityID', 'SiteID']).copy()
+
+    ## CrcActSiteID
+    act_wu = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'FromMonth', 'ToMonth']].copy()
+
+    # Save results
+    new_act_wu = mssql.update_from_difference(act_wu, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_act_wu)))
+
+    # Read db table
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+
+    ## ConsentedRate
+    wur1 = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'ConsentedRate']]
+    wur1 = pd.merge(wur1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
+
+    # Save results
+    new_wur1 = mssql.update_from_difference(wur1, param['output']['server'], param['output']['database'], 'ConsentedRate', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRate', 'pass', '{} rows updated'.format(len(new_wur1)))
+
+    ## ConsentedVolume
+    wuv1 = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod']].dropna(how='all', subset=['ConsentedMultiDayVolume'])
+    wuv1 = pd.merge(wuv1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
+
+    # Save results
+    new_wuv1 = mssql.update_from_difference(wuv1, param['output']['server'], param['output']['database'], 'ConsentedVolume', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedVolume', 'pass', '{} rows updated'.format(len(new_wuv1)))
+
+    ## Attributes
+    cols1 = ['RecordNumber', 'ActivityID', 'SiteID']
+    attr_cols = attr1.Attribute[attr1.Attribute.isin(wu6.columns)].tolist()
+    cols1.extend(attr_cols)
+    wua1 = wu6.loc[:, wu6.columns.isin(cols1)].set_index(['RecordNumber', 'ActivityID', 'SiteID'])
+    wua2 = wua1.stack()
+    wua2.name = 'Value'
+    wua2 = wua2.reset_index()
+    wua2.rename(columns={'level_3': 'Attribute'}, inplace=True)
+    wua3 = pd.merge(wua2, attr1, on='Attribute').drop('Attribute', axis=1)
+    wua4 = pd.merge(wua3, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
+
+    # Save results
+    new_wua = mssql.update_from_difference(wua4, param['output']['server'], param['output']['database'], 'ConsentedAttributes', on=['CrcActSiteID', 'AttributeID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedAttributes', 'pass', '{} rows updated'.format(len(new_wua)))
 
 ## If fails
 
 except Exception as err:
     err1 = err
     print(err1)
-    run_time_end = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-    log1 = pd.DataFrame([[run_time_start, run_time_end, '1900-01-01', param.crc_allo_table, param.ext_system, 'fail', str(err1)[:299]]], columns=['RunTimeStart', 'RunTimeEnd', 'DataFromTime', 'HydroTable', 'ExtSystem', 'RunResult', 'Comment'])
-    mssql.to_mssql(log1, param.hydro_server, param.hydro_database, param.log_table)
+    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Some Table', 'fail', str(err1)[:299])
 
 
-############################################################
-### Testing
-
-#w1 = crc_wap1.groupby(param.crc_wap_allo_pk).max_rate_wap.count()
-#
-#w2 = w1[w1 > 1].reset_index()
-#len(w2.crc.unique())
-#
-#c1 = crc_wap1[crc_wap1.use_type.str.contains(', ', na=False)]
-#
-#w3 = w2[w2.crc.isin(c1.crc.unique())]
-#len(w3.crc.unique())
-#
-#len(c1[c1.crc_status.isin(['Issued - Active', 'Issued - s124 Continuance'])].crc.unique())
-#
-#c1[c1.crc_status.isin([ 'Issued - Active', 'Issued - s124 Continuance'])].crc.unique()
-#
-#crc1 = crc_allo.groupby(param.crc_allo_pk).feav.count()
-#
-#crc2 = crc1[crc1 > 1].reset_index()
-#len(crc2.crc.unique())
-#
-#
-#crc3 = crc1[crc1 == 1].reset_index()
-#cr1 = crc3.groupby(['crc', 'take_type']).allo_block.count()
-#
-#cr2 = cr1[cr1 > 1].reset_index()
-#len(cr2.crc.unique())

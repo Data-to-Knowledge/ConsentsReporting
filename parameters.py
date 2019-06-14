@@ -93,7 +93,14 @@ process_name = 'consents processing'
 
 status_codes = ['Terminated - Replaced', 'Issued - Active', 'Terminated - Surrendered', 'Terminated - Cancelled', 'Terminated - Expired', 'Terminated - Lapsed', 'Issued - s124 Continuance', 'Issued - Inactive']
 
-use_types_codes = {'irrigation': ['Irrigation', 'Intensive Farming', 'Arable Farming'], 'stockwater': ['Stockwater'], 'industry': ['Industrial Use', 'Cooling Water'], 'water_supply': ['Public Water Supply (Municipal/Community)'], 'hydroelectric': ['Hydroelectric Power Generation', 'Hydroelectirc Power Generation']}
+use_types_codes = {'agriculture': ['Irrigation', 'Intensive Farming', 'Arable Farming', 'Aquaculture', 'Intensive (Shed) Farming - Dairy', 'Intensive (shed) Farming - Other', 'Intensive (shed) Farming - Poultry', 'Scheme - Irrigation'],
+                   'stockwater': ['Stockwater', 'Dairy Shed (Washdown/Cooling)', 'Scheme - Stockwater'],
+                   'industry': ['Industrial Use', 'Cooling Water', 'Construction', 'Drainage', 'Dewatering - Temporary', 'Gravel Extraction/Processing', 'Heat exchange - HVAC', 'Heat exchange - non HVAC', 'Manufacturing - Food Products', 'Manufacturing - Other', 'Manufacturing - Water Bottling', 'Mining'],
+                   'water_supply': ['Public Water Supply (Municipal/Community)', 'Domestic Use'],
+                   'hydroelectric': ['Power Generation', 'Hydroelectirc Power Generation'],
+                   'other': ['Augment Flow/Wetland/Aquifer', 'Firefighting', 'Fisheries/Wildlife Management', 'Flood Control', 'Frost Protection', 'Landfill', 'REVIEW', 'Research (incl testing)', 'Snow Making', 'Stormwater', 'Waste Water', 'Water Storage - To']}
+
+use_types_priorities = ['hydroelectric', 'water_supply', 'agriculture', 'stockwater', 'industry', 'other']
 
 ### Docs info
 
