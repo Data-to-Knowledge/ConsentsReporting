@@ -1,2 +1,2 @@
-conda env remove -n EcanConsents
+conda env remove -n ConsentsReporting
 pause

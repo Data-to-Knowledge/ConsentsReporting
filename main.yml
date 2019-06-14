@@ -1,4 +1,4 @@
-name: EcanConsents
+name: ConsentsReporting
 channels:
 - mullenkamp
 - conda-forge
