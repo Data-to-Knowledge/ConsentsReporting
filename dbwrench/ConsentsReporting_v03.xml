@@ -96,7 +96,7 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="AllocatedAnnualVolume" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
@@ -157,11 +157,8 @@
     </Tbl>
     <Tbl UsSo="1" nm="ConsentedRate">
       <TblOpts/>
-      <Pk ClNs="CrcActSiteID, Month" nm="pkConsentedRate"/>
+      <Pk ClNs="CrcActSiteID" nm="ConsentedRate_PK"/>
       <Cl au="0" df="" nm="CrcActSiteID" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="Month" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="ConsentedRate" nu="0">
@@ -191,7 +188,7 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="ConsentedAnnualVolume" nu="1">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
@@ -370,6 +367,29 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="Log">
+      <TblOpts/>
+      <Cl au="0" df="" nm="RunTimeStart" nu="0">
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="RunTimeEnd" nu="0">
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="DataFromTime" nu="0">
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="InternalTable" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="79" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="RunResult" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="9" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="Comment" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="299" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="MonitoringSites">
       <TblOpts/>
       <Pk ClNs="RecordNumber, SiteID" nm="pkMonitoringSites"/>
@@ -538,32 +558,33 @@
       <DbTableRectangleFill>HeaderFooterFill</DbTableRectangleFill>
       <svg path=""/>
     </DiaProps>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Activity" x="428" y="444"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Activity" x="428" y="428"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AlloBlock" x="1996" y="276"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AllocatedRate" x="2006" y="50"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AllocatedVolume" x="1996" y="171"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Attributes" x="58" y="50"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedAttributes" x="426" y="50"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedRate" x="421" y="186"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedVolume" x="386" y="307"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentsSites" x="454" y="596"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedVolume" x="386" y="291"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentsSites" x="454" y="580"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="CrcActSite" x="814" y="50"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="CrcAlloSite" x="1626" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="HydroFeature" x="50" y="444"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="HydroFeature" x="50" y="428"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="LinkedPermits" x="1616" y="428"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Log" x="2372" y="50"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="MonitoringSites" x="1606" y="596"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ParentChild" x="812" y="892"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ParentChild" x="812" y="876"/>
     <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Permit" x="1224" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="WAP" x="112" y="596"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="WAP" x="112" y="580"/>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.Activity.fk_Activity_HydroFeature" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="308" x2="428" y1="489" y2="489"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="308" x2="428" y1="473" y2="473"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.AlloBlock.fk_AlloBlock_HydroFeature" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="308" x2="2125" y1="474" y2="474"/>
-        <positionableLine lineRole="CHILD_LINE" x1="2129" x2="2129" y1="398" y2="470"/>
+        <positionableLine lineRole="PARENT_LINE" x1="308" x2="2125" y1="458" y2="458"/>
+        <positionableLine lineRole="CHILD_LINE" x1="2129" x2="2129" y1="398" y2="454"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.AllocatedRate.AllocatedRate_CrcAlloSite_FK" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
@@ -593,20 +614,20 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ConsentedVolume.fk_ConsentedVolume_CrcActSite" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="876" x2="876" y1="204" y2="364"/>
-        <positionableLine lineRole="CHILD_LINE" x1="694" x2="872" y1="368" y2="368"/>
+        <positionableLine lineRole="PARENT_LINE" x1="876" x2="876" y1="204" y2="348"/>
+        <positionableLine lineRole="CHILD_LINE" x1="694" x2="872" y1="352" y2="352"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcActSite.fk_CrcActSite_Activity" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="694" x2="935" y1="505" y2="505"/>
-        <positionableLine lineRole="CHILD_LINE" x1="939" x2="939" y1="204" y2="501"/>
+        <positionableLine lineRole="PARENT_LINE" x1="694" x2="934" y1="489" y2="489"/>
+        <positionableLine lineRole="CHILD_LINE" x1="938" x2="938" y1="204" y2="485"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcActSite.fk_CrcActSite_ConsentsSites" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="694" x2="935" y1="636" y2="636"/>
-        <positionableLine lineRole="CHILD_LINE" x1="939" x2="939" y1="204" y2="632"/>
+        <positionableLine lineRole="PARENT_LINE" x1="694" x2="996" y1="620" y2="620"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1000" x2="1000" y1="204" y2="616"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.CrcActSite.fk_CrcActSite_Permit" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
@@ -616,14 +637,14 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcAlloSite.fk_CrcAlloSite_AlloBlock" parentEdge="WEST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1996" x2="1630" y1="337" y2="337"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1626" x2="1626" y1="204" y2="333"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1996" x2="1796" y1="337" y2="337"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1792" x2="1792" y1="204" y2="333"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcAlloSite.fk_CrcAlloSite_ConsentsSites" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="694" x2="1747" y1="596" y2="596"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1751" x2="1751" y1="204" y2="592"/>
+        <positionableLine lineRole="PARENT_LINE" x1="694" x2="1705" y1="580" y2="580"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1709" x2="1709" y1="204" y2="576"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.CrcAlloSite.fk_CrcAlloSite_Permit" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
@@ -633,14 +654,14 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.LinkedPermits.fk_AssociatedPermits_Permit1" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1392" x2="1392" y1="220" y2="493"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1616" x2="1396" y1="497" y2="497"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1392" x2="1392" y1="220" y2="516"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1616" x2="1396" y1="520" y2="520"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.LinkedPermits.fk_AssociatedPermits_Permit2" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1434" x2="1434" y1="220" y2="493"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1616" x2="1438" y1="497" y2="497"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1434" x2="1434" y1="220" y2="470"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1616" x2="1438" y1="474" y2="474"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.MonitoringSites.fk_MonitoringSites_ConsentsSites" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
@@ -650,25 +671,25 @@
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.MonitoringSites.fk_MonitoringSites_Permit" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1350" x2="1350" y1="220" y2="592"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1606" x2="1354" y1="596" y2="596"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1350" x2="1350" y1="220" y2="627"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1606" x2="1354" y1="631" y2="631"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ParentChild.fk_ParentChild_Permit1" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1308" x2="1308" y1="220" y2="949"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1104" x2="1304" y1="953" y2="953"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1308" x2="1308" y1="220" y2="952"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1104" x2="1304" y1="956" y2="956"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ParentChild.fk_ParentChild_Permit2" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1266" x2="1266" y1="220" y2="949"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1104" x2="1262" y1="953" y2="953"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1266" x2="1266" y1="220" y2="912"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1104" x2="1262" y1="916" y2="916"/>
       </positionableLines>
     </FkGl>
     <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.WAP.fk_WAP_ConsentsSites" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="454" x2="334" y1="657" y2="657"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="454" x2="334" y1="641" y2="641"/>
       </positionableLines>
     </FkGl>
     <Notes/>
