@@ -359,13 +359,21 @@ try:
     col_names1.extend(['Month'])
     allo_rates3 = pd.DataFrame(allo_rates_list, columns=col_names1).drop(['FromMonth', 'ToMonth'], axis=1)
 
+    # Mean of all months
+    grp1 = allo_rates3.groupby(['RecordNumber', 'sw_allo_block', 'WAP'])
+    mean1 = grp1[['Groundwater', 'Surface Water']].mean().round(2)
+    mon_min = grp1['Month'].min()
+    mon_min.name = 'FromMonth'
+    mon_max = grp1['Month'].max()
+    mon_max.name = 'ToMonth'
+    allo_rates3a = pd.concat([mean1, mon_min, mon_max], axis=1)
+
     # Restructure data
-    allo_rates3a = allo_rates3.set_index(['RecordNumber', 'sw_allo_block', 'WAP','Month'])
-    allo_rates4 = allo_rates3a.stack()
+    allo_rates4 = allo_rates3a.set_index(['FromMonth', 'ToMonth'], append=True).stack()
     allo_rates4.name = 'AllocatedRate'
     allo_rates4 = allo_rates4.reset_index()
-    allo_rates4.rename(columns={'level_4': 'HydroFeature', 'sw_allo_block': 'AllocationBlock'}, inplace=True)
-    allo_rates4 = allo_rates4.drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroFeature', 'WAP', 'Month'])
+    allo_rates4.rename(columns={'level_5': 'HydroFeature', 'sw_allo_block': 'AllocationBlock'}, inplace=True)
+    allo_rates4 = allo_rates4.drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroFeature', 'WAP'])
 
     ## Allocated Volume
     av1 = allo_vol1.copy()
@@ -392,71 +400,35 @@ try:
     av3 = av2.drop(['take_type', 'AllocatedAnnualVolume'], axis=1)
     av4 = av3.set_index(['RecordNumber', 'allo_block', 'Include in allocation']).stack().reset_index()
     av4.rename(columns={'level_3': 'HydroFeature', 0: 'AllocatedAnnualVolume', 'allo_block': 'AllocationBlock'}, inplace=True)
+    av4 = av4[av4['Include in allocation']].drop('Include in allocation', axis=1).copy()
 
-    # Calculate missing volumes from rates
-    grp1 = allo_rates4.groupby(['RecordNumber', 'AllocationBlock', 'WAP', 'HydroFeature'])
-#    mon_count = grp1['Month'].count()
-    mon_min = grp1['Month'].min()
-    mon_min.name = 'FromMonth'
-    mon_max = grp1['Month'].max()
-    mon_max.name = 'ToMonth'
-    mon_min_max = pd.concat([mon_min, mon_max], axis=1)
-    mon_min_max1 = mon_min_max.reset_index()
-#    allo_mean = grp1['AllocatedRate'].mean()
-#    allo_sum = (allo_mean.multiply(mon_count, 0) * 60*60*24*30.42*0.001).round()
-#    allo_sum.name = 'AllocatedVolume'
-#    allo_sum1 = allo_sum.reset_index()
-
-    grp2 = mon_min_max1.groupby(['RecordNumber', 'AllocationBlock', 'HydroFeature'])
-    mon_min_max1['wap_count'] = grp2['WAP'].transform('count')
-
-    # Combine Annual volumes with the WAPs
-    avr1 = pd.merge(av4, mon_min_max1, on=['RecordNumber', 'AllocationBlock', 'HydroFeature'], how='outer', indicator=True)
-    grp3 = mon_min_max1.groupby(['RecordNumber', 'HydroFeature'])
-    mon_min_max1['wap_count'] = grp3['WAP'].transform('count')
-    mis_wap4 = avr1[avr1._merge == 'left_only'].drop(['WAP', '_merge', 'wap_count', 'FromMonth', 'ToMonth'], axis=1)
-    mis_wap5 = pd.merge(mis_wap4, mon_min_max1.drop(['AllocationBlock'], axis=1), on=['RecordNumber', 'HydroFeature'], how='left')
+    # Combine Annual volumes with rates
+    grp2 = allo_rates4.groupby(['RecordNumber', 'AllocationBlock', 'HydroFeature'])
+    allo_rates4['wap_count'] = grp2['WAP'].transform('count')
+    avr1 = pd.merge(av4, allo_rates4, on=['RecordNumber', 'AllocationBlock', 'HydroFeature'], how='outer', indicator=True)
+    grp3 = allo_rates4.groupby(['RecordNumber', 'HydroFeature'])
+    allo_rates4['wap_count'] = grp3['WAP'].transform('count')
+    mis_wap4 = avr1[avr1._merge == 'left_only'].drop(['WAP', '_merge', 'wap_count', 'FromMonth', 'ToMonth', 'AllocatedRate'], axis=1)
+    mis_wap5 = pd.merge(mis_wap4, allo_rates4.drop(['AllocationBlock'], axis=1), on=['RecordNumber', 'HydroFeature'], how='left')
     avr2 = avr1[avr1._merge != 'left_only'].drop(['_merge'], axis=1)
     avr3 = pd.concat([avr2, mis_wap5])
+    avr3['AllocatedAnnualVolume'] = (avr3['AllocatedAnnualVolume'] / avr3['wap_count']).round()
 
-    ## Create CrcAlloSite table
-    CrcAlloSite1 = pd.merge(avr3, ab_types1, on=['AllocationBlock', 'HydroFeature']).drop(['AllocationBlock', 'HydroFeature'], axis=1).copy()
-    CrcAlloSite2 = pd.merge(CrcAlloSite1, wap_site, on='WAP')
-    CrcAlloSite3 = CrcAlloSite2[['RecordNumber', 'AlloBlockID', 'SiteID', 'FromMonth', 'ToMonth']].copy()
+    ## Clean up unnecessary rows
+    avr4 = avr3[(avr3.AllocatedRate > 0) | (avr3.AllocatedAnnualVolume.notnull())].drop('wap_count', axis=1)
 
-    # Save results
-    new_cas = mssql.update_from_difference(CrcAlloSite3, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate')
+    ## Calculate missing volumes
+    avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedAnnualVolume'] = (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedRate'] * 0.001*60*60*24*30.42* (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'ToMonth'] - avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'FromMonth'] + 1)).round()
 
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_cas)))
-
-    # Read db table
-    cas0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'])
-
-    ## Distribute the volumes by WAP
-    avr4 = CrcAlloSite2[CrcAlloSite2['AllocatedAnnualVolume'].notnull() & CrcAlloSite2['Include in allocation']].drop('Include in allocation', axis=1).copy()
-    avr4['AllocatedAnnualVolume'] = (avr4['AllocatedAnnualVolume'] / avr4['wap_count']).round()
-    avr5 = pd.merge(avr4, cas0, on=['RecordNumber', 'AlloBlockID', 'SiteID'])
-    avr6 = avr5[['CrcAlloSiteID', 'AllocatedAnnualVolume']].copy()
+    ## Create AllocatedRateVolume table
+    avr5 = pd.merge(avr4, ab_types1, on=['AllocationBlock', 'HydroFeature']).drop(['AllocationBlock', 'HydroFeature'], axis=1).copy()
+    avr6 = pd.merge(avr5, wap_site, on='WAP').drop('WAP', axis=1)
 
     # Save results
-    new_aav = mssql.update_from_difference(avr6, param['output']['server'], param['output']['database'], 'AllocatedVolume', on=['CrcAlloSiteID'], mod_date_col='ModifiedDate')
+    new_avr = mssql.update_from_difference(avr6, param['output']['server'], param['output']['database'], 'AllocatedRateVolume', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate')
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedVolume', 'pass', '{} rows updated'.format(len(new_aav)))
-
-    ## Process the allocated rates
-    # Assign all the IDs
-    allo_rates4 = allo_rates4[allo_rates4.AllocatedRate > 0]
-    allo_rates5 = pd.merge(allo_rates4, ab_types1, on=['AllocationBlock', 'HydroFeature']).drop(['AllocationBlock', 'HydroFeature'], axis=1)
-    allo_rates6 = pd.merge(allo_rates5, wap_site, on='WAP')
-    allo_rates6 = pd.merge(allo_rates6, cas0, on=['RecordNumber', 'AlloBlockID', 'SiteID'])[['CrcAlloSiteID', 'Month', 'AllocatedRate']]
-
-    # Save results
-    new_ar = mssql.update_from_difference(allo_rates6, param['output']['server'], param['output']['database'], 'AllocatedRate', on=['CrcAlloSiteID', 'Month'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedRate', 'pass', '{} rows updated'.format(len(new_ar)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedRateVolume', 'pass', '{} rows updated'.format(len(new_avr)))
 
     #################################################
     ### ConsentedRateVolume
@@ -514,36 +486,16 @@ try:
     crv5 = pd.merge(crv4, wap_site, on='WAP').drop('WAP', axis=1)
 
     ## Create CrcActSite table
-    act_site1 = crv5[['RecordNumber', 'ActivityID', 'SiteID', 'FromMonth', 'ToMonth']].copy()
+    crv6 = crv5.drop('LowflowCondition', axis=1)
 
     # Save results
-    new_act_site = mssql.update_from_difference(act_site1, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crv = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_act_site)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv)))
 
     # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
-
-    ## Create ConsentedVolume table
-    crv6 = crv5.drop(['ConsentedRate', 'LowflowCondition', 'FromMonth', 'ToMonth'], axis=1).dropna(how='all', subset=['ConsentedAnnualVolume', 'ConsentedMultiDayVolume'])
-    crv6 = pd.merge(crv6, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
-
-    # Save results
-    new_cv = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedVolume', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedVolume', 'pass', '{} rows updated'.format(len(new_cv)))
-
-    ## Create ConsentedRate table
-    crv6 = crv5.drop(['ConsentedAnnualVolume', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'LowflowCondition', 'FromMonth', 'ToMonth'], axis=1)
-    crv6 = pd.merge(crv6, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
-
-    # Save results
-    new_cr = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRate', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRate', 'pass', '{} rows updated'.format(len(new_cr)))
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentedRateVolume', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
     ###########################################
     ### Diverts
@@ -579,39 +531,19 @@ try:
     div3 = pd.merge(div2, act_types1[['ActivityID', 'ActivityName']], left_on='DivertType', right_on='ActivityName').drop(['DivertType', 'ActivityName'], axis=1)
     div3 = pd.merge(div3, wap_site, on='WAP').drop('WAP', axis=1)
 
-    ## CrcActSiteID
-    act_div = div3.drop(['ConsentedRate', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'LowflowCondition'], axis=1).copy()
-    act_div['FromMonth'] = 1
-    act_div['ToMonth'] = 12
+    ## ConsentedRateVolume
+    crv_div = div3.drop(['LowflowCondition'], axis=1).copy()
+    crv_div['FromMonth'] = 1
+    crv_div['ToMonth'] = 12
 
     # Save results
-    new_act_div = mssql.update_from_difference(act_div, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crv_div = mssql.update_from_difference(crv_div, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_act_div)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_div)))
 
     # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
-
-    ## ConsentedRate
-    divr1 = div3.drop(['ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'LowflowCondition'], axis=1)
-    divr1 = pd.merge(divr1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
-
-    # Save results
-    new_divr1 = mssql.update_from_difference(divr1, param['output']['server'], param['output']['database'], 'ConsentedRate', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRate', 'pass', '{} rows updated'.format(len(new_divr1)))
-
-    ## ConsentedVolume
-    divv1 = div3.drop(['ConsentedRate', 'LowflowCondition'], axis=1).dropna(how='all', subset=['ConsentedMultiDayVolume'])
-    divv1 = pd.merge(divv1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
-
-    # Save results
-    new_divv1 = mssql.update_from_difference(divv1, param['output']['server'], param['output']['database'], 'ConsentedVolume', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedVolume', 'pass', '{} rows updated'.format(len(new_divv1)))
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentedRateVolume', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
 
     ###########################################
@@ -664,37 +596,17 @@ try:
     wu5 = wu5.sort_values('WaterUse')
     wu6 = wu5.drop_duplicates(['RecordNumber', 'ActivityID', 'SiteID']).copy()
 
-    ## CrcActSiteID
-    act_wu = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'FromMonth', 'ToMonth']].copy()
+    ## ConsentedRateVolume
+    crv_wu = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'ConsentedRate', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'FromMonth', 'ToMonth']].copy()
 
     # Save results
-    new_act_wu = mssql.update_from_difference(act_wu, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crv_wu = mssql.update_from_difference(crv_wu, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_act_wu)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_wu)))
 
     # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
-
-    ## ConsentedRate
-    wur1 = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'ConsentedRate']]
-    wur1 = pd.merge(wur1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
-
-    # Save results
-    new_wur1 = mssql.update_from_difference(wur1, param['output']['server'], param['output']['database'], 'ConsentedRate', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRate', 'pass', '{} rows updated'.format(len(new_wur1)))
-
-    ## ConsentedVolume
-    wuv1 = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod']].dropna(how='all', subset=['ConsentedMultiDayVolume'])
-    wuv1 = pd.merge(wuv1, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1).dropna()
-
-    # Save results
-    new_wuv1 = mssql.update_from_difference(wuv1, param['output']['server'], param['output']['database'], 'ConsentedVolume', on=['CrcActSiteID'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedVolume', 'pass', '{} rows updated'.format(len(new_wuv1)))
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentedRateVolume', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
     ## Attributes
     cols1 = ['RecordNumber', 'ActivityID', 'SiteID']
@@ -714,7 +626,7 @@ try:
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedAttributes', 'pass', '{} rows updated'.format(len(new_wua)))
 
-## If fails
+## If failure
 
 except Exception as err:
     err1 = err
