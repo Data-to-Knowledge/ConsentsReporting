@@ -141,7 +141,7 @@ try:
         att0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes')
 
     ##################################################
-    ### Sites and WAPs
+    ### Sites and streamdepletion
     print('--Update sites tables')
 
     ## takes
@@ -170,29 +170,28 @@ try:
         wap_allo1 = wap_allo1[~wap_allo1.WAP.isin(miss_waps)].copy()
 
     ## Update ConsentsSites table
-    cs1 = usm_waps1[['ExtSiteID']].copy()
-    cs1['SiteType'] = 'WAP'
+    cs1 = usm_waps1[['ExtSiteID', 'SiteName']].copy()
+#    cs1['SiteType'] = 'WAP'
 
     new_sites = mssql.update_from_difference(cs1, param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentsSites', 'pass', '{} sites updated'.format(len(new_sites)))
 
-    cs0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites')
-    cs_waps1 = cs0[cs0.SiteType == 'WAP'].copy()
-    cs_waps2 = pd.merge(cs_waps1, usm_waps1, on='ExtSiteID').drop(['SiteType', 'Geo', 'ModifiedDate'], axis=1)
+    cs0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'])
+    cs_waps2 = pd.merge(cs0, usm_waps1.drop('SiteName', axis=1), on='ExtSiteID')
     cs_waps3 = pd.merge(cs_waps2, db.wap_sd, on='ExtSiteID').drop('ExtSiteID', axis=1).round()
 
-    new_waps = mssql.update_from_difference(cs_waps3, param['output']['server'], param['output']['database'], 'WAP', on='SiteID', mod_date_col='ModifiedDate')
+    new_waps = mssql.update_from_difference(cs_waps3, param['output']['server'], param['output']['database'], 'SiteStreamDepletion', on='SiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'WAP', 'pass', '{} sites updated'.format(len(new_waps)))
 
     ## Read db table
-    wap0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'WAP')
+#    wap0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'SiteStreamDepletion')
 
     ## Make linked WAP-SiteID table
-    wap_site = cs0.drop(['SiteType', 'Geo', 'ModifiedDate'], axis=1).rename(columns={'ExtSiteID': 'WAP'})
+    wap_site = cs0.rename(columns={'ExtSiteID': 'WAP'})
 
     ##################################################
     ### Permit table
@@ -251,35 +250,6 @@ try:
 
     ## Read db table
     pc0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ParentChild')
-
-    #################################################
-    ### Linked Consents
-    print('--Update LinkConsent table')
-
-    ## Clean data
-    lc1 = db.linked_permits.copy()
-    lc1['RecordNumber'] = lc1['RecordNumber'].str.strip().str.upper()
-    lc1['OtherRecordNumber'] = lc1['OtherRecordNumber'].str.strip().str.upper()
-    lc1['Relationship'] = lc1['Relationship'].str.strip()
-    lc1['LinkedStatus'] = lc1['LinkedStatus'].str.strip()
-    lc1['CombinedAnnualVolume'] = pd.to_numeric(lc1['CombinedAnnualVolume'], errors='coerce').round()
-
-    ## Check foreign keys
-    lc2 = lc1[lc1.RecordNumber.isin(crc1) & lc1.OtherRecordNumber.isin(crc1)].copy()
-
-    ## Filter data
-    lc2 = lc2.drop_duplicates(['RecordNumber', 'OtherRecordNumber'])
-    lc2 = lc2[lc2['Relationship'].notnull()]
-    lc3 = lc2[lc2['CombinedAnnualVolume'] > 0].copy()
-
-    ## Save results
-    new_lc = mssql.update_from_difference(lc3, param['output']['server'], param['output']['database'], 'LinkedPermits', on=['RecordNumber', 'OtherRecordNumber'], mod_date_col='ModifiedDate')
-
-    # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LinkedPermits', 'pass', '{} rows updated'.format(len(new_lc)))
-
-    ## Read db table
-    lc0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'LinkedPermits')
 
     #################################################
     ### AllocatedRatesVolumes
@@ -476,26 +446,36 @@ try:
     crv3 = pd.merge(crv2, mon_min_max1, on=['RecordNumber', 'take_type'])
     crv3[['ConsentedAnnualVolume', 'ConsentedMultiDayVolume']] = crv3[['ConsentedAnnualVolume', 'ConsentedMultiDayVolume']].divide(crv3['wap_count'], 0).round()
     crv3['ConsentedRate'] = crv3['ConsentedRate'].divide(crv3['wap_count'], 0).round(2)
-    crv3.drop('wap_count', axis=1, inplace=True)
 
     ## Convert take types to ActivityID
     take_types1 = act_types1[act_types1.ActivityType == 'Take'].copy()
-    crv4 = pd.merge(crv3, take_types1[['ActivityID', 'ActivityName']], left_on='take_type', right_on='ActivityName').drop(['take_type', 'ActivityName'], axis=1)
+    crv4 = pd.merge(crv3.drop('wap_count', axis=1), take_types1[['ActivityID', 'ActivityName']], left_on='take_type', right_on='ActivityName').drop(['take_type', 'ActivityName'], axis=1)
 
     ## Convert WAPs to SiteIDs
     crv5 = pd.merge(crv4, wap_site, on='WAP').drop('WAP', axis=1)
 
     ## Create CrcActSite table
-    crv6 = crv5.drop('LowflowCondition', axis=1)
+    crc_act = crv5[['RecordNumber', 'ActivityID', 'SiteID']].copy()
+    crc_act['SiteActivity'] = True
+    crc_act['SiteType'] = 'WAP'
 
     # Save results
-    new_crv = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crc_act = mssql.update_from_difference(crc_act, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crc_act)))
+
+    # Read db table
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+
+    ## Create ConsentedRateVolume table
+    crv6 = pd.merge(crv5, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID', 'LowflowCondition'], axis=1)
+
+    # Save results
+    new_crv = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv)))
-
-    # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentedRateVolume', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
     ###########################################
     ### Diverts
@@ -531,19 +511,30 @@ try:
     div3 = pd.merge(div2, act_types1[['ActivityID', 'ActivityName']], left_on='DivertType', right_on='ActivityName').drop(['DivertType', 'ActivityName'], axis=1)
     div3 = pd.merge(div3, wap_site, on='WAP').drop('WAP', axis=1)
 
+    ## CrcActSite
+    crc_act_div = div3[['RecordNumber', 'ActivityID', 'SiteID']].copy()
+    crc_act_div['SiteActivity'] = True
+    crc_act_div['SiteType'] = 'WAP'
+
+    # Save results
+    new_crv_div = mssql.update_from_difference(crc_act_div, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crv_div)))
+
+    # Read db table
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+
     ## ConsentedRateVolume
-    crv_div = div3.drop(['LowflowCondition'], axis=1).copy()
+    crv_div = pd.merge(div3, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID', 'LowflowCondition'], axis=1).dropna(subset=['ConsentedRate', 'ConsentedMultiDayVolume'], how='all')
     crv_div['FromMonth'] = 1
     crv_div['ToMonth'] = 12
 
     # Save results
-    new_crv_div = mssql.update_from_difference(crv_div, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crv_div = mssql.update_from_difference(crv_div, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_div)))
-
-    # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentedRateVolume', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
 
     ###########################################
@@ -596,17 +587,30 @@ try:
     wu5 = wu5.sort_values('WaterUse')
     wu6 = wu5.drop_duplicates(['RecordNumber', 'ActivityID', 'SiteID']).copy()
 
-    ## ConsentedRateVolume
-    crv_wu = wu6[['RecordNumber', 'ActivityID', 'SiteID', 'ConsentedRate', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'FromMonth', 'ToMonth']].copy()
+    ## CrcActSite
+    crc_act_wu = wu6[['RecordNumber', 'ActivityID', 'SiteID']].copy()
+    crc_act_wu['SiteActivity'] = True
+    crc_act_wu['SiteType'] = 'WAP'
 
     # Save results
-    new_crv_wu = mssql.update_from_difference(crv_wu, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crv_wu = mssql.update_from_difference(crc_act_wu, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crv_wu)))
+
+    # Read db table
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+
+    ## ConsentedRateVolume
+    crv_wu = pd.merge(wu6, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID'])[['CrcActSiteID', 'ConsentedRate', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod']].dropna(subset=['ConsentedRate', 'ConsentedMultiDayVolume'], how='all')
+    crv_wu['FromMonth'] = 1
+    crv_wu['ToMonth'] = 12
+
+    # Save results
+    new_crv_wu = mssql.update_from_difference(crv_wu, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_wu)))
-
-    # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentedRateVolume', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
     ## Attributes
     cols1 = ['RecordNumber', 'ActivityID', 'SiteID']
@@ -625,6 +629,52 @@ try:
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedAttributes', 'pass', '{} rows updated'.format(len(new_wua)))
+
+    #################################################
+    ### Linked Consents
+    print('--Update LinkConsent table')
+
+    ## Clean data
+    lc1 = db.linked_permits.copy()
+    lc1['RecordNumber'] = lc1['RecordNumber'].str.strip().str.upper()
+    lc1['OtherRecordNumber'] = lc1['OtherRecordNumber'].str.strip().str.upper()
+    lc1['Relationship'] = lc1['Relationship'].str.strip()
+    lc1['LinkedStatus'] = lc1['LinkedStatus'].str.strip()
+    lc1['CombinedAnnualVolume'] = pd.to_numeric(lc1['CombinedAnnualVolume'], errors='coerce').round()
+
+    ## Check foreign keys
+    lc2 = lc1[lc1.RecordNumber.isin(crc1) & lc1.OtherRecordNumber.isin(crc1)].copy()
+
+    ## Filter data
+    lc2 = lc2.drop_duplicates(['RecordNumber', 'OtherRecordNumber'])
+    lc2 = lc2[lc2['Relationship'].notnull()]
+#    lc3 = lc2[lc2['CombinedAnnualVolume'] > 0].copy()
+
+    ## Distribute to CrcActSiteIDs
+    crc_count1 = mon_min_max1.drop(['FromMonth', 'ToMonth'], axis=1)
+    crc_count1['wap_count'] = crc_count1.groupby(['RecordNumber']).WAP.transform('count')
+
+    # Main one
+    lc3 = pd.merge(lc2, crc_count1, on='RecordNumber')
+    lc3['CombinedAnnualVolume'] = lc3['CombinedAnnualVolume'] / lc3['wap_count']
+    lc4 = pd.merge(lc3.drop('wap_count', axis=1), take_types1[['ActivityID', 'ActivityName']], left_on='take_type', right_on='ActivityName').drop(['take_type', 'ActivityName'], axis=1)
+    lc4 = pd.merge(lc4, wap_site, on='WAP').drop('WAP', axis=1)
+    lc4 = pd.merge(lc4, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
+
+    # Other one
+    lc4.rename(columns={'OtherRecordNumber': 'RecordNumber'}, inplace=True)
+    lc5 = pd.merge(lc4, crc_count1, on='RecordNumber').drop('wap_count', axis=1)
+    lc5 = pd.merge(lc5, take_types1[['ActivityID', 'ActivityName']], left_on='take_type', right_on='ActivityName').drop(['take_type', 'ActivityName'], axis=1)
+    lc5 = pd.merge(lc5, wap_site, on='WAP').drop('WAP', axis=1)
+    lc5 = pd.merge(lc5, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
+    lc5.rename(columns={'CrcActSiteID_x': 'CrcActSiteID', 'CrcActSiteID_y': 'OtherCrcActSiteID'}, inplace=True)
+
+    ## Save results
+    new_lc = mssql.update_from_difference(lc5, param['output']['server'], param['output']['database'], 'LinkedPermits', on=['CrcActSiteID', 'OtherCrcActSiteID'], mod_date_col='ModifiedDate')
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LinkedPermits', 'pass', '{} rows updated'.format(len(new_lc)))
+
 
 ## If failure
 
