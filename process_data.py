@@ -697,7 +697,7 @@ try:
     ### Lowflows tables
 
     ## ConsentsSites
-    lf_sites1 = lf.lf_sites()
+    lf_sites1 = lf.lf_sites().reset_index()
 
     new_sites = mssql.update_from_difference(lf_sites1[['ExtSiteID', 'SiteName']], param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
     sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'])
@@ -707,16 +707,27 @@ try:
     new_lf_sites = mssql.update_from_difference(lf_sites2, param['output']['server'], param['output']['database'], 'LowFlowSite', on='SiteID', mod_date_col='ModifiedDate')
 
     ## Make lowflow conditions tables
-    trigs1 = lf.crc_trigs()
+    trigs1 = lf.crc_trigs().reset_index()
     trigs2 = trigs1.sort_values(['IsActive', 'ExtSiteID', 'RecordNumber', 'MinAllocation', 'BandNumber'], ascending=[False, True, True, True, True]).drop_duplicates(['RecordNumber', 'ExtSiteID']).drop('IsActive', axis=1)
 
     trigs3 = pd.merge(sites1, trigs2, on=['ExtSiteID']).drop('ExtSiteID', axis=1)
 
     sw_blocks = ab_types1[ab_types1.HydroFeature == 'Surface Water']
     allo_site1 = allo_site0[['RecordNumber', 'AlloBlockID']].drop_duplicates()
-    allo_site2 = allo_site1[allo_site1.AlloBlockID.isin(sw_blocks.AlloBlockID)].copy()
+    allo_site2 = allo_site1[allo_site1.AlloBlockID.isin(sw_blocks.AlloBlockID)]
 
-    trigs4 = pd.merge(allo_site2, trigs3, on=['RecordNumber'])
+    trigs3a = pd.merge(allo_site2, trigs3, on=['RecordNumber'])
+
+    # Missing SW Allo consents
+    mis_trigs1 = trigs3[~trigs3['RecordNumber'].isin(allo_site2.RecordNumber.unique())].copy()
+    mis_allo_site1 = allo_site1[allo_site1.RecordNumber.isin(mis_trigs1.RecordNumber.unique())].copy()
+    mis_allo_site1['AlloBlockID'] = 9
+    mis_allo_site1.drop_duplicates(inplace=True)
+
+    extra_trigs = pd.merge(mis_allo_site1, trigs3, on=['RecordNumber'])
+
+    # Combine trigs
+    trigs4 = pd.concat([trigs3a, extra_trigs], sort=False)
 
     ## Update CrcAlloSite table
     trigs_allo = trigs4[['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType']].copy()

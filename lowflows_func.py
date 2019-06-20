@@ -320,8 +320,8 @@ def rd_lf_last_readings_ts(from_date, to_date=None, SiteID=None):
 
     return site_type2
 
-
-## Special functions
+#########################################
+### Special functions
 
 
 def telem_corr_sites(site_num=None):
@@ -366,7 +366,7 @@ def telem_corr_sites(site_num=None):
     return corr_sites.ExtSysID.astype('int32').astype(str).tolist()
 
 
-def min_max_trig(ExtSiteID=None, only_active=None):
+def min_max_trigs(ExtSiteID=None, only_active=None):
     """
     Function to determine the min/max triggers.
 
@@ -435,7 +435,7 @@ def min_max_trig(ExtSiteID=None, only_active=None):
 #    p_max_site = p_max.reset_index().groupby(['ExtSiteID', 'mon'])['max_trig'].max()
 #    p_set_site = pd.concat([p_min_site, p_max_site], axis=1).reset_index()
 
-    p_set = pd.concat([p_min, p_max], axis=1).reset_index()
+    p_set = pd.concat([p_min, p_max], axis=1)
 
     return p_set
 
@@ -446,22 +446,53 @@ def min_max_trig(ExtSiteID=None, only_active=None):
 
 def lf_sites(SiteID=None, ExtSiteID=None):
     """
+    Function to get the site info for the lowflows sites that correspond in USM.
 
+    Parameters
+    ----------
+    SiteID: int, str, or list
+        LowFlow internal site IDs.
+    ExtSiteID: int, str, or list
+        ECan site IDs
+
+    Returns
+    -------
+    DataFrame
+        'ExtSiteID'
     """
     lf_sites = rd_lf_sites(SiteID, ExtSiteID)
     usm_sites1 = rd_sql(usm_server, usm_db, usm_sites, usm_fields, where_in={'UpstreamSiteID': lf_sites.ExtSiteID.tolist()}, rename_cols=usm_names).round()
 
-    return usm_sites1
+    return usm_sites1.set_index('ExtSiteID')
 
 
 
 def crc_trigs(SiteID=None, ExtSiteID=None, BandNumber=None, RecordNumber=None, SiteType=None, only_active=None):
     """
+    Function to Determine the min and max trigger and allocations by the RecordNumber, BandNumber, and ExtSiteID.
 
+    Parameters
+    ----------
+    SiteID: int, str, or list
+        Lowflow internal site IDs.
+    ExtSiteID: int, str, or list
+        ECan site IDs
+    BandNumber: int or list of int
+        The Lowflow internal band numbers.
+    RecordNumber: str or list of str
+        The ECan record numbers.
+    SiteType: str or list of str
+        Options are 'Lowflow' or 'Residual'
+    only_active: bool or None
+        Should only the active bands be returned? None will contain all.
+
+    Returns
+    -------
+    DataFrame
     """
     ### Read in tables
     crc = rd_lf_crc(SiteID=SiteID, BandNumber=BandNumber, RecordNumber=RecordNumber)
-    min_max = min_max_trig(ExtSiteID=ExtSiteID, only_active=only_active)
+    min_max = min_max_trigs(ExtSiteID=ExtSiteID, only_active=only_active).reset_index()
     sites = rd_lf_sites(SiteID=SiteID, ExtSiteID=ExtSiteID)
     site_types = rd_lf_site_type(SiteID=SiteID, BandNumber=BandNumber, SiteType=SiteType, only_active=only_active).reset_index()
 
@@ -489,12 +520,28 @@ def crc_trigs(SiteID=None, ExtSiteID=None, BandNumber=None, RecordNumber=None, S
     min_max5 = pd.merge(min_max4, site_types2, on=['ExtSiteID', 'BandNumber'])
 
     ### Return
-    return min_max5
+    return min_max5.set_index(['RecordNumber', 'BandNumber', 'ExtSiteID'])
 
 
 def site_log_ts(from_date, to_date=None, SiteID=None, ExtSiteID=None):
     """
+    Function to return a time series log of site measurements read by Lowflows to the source systems.
 
+    Parameters
+    ----------
+    from_date: str
+        The start date for the log.
+    to_date: str or None
+        The end date for the log. None returns today's date.
+    SiteID: int, str, or list
+        LowFlow internal site IDs.
+    ExtSiteID: int, str, or list
+        ECan site IDs
+
+    Returns
+    -------
+    DataFrame
+        ['ExtSiteID', 'RestrDate']
     """
     ### Read in tables
     site_log1 = rd_lf_db_log(SiteID=SiteID, from_date=from_date, to_date=to_date)
@@ -506,12 +553,32 @@ def site_log_ts(from_date, to_date=None, SiteID=None, ExtSiteID=None):
     site_ts = pd.merge(sites, method2, on='SiteID').drop('SiteID', axis=1)
 
     ### Return
-    return site_ts
+    return site_ts.set_index(['ExtSiteID', 'RestrDate'])
 
 
 def allocation_ts(from_date, to_date=None, ExtSiteID=None, BandNumber=None, RecordNumber=None):
     """
+    Function to return a time series of allocation restrictions by 'RecordNumber', 'BandNumber', 'ExtSiteID', and 'RestrDate'.
 
+    Parameters
+    ----------
+    from_date: str
+        The start date for the log.
+    to_date: str or None
+        The end date for the log. None returns today's date.
+    SiteID: int, str, or list
+        LowFlow internal site IDs.
+    ExtSiteID: int, str, or list
+        ECan site IDs
+    BandNumber: int or list of int
+        The Lowflow internal band numbers.
+    RecordNumber: str or list of str
+        The ECan record numbers.
+
+    Returns
+    -------
+    DataFrame
+        ['RecordNumber', 'BandNumber', 'ExtSiteID', 'RestrDate']
     """
     ## Read tables
     sites = rd_lf_sites(ExtSiteID=ExtSiteID)
@@ -528,7 +595,7 @@ def allocation_ts(from_date, to_date=None, ExtSiteID=None, BandNumber=None, Reco
     restr_crc2 = pd.merge(sites, restr_crc1, on='SiteID').drop('SiteID', axis=1)
 
     ## Return
-    return restr_crc2
+    return restr_crc2.set_index(['RecordNumber', 'BandNumber', 'ExtSiteID', 'RestrDate'])
 
 
 
