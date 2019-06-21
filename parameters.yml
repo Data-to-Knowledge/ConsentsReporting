@@ -76,20 +76,6 @@ source data:
     col_names: [UpstreamSiteID, Name, NZTMX, NZTMY]
     rename_cols: [ExtSiteID, SiteName, NZTMX, NZTMY]
 
-  # lowflows_crc:
-  #   server: SQL2012PROD03
-  #   database: lowflows
-  #   table: tagLowFlow
-  #   col_names: [RecordNo, SiteID, BandNo]
-  #   rename_cols: [RecordNumber, lowflow_site_id, BandNumber]
-  #
-  # lowflows_sites:
-  #   server: SQL2012PROD03
-  #   database: lowflows
-  #   table: LowFlowSite
-  #   col_names: [SiteID, RefDBaseKey, SiteID, BandNo]
-  #   rename_cols: [RecordNumber, lowflow_site_id, BandNumber]
-
 misc:
   HydroFeature:
     HydroFeature: [Surface Water, Groundwater]

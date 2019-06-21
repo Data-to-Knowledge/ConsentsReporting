@@ -10,9 +10,9 @@ import pandas as pd
 import numpy as np
 from pdsql import mssql
 from datetime import datetime
-import lowflows_func as lf
 import yaml
 import itertools
+import lowflows as lf
 import util
 
 pd.options.display.max_columns = 10
@@ -695,9 +695,10 @@ try:
 
     ###############################################3
     ### Lowflows tables
+    print('--Lowflows')
 
     ## ConsentsSites
-    lf_sites1 = lf.lf_sites().reset_index()
+    lf_sites1 = lf.sites().reset_index()
 
     new_sites = mssql.update_from_difference(lf_sites1[['ExtSiteID', 'SiteName']], param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
     sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'])
