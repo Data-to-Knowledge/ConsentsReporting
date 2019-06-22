@@ -34,12 +34,13 @@ try:
     ######################################
     ### TSLowFlowRestr
     print('--TSLowFlowRestr')
+    table1 = lowflow_ts_table
 
     sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'])
 
     ## Determine last restriction date run
 
-    stmt1 = max_date_stmt.format(table=lowflow_ts_table)
+    stmt1 = max_date_stmt.format(table=table1)
     last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt1).loc[0][0]
 
     if last_date1 is None:
@@ -52,7 +53,7 @@ try:
     #last_date1 = '2019-06-20'
     if last_date2 <= today1:
         # Process the results
-        restr_ts1 = lf.allocation_ts(str(last_date2)).reset_index()
+        restr_ts1 = lf.allocation_ts(str(last_date2), str(today1)).reset_index()
 
         # Read db tables
         allo_site_trig = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteType': ['LowFlow', 'Residual']})
@@ -70,18 +71,19 @@ try:
 
         # Save results
         print('Save results')
-        mssql.to_mssql(restr_ts3, param['output']['server'], param['output']['database'], 'TSLowFlowRestr')
+        mssql.to_mssql(restr_ts3, param['output']['server'], param['output']['database'], table1)
     #    new_restr_ts = mssql.update_from_difference(restr_ts3, param['output']['server'], param['output']['database'], 'TSLowFlowRestr', on=['CrcAlloSiteID', 'RestrDate'], mod_date_col='ModifiedDate')
 
         # Log
-        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date2, 'TSLowFlowRestr', 'pass', '{} rows updated'.format(len(restr_ts3)))
+        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(restr_ts3)))
     else:
         # Log
-        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, str(last_date1), 'TSLowFlowRestr', 'pass', 'Todays restrictions were already saved')
+        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', 'Todays restrictions were already saved')
 
     #####################################
     ### TSLowFlowSite
     print('--TSLowFlowSite')
+    table1 = lowflow_site_ts_table
 
     ## Determine last restriction date run
 
@@ -100,7 +102,7 @@ try:
 #    last_date1 = '2019-06-20'
     if last_date2 <= today1:
         # Process the results
-        site_log1 = lf.site_log_ts(str(last_date2)).reset_index()
+        site_log1 = lf.site_log_ts(str(last_date2), str(today1)).reset_index()
 
         site_log2 = pd.merge(sites1, site_log1, on='ExtSiteID').drop('ExtSiteID', axis=1)
 
@@ -110,19 +112,19 @@ try:
 
         # Save results
         print('Save results')
-        mssql.to_mssql(site_log2, param['output']['server'], param['output']['database'], 'TSLowFlowSite')
+        mssql.to_mssql(site_log2, param['output']['server'], param['output']['database'], table1)
 
         # Log
-        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'TSLowFlowSite', 'pass', '{} rows updated'.format(len(site_log2)))
+        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(site_log2)))
     else:
         # Log
-        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, str(last_date1), 'TSLowFlowSite', 'pass', 'Todays restrictions were already saved')
+        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', 'Todays restrictions were already saved')
 
 ## If failure
 
 except Exception as err:
     err1 = err
     print(err1)
-    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Some TS Table', 'fail', str(err1)[:299])
+    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', table1, 'fail', str(err1)[:299])
 
 
