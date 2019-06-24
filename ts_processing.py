@@ -16,11 +16,16 @@ pd.options.display.max_columns = 10
 today1 = date.today()
 run_time_start = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
+#today1 = date(2007, 4, 1)
+
 #####################################
 ### Parameters
 
 lowflow_ts_table = 'TSLowFlowRestr'
 lowflow_site_ts_table = 'TSLowFlowSite'
+lowflow_site_summ_table = 'TSLowFlowSiteSumm'
+schema1 = 'reporting'
+only_active = True
 
 max_date_stmt = "select max(RestrDate) from {table}"
 min_date_stmt = "select min(RestrDate) from {table}"
@@ -44,7 +49,8 @@ try:
     last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt1).loc[0][0]
 
     if last_date1 is None:
-        last_date2 = '1900-01-01'
+        last_date1 = '1900-01-01'
+        last_date2 = last_date1
     else:
         last_date2 = last_date1 + timedelta(days=1)
 
@@ -87,7 +93,7 @@ try:
 
     ## Determine last restriction date run
 
-    stmt2 = max_date_stmt.format(table=lowflow_site_ts_table)
+    stmt2 = max_date_stmt.format(table=table1)
     last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt2).loc[0][0]
 
     if last_date1 is None:
@@ -99,7 +105,6 @@ try:
 
     print('Last sucessful date is ' + str(last_date1), ' New data to query will be ' + str(last_date2))
 
-#    last_date1 = '2019-06-20'
     if last_date2 <= today1:
         # Process the results
         site_log1 = lf.site_log_ts(str(last_date2), str(today1)).reset_index()
@@ -116,6 +121,40 @@ try:
 
         # Log
         log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(site_log2)))
+    else:
+        # Log
+        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', 'Todays restrictions were already saved')
+
+    #####################################
+    ### TSLowFlowSiteSumm
+    print('--TSLowFlowSiteSumm')
+    table1 = lowflow_site_summ_table
+
+    ## Determine last restriction date run
+
+    stmt2 = max_date_stmt.format(table=schema1 + '.' + table1)
+    last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt2).loc[0][0]
+
+    if last_date1 is None:
+        stmt3 = min_date_stmt.format(table=lowflow_ts_table)
+        last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt3).loc[0][0]
+        last_date2 = last_date1
+    else:
+        last_date2 = last_date1 + timedelta(days=1)
+
+    print('Last sucessful date is ' + str(last_date1), ' New data to query will be ' + str(last_date2))
+
+    if last_date2 <= today1:
+
+        # Process the results
+        site_summ1 = lf.site_summary_ts(str(last_date2), str(today1), only_active=only_active).reset_index()
+
+        # Save results
+        print('Save results')
+        mssql.to_mssql(site_summ1, param['output']['server'], param['output']['database'], table1, schema=schema1)
+
+        # Log
+        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(site_summ1)))
     else:
         # Log
         log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', 'Todays restrictions were already saved')
