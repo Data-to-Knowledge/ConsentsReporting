@@ -16,16 +16,14 @@ pd.options.display.max_columns = 10
 today1 = date.today()
 run_time_start = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
-#today1 = date(2007, 4, 1)
+#today1 = date(2010, 7, 1)
 
 #####################################
 ### Parameters
 
 lowflow_ts_table = 'TSLowFlowRestr'
 lowflow_site_ts_table = 'TSLowFlowSite'
-lowflow_site_summ_table = 'TSLowFlowSiteSumm'
-schema1 = 'reporting'
-only_active = True
+permit_table = 'Permit'
 
 max_date_stmt = "select max(RestrDate) from {table}"
 min_date_stmt = "select min(RestrDate) from {table}"
@@ -49,7 +47,7 @@ try:
     last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt1).loc[0][0]
 
     if last_date1 is None:
-        last_date1 = '1900-01-01'
+        last_date1 = date(1900, 1, 1)
         last_date2 = last_date1
     else:
         last_date2 = last_date1 + timedelta(days=1)
@@ -61,6 +59,17 @@ try:
         # Process the results
         restr_ts1 = lf.allocation_ts(str(last_date2), str(today1)).reset_index()
 
+        # Permits
+        permit1 = mssql.rd_sql(param['output']['server'], param['output']['database'], permit_table, ['RecordNumber', 'FromDate', 'ToDate'])
+
+        # permit date filter
+        permit2 = permit1[(permit1.FromDate < today1) & (permit1.ToDate > last_date2)].copy()
+        permit2.FromDate = pd.to_datetime(permit2.FromDate)
+        permit2.ToDate = pd.to_datetime(permit2.ToDate)
+
+        restr4 = pd.merge(permit2, restr_ts1, on='RecordNumber')
+        restr5 = restr4[(restr4.RestrDate <= restr4.ToDate) & (restr4.RestrDate >= restr4.FromDate)].drop(['FromDate', 'ToDate'], axis=1).copy()
+
         # Read db tables
         allo_site_trig = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteType': ['LowFlow', 'Residual']})
 
@@ -69,7 +78,7 @@ try:
         allo_site_trig1 = pd.merge(trig_cond1, allo_site_trig, on='CrcAlloSiteID')
 
         # Combine tables
-        restr_ts2 = pd.merge(sites1, restr_ts1, on='ExtSiteID').drop('ExtSiteID', axis=1)
+        restr_ts2 = pd.merge(sites1, restr5, on='ExtSiteID').drop('ExtSiteID', axis=1)
 
         restr_ts3 = pd.merge(restr_ts2, allo_site_trig1, on=['RecordNumber', 'SiteID', 'BandNumber']).drop(['RecordNumber', 'SiteID', 'BandNumber', 'AlloBlockID'], axis=1).drop_duplicates(['CrcAlloSiteID', 'RestrDate'])
 
@@ -121,40 +130,6 @@ try:
 
         # Log
         log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(site_log2)))
-    else:
-        # Log
-        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', 'Todays restrictions were already saved')
-
-    #####################################
-    ### TSLowFlowSiteSumm
-    print('--TSLowFlowSiteSumm')
-    table1 = lowflow_site_summ_table
-
-    ## Determine last restriction date run
-
-    stmt2 = max_date_stmt.format(table=schema1 + '.' + table1)
-    last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt2).loc[0][0]
-
-    if last_date1 is None:
-        stmt3 = min_date_stmt.format(table=lowflow_ts_table)
-        last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt3).loc[0][0]
-        last_date2 = last_date1
-    else:
-        last_date2 = last_date1 + timedelta(days=1)
-
-    print('Last sucessful date is ' + str(last_date1), ' New data to query will be ' + str(last_date2))
-
-    if last_date2 <= today1:
-
-        # Process the results
-        site_summ1 = lf.site_summary_ts(str(last_date2), str(today1), only_active=only_active).reset_index()
-
-        # Save results
-        print('Save results')
-        mssql.to_mssql(site_summ1, param['output']['server'], param['output']['database'], table1, schema=schema1)
-
-        # Log
-        log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(site_summ1)))
     else:
         # Log
         log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', 'Todays restrictions were already saved')
