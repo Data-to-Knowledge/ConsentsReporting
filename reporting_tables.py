@@ -5,14 +5,10 @@ Created on Tue Jun 25 11:07:27 2019
 @author: michaelek
 """
 import os
-import types
 import pandas as pd
-import numpy as np
 from pdsql import mssql
 from datetime import datetime
 import yaml
-import itertools
-import lowflows as lf
 import util
 
 pd.options.display.max_columns = 10
@@ -85,22 +81,8 @@ try:
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm', 'pass', '{} rows updated'.format(len(new_allo)))
 
-
-    ####################################
-    ###
-
-
-    ## Read base data
-#    usm_sites1 = mssql.rd_sql(usm_server, usm_db, usm_site_table, ['UpstreamSiteID', 'SiteMasterID', 'NZTMX', 'NZTMY']).rename(columns={'UpstreamSiteID': 'ExtSiteID', 'SiteMasterID': 'SiteID'})
-#    usm_site_attr1 = mssql.rd_sql(usm_server, usm_db, usm_site_attr_table, ['SiteID', 'CatchmentNumber', 'CatchmentName', 'CatchmentGroupName', 'CatchmentGroupNumber', 'CwmsName', 'SwazName', 'SwazGroupName', 'SwazSubRegionalName', 'GwazName'])
-
-
-
-
-
-
-
-
-
-
+except Exception as err:
+    err1 = err
+    print(err1)
+    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm', 'fail', str(err1)[:299])
 
