@@ -10,5 +10,11 @@ This module runs through the sequence of other python modules for updating the H
 print('Populate the consents allocation tables')
 import process_data
 
+print('Populate the time series tables')
+import ts_processing
 
+print('Populate the normal reporting tables')
+import reporting_tables
 
+print('Populate the time series reporting tables')
+import reporting_tables_ts

@@ -1,4 +1,4 @@
-name: EcanConsents
+name: ConsentsReporting
 channels:
 - mullenkamp
 - conda-forge
@@ -6,3 +6,5 @@ channels:
 dependencies:
 - python=3.6
 - pdsql=1.2
+- pyyaml
+- lowflows

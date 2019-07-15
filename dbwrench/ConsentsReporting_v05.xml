@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><Db flnm="ConsentsReporting_v03" nm="ConsentsReporting" ver="1.3.4">
+<?xml version="1.0" encoding="UTF-8"?><Db flnm="ConsentsReporting_v05" nm="ConsentsReporting" ver="1.3.4">
   <VerLbl/>
   <VerNotes/>
   <DefTblOpts/>
@@ -66,45 +66,50 @@
       </UniqueConstraints>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="AllocatedRate">
+    <Tbl UsSo="1" nm="AllocatedRateVolume">
       <TblOpts/>
-      <Pk ClNs="CrcAlloSiteID, Month" nm="AllocatedRate_PK"/>
-      <Cl au="0" df="" nm="CrcAlloSiteID" nu="0">
+      <Pk ClNs="CrcAlloSiteID" nm="pkAllocatedRateVolume"/>
+      <Cl au="1" df="" nm="CrcAlloSiteID" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="Month" nu="0">
+      <Cl au="0" df="" nm="RecordNumber" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="19" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="AlloBlockID" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="SiteID" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="AllocatedRate" nu="0">
         <DT arr="0" ds="Numeric" en="" id="2" ln="9" sc="2" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="AllocatedRate_CrcAlloSite_FK" prLkCl="CrcAlloSiteID" upAc="3">
-        <PrTb mn="0" nm="CrcAlloSite" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="AllocatedRate" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="CrcAlloSiteID" prCl="CrcAlloSiteID"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="AllocatedVolume">
-      <TblOpts/>
-      <Pk ClNs="CrcAlloSiteID" nm="AllocatedVolume_PK"/>
-      <Cl au="0" df="" nm="CrcAlloSiteID" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
       <Cl au="0" df="" nm="AllocatedAnnualVolume" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="FromMonth" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_AllocatedVolume_CrcAlloSite" prLkCl="CrcAlloSiteID" upAc="3">
-        <PrTb mn="0" nm="CrcAlloSite" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="AllocatedVolume" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="CrcAlloSiteID" prCl="CrcAlloSiteID"/>
+      <Cl au="0" df="" nm="ToMonth" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_AllocatedRateVolume_AlloBlock" prLkCl="AlloBlockID" upAc="3">
+        <PrTb mn="0" nm="AlloBlock" oe="1" sch="dbo" zr="0"/>
+        <CdTb mn="1" nm="AllocatedRateVolume" oe="0" sch="dbo" zr="1"/>
+        <ClPr cdCl="AlloBlockID" prCl="AlloBlockID"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_AllocatedRateVolume_ConsentsSites" prLkCl="SiteID" upAc="3">
+        <PrTb mn="0" nm="ConsentsSites" oe="1" sch="dbo" zr="0"/>
+        <CdTb mn="1" nm="AllocatedRateVolume" oe="0" sch="dbo" zr="1"/>
+        <ClPr cdCl="SiteID" prCl="SiteID"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_AllocatedRateVolume_Permit" prLkCl="RecordNumber" upAc="3">
+        <PrTb mn="0" nm="Permit" oe="1" sch="dbo" zr="0"/>
+        <CdTb mn="1" nm="AllocatedRateVolume" oe="0" sch="dbo" zr="1"/>
+        <ClPr cdCl="RecordNumber" prCl="RecordNumber"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -129,7 +134,7 @@
     </Tbl>
     <Tbl UsSo="1" nm="ConsentedAttributes">
       <TblOpts/>
-      <Pk ClNs="AttributeID, CrcActSiteID" nm="pkConsentedAttributes"/>
+      <Pk ClNs="CrcActSiteID, AttributeID" nm="ConsentedAttributes_PK"/>
       <Cl au="0" df="" nm="CrcActSiteID" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
@@ -140,14 +145,14 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="299" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_ConsentedAttributes_Attributes" prLkCl="AttributeID" upAc="3">
+      <Fk deAc="3" nm="ConsentedAttributes_Attributes_FK" prLkCl="AttributeID" upAc="3">
         <PrTb mn="0" nm="Attributes" oe="1" sch="dbo" zr="0"/>
         <CdTb mn="1" nm="ConsentedAttributes" oe="0" sch="dbo" zr="1"/>
         <ClPr cdCl="AttributeID" prCl="AttributeID"/>
       </Fk>
-      <Fk deAc="3" nm="fk_ConsentedAttributes_CrcActSite" prLkCl="CrcActSiteID" upAc="3">
+      <Fk deAc="3" nm="ConsentedAttributes_CrcActSite_FK" prLkCl="CrcActSiteID" upAc="3">
         <PrTb mn="0" nm="CrcActSite" oe="1" sch="dbo" zr="0"/>
         <CdTb mn="1" nm="ConsentedAttributes" oe="0" sch="dbo" zr="1"/>
         <ClPr cdCl="CrcActSiteID" prCl="CrcActSiteID"/>
@@ -155,31 +160,14 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="ConsentedRate">
+    <Tbl UsSo="1" nm="ConsentedRateVolume">
       <TblOpts/>
-      <Pk ClNs="CrcActSiteID" nm="ConsentedRate_PK"/>
+      <Pk ClNs="CrcActSiteID" nm="pkConsentedRateVolume"/>
       <Cl au="0" df="" nm="CrcActSiteID" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="ConsentedRate" nu="0">
+      <Cl au="0" df="" nm="ConsentedRate" nu="1">
         <DT arr="0" ds="Numeric" en="" id="2" ln="9" sc="2" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk_AllocatedRate_CrcActSite" prLkCl="CrcActSiteID" upAc="3">
-        <PrTb mn="0" nm="CrcActSite" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="ConsentedRate" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="CrcActSiteID" prCl="CrcActSiteID"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="ConsentedVolume">
-      <TblOpts/>
-      <Pk ClNs="CrcActSiteID" nm="ConsentedVolume_PK"/>
-      <Cl au="0" df="" nm="CrcActSiteID" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="ConsentedMultiDayVolume" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -190,12 +178,18 @@
       <Cl au="0" df="" nm="ConsentedAnnualVolume" nu="1">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="FromMonth" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_ConsentedVolume_CrcActSite" prLkCl="CrcActSiteID" upAc="3">
+      <Cl au="0" df="" nm="ToMonth" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="ConsentedRateVolume_CrcActSite_FK_1" prLkCl="CrcActSiteID" upAc="3">
         <PrTb mn="0" nm="CrcActSite" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="ConsentedVolume" oe="0" sch="dbo" zr="1"/>
+        <CdTb mn="1" nm="ConsentedRateVolume" oe="0" sch="dbo" zr="1"/>
         <ClPr cdCl="CrcActSiteID" prCl="CrcActSiteID"/>
       </Fk>
       <UniqueConstraints/>
@@ -210,14 +204,14 @@
       <Cl au="0" df="" nm="ExtSiteID" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="19" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="SiteType" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="19" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="Geo" nu="1">
-        <DT arr="0" ds="Image" en="" id="721" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
       <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="SiteName" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="299" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="Geo" nu="1">
+        <DT arr="0" ds="Geometry" en="" id="779" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <UniqueConstraints>
         <UnCon nm="ConsentsSites_UN">
@@ -228,7 +222,7 @@
     </Tbl>
     <Tbl UsSo="1" nm="CrcActSite">
       <TblOpts/>
-      <Pk ClNs="CrcActSiteID" nm="pkCrcActSite"/>
+      <Pk ClNs="CrcActSiteID" nm="pkConsentedRateVolume_dup"/>
       <Cl au="1" df="" nm="CrcActSiteID" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
@@ -241,81 +235,31 @@
       <Cl au="0" df="" nm="SiteID" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="FromMonth" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="ToMonth" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="SiteActivity" nu="0">
+        <DT arr="0" ds="Bit" en="" id="-7" ln="1" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_CrcActSite_Activity" prLkCl="ActivityID" upAc="3">
+      <Cl au="0" df="" nm="SiteType" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="29" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_ConsentedRateVolume_Activity1" prLkCl="ActivityID" upAc="3">
         <PrTb mn="0" nm="Activity" oe="1" sch="dbo" zr="0"/>
         <CdTb mn="1" nm="CrcActSite" oe="0" sch="dbo" zr="1"/>
         <ClPr cdCl="ActivityID" prCl="ActivityID"/>
       </Fk>
-      <Fk deAc="3" nm="fk_CrcActSite_ConsentsSites" prLkCl="SiteID" upAc="3">
+      <Fk deAc="3" nm="fk_ConsentedRateVolume_ConsentsSites1" prLkCl="SiteID" upAc="3">
         <PrTb mn="0" nm="ConsentsSites" oe="1" sch="dbo" zr="0"/>
         <CdTb mn="1" nm="CrcActSite" oe="0" sch="dbo" zr="1"/>
         <ClPr cdCl="SiteID" prCl="SiteID"/>
       </Fk>
-      <Fk deAc="3" nm="fk_CrcActSite_Permit" prLkCl="RecordNumber" upAc="3">
+      <Fk deAc="3" nm="fk_ConsentedRateVolume_Permit1" prLkCl="RecordNumber" upAc="3">
         <PrTb mn="0" nm="Permit" oe="1" sch="dbo" zr="0"/>
         <CdTb mn="1" nm="CrcActSite" oe="0" sch="dbo" zr="1"/>
         <ClPr cdCl="RecordNumber" prCl="RecordNumber"/>
       </Fk>
-      <UniqueConstraints>
-        <UnCon nm="CrcActSite_UN">
-          <ClNs>RecordNumber, ActivityID, SiteID</ClNs>
-        </UnCon>
-      </UniqueConstraints>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="CrcAlloSite">
-      <TblOpts/>
-      <Pk ClNs="CrcAlloSiteID" nm="pkCrcAlloSite"/>
-      <Cl au="1" df="" nm="CrcAlloSiteID" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="RecordNumber" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="19" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="AlloBlockID" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="SiteID" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="FromMonth" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="ToMonth" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk_CrcAlloSite_AlloBlock" prLkCl="AlloBlockID" upAc="3">
-        <PrTb mn="0" nm="AlloBlock" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="CrcAlloSite" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="AlloBlockID" prCl="AlloBlockID"/>
-      </Fk>
-      <Fk deAc="3" nm="fk_CrcAlloSite_ConsentsSites" prLkCl="SiteID" upAc="3">
-        <PrTb mn="0" nm="ConsentsSites" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="CrcAlloSite" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="SiteID" prCl="SiteID"/>
-      </Fk>
-      <Fk deAc="3" nm="fk_CrcAlloSite_Permit" prLkCl="RecordNumber" upAc="3">
-        <PrTb mn="0" nm="Permit" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="CrcAlloSite" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="RecordNumber" prCl="RecordNumber"/>
-      </Fk>
-      <UniqueConstraints>
-        <UnCon nm="CrcAlloSite_UN">
-          <ClNs>RecordNumber, AlloBlockID, SiteID</ClNs>
-        </UnCon>
-      </UniqueConstraints>
+      <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="HydroFeature">
@@ -335,34 +279,43 @@
     </Tbl>
     <Tbl UsSo="1" nm="LinkedPermits">
       <TblOpts/>
-      <Pk ClNs="RecordNumber, OtherRecordNumber" nm="LinkedPermits_PK"/>
-      <Cl au="0" df="" nm="RecordNumber" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="19" sc="null" sg="1" un="0"/>
+      <Pk ClNs="CrcActSiteID, OtherCrcActSiteID" nm="LinkedPermits_PK"/>
+      <Cl au="0" df="" nm="CrcActSiteID" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="OtherRecordNumber" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="19" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="OtherCrcActSiteID" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="Relationship" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="29" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="CombinedAnnualVolume" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
       <Cl au="0" df="" nm="LinkedStatus" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="59" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="CombinedRate" nu="1">
+        <DT arr="0" ds="Numeric" en="" id="2" ln="9" sc="2" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_AssociatedPermits_Permit1" prLkCl="RecordNumber" upAc="3">
-        <PrTb mn="0" nm="Permit" oe="1" sch="dbo" zr="0"/>
+      <Cl au="0" df="" nm="CombinedMultiDayVolume" nu="1">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="CombinedMultiDayPeriod" nu="1">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="CombinedAnnualVolume" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
+        <DT arr="0" ds="datetime2" en="" id="5001" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="LinkedPermits_CrcActSite_FK" prLkCl="CrcActSiteID" upAc="3">
+        <PrTb mn="0" nm="CrcActSite" oe="1" sch="dbo" zr="0"/>
         <CdTb mn="1" nm="LinkedPermits" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="RecordNumber" prCl="RecordNumber"/>
+        <ClPr cdCl="CrcActSiteID" prCl="CrcActSiteID"/>
       </Fk>
-      <Fk deAc="3" nm="fk_AssociatedPermits_Permit2" prLkCl="RecordNumber" upAc="3">
-        <PrTb mn="0" nm="Permit" oe="1" sch="dbo" zr="0"/>
+      <Fk deAc="3" nm="LinkedPermits_CrcActSite_FK_1" prLkCl="CrcActSiteID" upAc="3">
+        <PrTb mn="0" nm="CrcActSite" oe="1" sch="dbo" zr="0"/>
         <CdTb mn="1" nm="LinkedPermits" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="OtherRecordNumber" prCl="RecordNumber"/>
+        <ClPr cdCl="OtherCrcActSiteID" prCl="CrcActSiteID"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -390,30 +343,34 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="MonitoringSites">
+    <Tbl UsSo="1" nm="LowFlowConditions">
       <TblOpts/>
-      <Pk ClNs="RecordNumber, SiteID" nm="pkMonitoringSites"/>
-      <Cl au="0" df="" nm="RecordNumber" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="19" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="SiteID" nu="0">
+      <Pk ClNs="LowFLowCondID" nm="pkLowFlowConditions"/>
+      <Cl au="1" df="" nm="LowFLowCondID" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="SiteRestrictionType" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="99" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="CrcAlloSiteID" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="getdate()" nm="ModifiedDate" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="BandNumber" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_MonitoringSites_ConsentsSites" prLkCl="SiteID" upAc="3">
-        <PrTb mn="0" nm="ConsentsSites" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="MonitoringSites" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="SiteID" prCl="SiteID"/>
-      </Fk>
-      <Fk deAc="3" nm="fk_MonitoringSites_Permit" prLkCl="RecordNumber" upAc="3">
-        <PrTb mn="0" nm="Permit" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="MonitoringSites" oe="0" sch="dbo" zr="1"/>
-        <ClPr cdCl="RecordNumber" prCl="RecordNumber"/>
+      <Cl au="0" df="" nm="BandName" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="SiteType" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="9" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="MinTrigger" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="MaxTrigger" nu="0">
+        <DT arr="0" ds="Float" en="" id="6" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="LowFlowConditions_AllocatedRateVolume_FK" prLkCl="CrcAlloSiteID" upAc="3">
+        <PrTb mn="0" nm="AllocatedRateVolume" oe="1" sch="dbo" zr="0"/>
+        <CdTb mn="1" nm="LowFlowConditions" oe="0" sch="dbo" zr="1"/>
+        <ClPr cdCl="CrcAlloSiteID" prCl="CrcAlloSiteID"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -479,7 +436,7 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="WAP">
+    <Tbl UsSo="1" nm="SiteStreamDepletion">
       <TblOpts/>
       <Pk ClNs="SiteID" nm="pkWAP"/>
       <Cl au="0" df="" nm="SiteID" nu="0">
@@ -526,7 +483,7 @@
       </Cl>
       <Fk deAc="3" nm="fk_WAP_ConsentsSites" prLkCl="SiteID" upAc="3">
         <PrTb mn="0" nm="ConsentsSites" oe="1" sch="dbo" zr="0"/>
-        <CdTb mn="1" nm="WAP" oe="0" sch="dbo" zr="1"/>
+        <CdTb mn="1" nm="SiteStreamDepletion" oe="0" sch="dbo" zr="1"/>
         <ClPr cdCl="SiteID" prCl="SiteID"/>
       </Fk>
       <UniqueConstraints/>
@@ -558,144 +515,121 @@
       <DbTableRectangleFill>HeaderFooterFill</DbTableRectangleFill>
       <svg path=""/>
     </DiaProps>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Activity" x="428" y="428"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AlloBlock" x="1996" y="276"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AllocatedRate" x="2006" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AllocatedVolume" x="1996" y="171"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Attributes" x="58" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedAttributes" x="426" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedRate" x="421" y="186"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedVolume" x="386" y="291"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentsSites" x="454" y="580"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="CrcActSite" x="814" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="CrcAlloSite" x="1626" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="HydroFeature" x="50" y="428"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="LinkedPermits" x="1616" y="428"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Log" x="2372" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="MonitoringSites" x="1606" y="596"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ParentChild" x="812" y="876"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Permit" x="1224" y="50"/>
-    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="WAP" x="112" y="580"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Activity" x="841" y="235"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AlloBlock" x="77" y="235"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="AllocatedRateVolume" x="418" y="387"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Attributes" x="1975" y="266"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedAttributes" x="1607" y="266"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentedRateVolume" x="774" y="50"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ConsentsSites" x="859" y="387"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="CrcActSite" x="1227" y="50"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="HydroFeature" x="463" y="235"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="LinkedPermits" x="1617" y="50"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Log" x="2351" y="50"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="ParentChild" x="1969" y="402"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="Permit" x="1597" y="402"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="SiteStreamDepletion" x="517" y="603"/>
+    <TbGl bkCl="ff4c78ff" sch="dbo" tbl="LowFlowConditions" x="84" y="591"/>
     <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.Activity.fk_Activity_HydroFeature" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="308" x2="428" y1="473" y2="473"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="721" x2="841" y1="280" y2="280"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.AlloBlock.fk_AlloBlock_HydroFeature" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.AlloBlock.fk_AlloBlock_HydroFeature" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="308" x2="2125" y1="458" y2="458"/>
-        <positionableLine lineRole="CHILD_LINE" x1="2129" x2="2129" y1="398" y2="454"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="463" x2="343" y1="280" y2="280"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.AllocatedRate.AllocatedRate_CrcAlloSite_FK" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="dbo.AllocatedRateVolume.fk_AllocatedRateVolume_AlloBlock" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1876" x2="2006" y1="103" y2="103"/>
+        <positionableLine lineRole="PARENT_LINE" x1="343" x2="569" y1="315" y2="315"/>
+        <positionableLine lineRole="CHILD_LINE" x1="573" x2="573" y1="387" y2="319"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.AllocatedVolume.fk_AllocatedVolume_CrcAlloSite" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.AllocatedRateVolume.fk_AllocatedRateVolume_ConsentsSites" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1876" x2="1996" y1="187" y2="187"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="859" x2="729" y1="448" y2="448"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.ConsentedAttributes.fk_ConsentedAttributes_Attributes" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.AllocatedRateVolume.fk_AllocatedRateVolume_Permit" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="306" x2="426" y1="103" y2="103"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1597" x2="729" y1="487" y2="487"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ConsentedAttributes.fk_ConsentedAttributes_CrcActSite" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ConsentedAttributes.ConsentedAttributes_Attributes_FK" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="814" x2="674" y1="103" y2="103"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1975" x2="1855" y1="319" y2="319"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ConsentedRate.fk_AllocatedRate_CrcActSite" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.ConsentedAttributes.ConsentedAttributes_CrcActSite_FK" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="814" x2="684" y1="195" y2="195"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1427" x2="1427" y1="204" y2="262"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1607" x2="1431" y1="266" y2="266"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ConsentedVolume.fk_ConsentedVolume_CrcActSite" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ConsentedRateVolume.ConsentedRateVolume_CrcActSite_FK_1" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="876" x2="876" y1="204" y2="348"/>
-        <positionableLine lineRole="CHILD_LINE" x1="694" x2="872" y1="352" y2="352"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1227" x2="1107" y1="127" y2="127"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcActSite.fk_CrcActSite_Activity" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcActSite.fk_ConsentedRateVolume_Activity1" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="694" x2="934" y1="489" y2="489"/>
-        <positionableLine lineRole="CHILD_LINE" x1="938" x2="938" y1="204" y2="485"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1107" x2="1348" y1="296" y2="296"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1352" x2="1352" y1="204" y2="292"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcActSite.fk_CrcActSite_ConsentsSites" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcActSite.fk_ConsentedRateVolume_ConsentsSites1" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="694" x2="996" y1="620" y2="620"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1000" x2="1000" y1="204" y2="616"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1107" x2="1348" y1="448" y2="448"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1352" x2="1352" y1="204" y2="444"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.CrcActSite.fk_CrcActSite_Permit" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcActSite.fk_ConsentedRateVolume_Permit1" parentEdge="WEST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1224" x2="1064" y1="127" y2="127"/>
+        <positionableLine lineRole="PARENT_LINE" x1="1597" x2="1356" y1="458" y2="458"/>
+        <positionableLine lineRole="CHILD_LINE" x1="1352" x2="1352" y1="204" y2="454"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcAlloSite.fk_CrcAlloSite_AlloBlock" parentEdge="WEST" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.LinkedPermits.LinkedPermits_CrcActSite_FK" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1996" x2="1796" y1="337" y2="337"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1792" x2="1792" y1="204" y2="333"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1477" x2="1617" y1="127" y2="127"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="SOUTH" nm="dbo.CrcAlloSite.fk_CrcAlloSite_ConsentsSites" parentEdge="EAST" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.LinkedPermits.LinkedPermits_CrcActSite_FK_1" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="694" x2="1705" y1="580" y2="580"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1709" x2="1709" y1="204" y2="576"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1477" x2="1617" y1="127" y2="127"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.CrcAlloSite.fk_CrcAlloSite_Permit" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="NORTH" nm="dbo.LowFlowConditions.LowFlowConditions_AllocatedRateVolume_FK" parentEdge="WEST" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="1476" x2="1626" y1="127" y2="127"/>
+        <positionableLine lineRole="PARENT_LINE" x1="418" x2="330" y1="472" y2="472"/>
+        <positionableLine lineRole="CHILD_LINE" x1="326" x2="326" y1="591" y2="476"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.LinkedPermits.fk_AssociatedPermits_Permit1" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.ParentChild.fk_ParentChild_Permit1" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1392" x2="1392" y1="220" y2="516"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1616" x2="1396" y1="520" y2="520"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1849" x2="1969" y1="463" y2="463"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.LinkedPermits.fk_AssociatedPermits_Permit2" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.ParentChild.fk_ParentChild_Permit2" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1434" x2="1434" y1="220" y2="470"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1616" x2="1438" y1="474" y2="474"/>
+        <positionableLine lineRole="SINGLE_LINE" x1="1849" x2="1969" y1="463" y2="463"/>
       </positionableLines>
     </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.MonitoringSites.fk_MonitoringSites_ConsentsSites" parentEdge="EAST" positioner="OneLineUserLinkPositioner">
+    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.SiteStreamDepletion.fk_WAP_ConsentsSites" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
       <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="694" x2="1606" y1="649" y2="649"/>
-      </positionableLines>
-    </FkGl>
-    <FkGl bkCl="ff000000" childEdge="WEST" nm="dbo.MonitoringSites.fk_MonitoringSites_Permit" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
-      <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1350" x2="1350" y1="220" y2="627"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1606" x2="1354" y1="631" y2="631"/>
-      </positionableLines>
-    </FkGl>
-    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ParentChild.fk_ParentChild_Permit1" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
-      <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1308" x2="1308" y1="220" y2="952"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1104" x2="1304" y1="956" y2="956"/>
-      </positionableLines>
-    </FkGl>
-    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.ParentChild.fk_ParentChild_Permit2" parentEdge="SOUTH" positioner="TwoLineUserLinkPositioner">
-      <positionableLines>
-        <positionableLine lineRole="PARENT_LINE" x1="1266" x2="1266" y1="220" y2="912"/>
-        <positionableLine lineRole="CHILD_LINE" x1="1104" x2="1262" y1="916" y2="916"/>
-      </positionableLines>
-    </FkGl>
-    <FkGl bkCl="ff000000" childEdge="EAST" nm="dbo.WAP.fk_WAP_ConsentsSites" parentEdge="WEST" positioner="OneLineUserLinkPositioner">
-      <positionableLines>
-        <positionableLine lineRole="SINGLE_LINE" x1="454" x2="334" y1="641" y2="641"/>
+        <positionableLine lineRole="PARENT_LINE" x1="983" x2="983" y1="509" y2="599"/>
+        <positionableLine lineRole="CHILD_LINE" x1="739" x2="979" y1="603" y2="603"/>
       </positionableLines>
     </FkGl>
     <Notes/>
     <Zones/>
   </Dgm>
-  <RnmMgr NxRnmId="1"/>
+  <RnmMgr NxRnmId="2">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="dbo" SupCls="" SupNme="">
+      <Rnm id="1" nNm="LowFlowCondition1" oNm="LowFlowConditions"/>
+    </RnmCh>
+  </RnmMgr>
   <DbDocOptionMgr>
     <BasicOptionMgr>
       <Name>db.doc.option.mgr</Name>
@@ -712,7 +646,7 @@
     </BasicOptionMgr>
   </DbDocOptionMgr>
   <OpenEditors>
-    <OpenEditor ClsNm="Diagram" fqn="null.diagramA" selected="0"/>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagramA" selected="1"/>
   </OpenEditors>
   <TreePaths>
     <TreePath/>
