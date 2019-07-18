@@ -84,12 +84,12 @@ misc:
   Attributes:
     Attribute: [IrrigationOf, PrimaryIrrigationType, IrrigationArea]
   use_types_codes:
-    'agriculture': ['Irrigation', 'Intensive Farming', 'Arable Farming', 'Aquaculture', 'Intensive (Shed) Farming - Dairy', 'Intensive (shed) Farming - Other', 'Intensive (shed) Farming - Poultry', 'Scheme - Irrigation']
-    'stockwater': ['Stockwater', 'Dairy Shed (Washdown/Cooling)', 'Scheme - Stockwater']
-    'industry': ['Industrial Use', 'Cooling Water', 'Construction', 'Drainage', 'Dewatering - Temporary', 'Gravel Extraction/Processing', 'Heat exchange - HVAC', 'Heat exchange - non HVAC', 'Manufacturing - Food Products', 'Manufacturing - Other', 'Manufacturing - Water Bottling', 'Mining', 'Industrial Use - Food Products', 'Industrial Use - Water Bottling', 'Industrial Use - Other']
+    'agriculture': ['Irrigation', 'Intensive Farming', 'Arable Farming', 'Aquaculture', 'Intensive (Shed) Farming - Dairy', 'Intensive (shed) Farming - Other', 'Intensive (shed) Farming - Poultry', 'Intensive (Shed) Farming - Beef', 'Scheme - Irrigation']
+    'stockwater': ['Stockwater', 'Dairy Shed (Washdown/Cooling)', 'Intensive (shed) Farming - Pork', 'Scheme - Stockwater']
+    'industry': ['Industrial Use', 'Cooling Water', 'Construction', 'Drainage', 'Dewatering - Temporary', 'Dewatering - Long-Term', 'Gravel Extraction/Processing', 'Heat exchange - HVAC', 'Heat exchange - non HVAC', 'Manufacturing - Food Products', 'Manufacturing - Other', 'Manufacturing - Water Bottling', 'Mining', 'Industrial Use - Food Products', 'Industrial Use - Water Bottling', 'Industrial Use - Other', 'Manufacturing - Beverage', 'Manufacturing - Meat Processing', 'Manufacturing - Timber processing', 'Manufacturing - Vege processing']
     'water_supply': ['Public Water Supply', 'Domestic Use', 'Potable Supply']
     'hydroelectric': ['Power Generation', 'Hydroelectirc Power Generation']
-    'other': ['Augment Flow/Wetland/Aquifer', 'Firefighting', 'Fisheries/Wildlife Management', 'Flood Control', 'Frost Protection', 'Landfill', 'REVIEW', 'Research (incl testing)', 'Snow Making', 'Stormwater', 'Waste Water', 'Water Storage - To', 'Swimming Pool', 'Amenity - non-consumptive']
+    'other': ['Augment Flow/Wetland/Aquifer', 'Firefighting', 'Fisheries/Wildlife Management', 'Flood Control', 'Frost Protection', 'Landfill', 'REVIEW', 'Research (incl testing)', 'Snow Making', 'Stormwater', 'Waste Water', 'Water Storage - To', 'Swimming Pool', 'Amenity - non-consumptive', 'Artifical Lake/pond', 'Water Storage - From', 'Realignment of stream']
   use_types_priorities: ['hydroelectric', 'water_supply', 'agriculture', 'stockwater', 'industry', 'other']
 
 output:
