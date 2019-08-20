@@ -1,4 +1,50 @@
-Ecan consents summary tables
+Ecan water consents reporting tables
 ==================================
 
-This git repository contains code necessary to populate/update the summary tables for the Ecan consents data.
+This git repository contains code necessary to populate/update the tables for the Ecan water consents data.
+
+Consenting Rules as they relate to water permits
+-------------------------------------------------
+
+Intro
+~~~~~
+There are lots of rules surrounding how we issue water consents and the associated conditions. This document will try to describe as much of the rules as possible for a system developer. Some of these rules WILL have some exceptions, but are not worth creating overly complex rules for a small handful of bad consents.
+
+Basic concepts/entities
+~~~~~~~~~~~~~~~~~~~~~~~
+The fundamental entities of permits include the permit itself, the regulatory plan associated with area of the permit, the activity types permitted (e.g. use, take, divert, discharge), the allocation blocks used for accounting, sites/locations associated with the permits and activities (e.g. WAPs), and the conditions of the permit and activities (e.g. max rate, annual volume, use type).
+
+Permit
+~~~~~~
+The permit at the top level (e.g. applies to all activities associated with it) have dates relating to when it was lodged, applicable, etc. It also contains the status of the permit (e.g. Issued - Active, Issued - Terminated), relationships to the parent permit, and other data associated with the entire permit.
+
+Activities
+~~~~~~~~~~
+Water related activities include, takes, diverts, use, dam, and discharge. These are physical activities performed on one of two hydrologic features: Surface Water or Groundwater.
+
+Sites
+~~~~~
+As all activities are physical, they are all performed at some geographic location. Sites in this context can be one or more points, lines, or polygons. For example, Takes are abstractions from wells which are represented as points, while the Use for irrigation would be applied to agricultural land represented by a polygon.
+
+Allocation Blocks
+~~~~~~~~~~~~~~~~~
+The concept of allocation blocks only relate to Take activities. The goal of allocation blocks is to define abstraction limits for specific areas/rivers. Each permit with a Take activity has their Take accounted in the surface water and/or groundwater allocation blocks associated with the plan in the area where the water is taken. This assessment is performed when someone applies for a Take permit to determine if there is any more water available to be taken given the existing limits and accounting.
+Allocation block limits come in the form of either a rate (as is generally for surface water) or an annual volume (as is generally for groundwater), but allocation blocks can potentially have both rates and annual volumes for both surface water and groundwater depending on the area/plan.
+
+Specific consenting rules
+~~~~~~~~~~~~~~~~~~~~~~~~~
+The activities take, divert, use, and discharge must have a consented max rate > 0. There also tends to be a variety of volume conditions over a number of days that could be consented, but it is not required. Generally, a Take Groundwater activity will have a consented annual volume and will be the case going forward, but many of the old consents do not have this.
+
+Each different activity should have a site/location of where this activity applies to. This is most explicit with the Takes and their associated Water Abstraction Points (WAPs). These are conceptually the point(s) where the water is taken from the hydrologic feature. ECan has given them coordinate namings like those of our monitoring wells even if they draw from surface water. Diverts have also been given the site type of WAP even though they probably should have a different name and they should more appropriately be lines representing the diversion route as a point or set of points do not adequately represent the location of a diversion.
+
+Unfortunately, the activities Use, Dam, and Discharge do not have explicitly associated spatial locations. These should be added in the future and in addition to the points we should also allow lines and polygons to be associated with activities. This is especially important for Use irrigation activities to know the irrigated areas associated with the Use.
+
+LowFlow Conditions
+~~~~~~~~~~~~~~~~~~
+Within and in addition to allocation blocks, lowflow conditions are assigned to permits that are counted in the surface water allocation blocks. These conditions are meant to ensure that rivers will have a minimum amount of flow regardless of the other permitted conditions and associated allocation blocks.
+
+These lowflow conditions have trigger flows that require the Take activity to be reduced or cease. These trigger flows are generally defined by the associated plans for the rivers/SWAZs and allocation blocks, but can be defined uniquely for the permitted Take activity.
+
+Going forward with our permitting, one permit should have one take for one SW allocation block. But in the past one permit could have multiple takes on multiple allocation blocks. This means that a single permit could have multiple sets of lowflow conditions if they were on multiple allocation blocks.
+
+In general, a permit with a Take on a SW allocation block will have a single set of lowflow conditions on one SW or GW monitoring site. In the past, it was possible for people to have multiple sets of lowflow conditions on multiple SW or GW monitoring sites, but this should not be allowed going forward as the logic and relationships of how to handle those combinations are complicated and unnecessary.
