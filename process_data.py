@@ -270,7 +270,7 @@ try:
     wa1['AllocatedRate'] = pd.to_numeric(wa1['AllocatedRate'], errors='coerce')
 #    wa1['WapRate'] = pd.to_numeric(wa1['WapRate'], errors='coerce')
     wa1['SD1'] = pd.to_numeric(wa1['SD1'], errors='coerce')
-    wa1['SD2'] = pd.to_numeric(wa1['SD2'], errors='coerce')
+#    wa1['SD2'] = pd.to_numeric(wa1['SD2'], errors='coerce')
 
     wa1.loc[wa1['FromMonth'] == 'Migration: Not Classified', 'FromMonth'] = 'Jul'
     wa1.loc[wa1['ToMonth'] == 'Migration: Not Classified', 'ToMonth'] = 'Jun'
@@ -305,7 +305,7 @@ try:
 
     # Stream depletion processing
     wa4['SD'] = wa4['SD1']
-    wa4.loc[wa4['SD'] < wa4['SD2'], 'SD'] = wa4.loc[wa4['SD'] < wa4['SD2'], 'SD2']
+#    wa4.loc[wa4['SD'] < wa4['SD2'], 'SD'] = wa4.loc[wa4['SD'] < wa4['SD2'], 'SD2']
     wa5 = wa4.drop(['SD1', 'SD2'], axis=1)
     wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'SD'] = wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'AllocatedRate']
 
