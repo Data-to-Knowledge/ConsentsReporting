@@ -693,7 +693,7 @@ try:
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LinkedPermits', 'pass', '{} rows updated'.format(len(new_lc)))
 
-    ###############################################3
+    ###############################################
     ### Lowflows tables
     print('--Lowflows')
 
