@@ -61,4 +61,12 @@ The source tables used in filling the core physical model is stored as a `yaml f
 
 Filters to ensure the physical model is complete
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The python scripts to populate and update the core physical model can be found `here <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/process_data.py>`_. Without going into detail, there are many filters in the scripts purely to ensure that the existing data is complete enough to fill the tables and relationships (e.g. there must be a FromDate attribute in the Permit table).
+The python scripts to populate and update the core physical model can be found `here <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/process_data.py>`_. Without going into detail, there are many filters in the scripts purely to ensure that the existing data is complete enough to fill the tables and relationships (e.g. there must be a FromDate attribute in the Permit table). A consented or allocated rate or volume of 0 has been converted to null as these are not correct.
+
+Splitting the rates and volumes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Both the consented and allocated rates and volumes would need to be split according to their appropriate combo of consent number, activity/allocation block, and site. This is not always obvious from the source tables. For example, the consented rate (and volume) is stored against the consent number and activity, but not the site (AKA Wap). The site/Wap may have a specific rate, but it's not necessarily connected with the consented rate. To split it across all three entities, we have used the proportion ratio of the individual site/Wap to the total sites/Waps for the entire consent and this ratio is multiplied by the consented rate (or volume). This assumption is made for the consented and allocated rates and volumes when necessary. If there is only one site/Wap for the entire consent, then no proportioning is needed.
+
+Water use types
+~~~~~~~~~~~~~~~
+Similar to the rates and volumes, the water use types (e.g. agriculture, water supply, etc.) are split by consent number and activity only in the source tables. Most of the time there is only one water use type, but is a significant number of cases there are several. Unlike rate and volumes, there is not a clear way to split these use types across one or more sites/Waps. Consequently, only one use type is selected from the source use types and prioritised according to the use_types_priorities parameter in the parameters.yml file. One use type is assigned to all Waps within the combo key of consent number and activity/allocation block.
