@@ -1,11 +1,10 @@
-Ecan water consents reporting tables
+ECan water consents reporting tables
 ==================================
 
-This git repository contains code necessary to populate/update the tables for the Ecan water consents data.
+This git repository contains code necessary to populate/update the tables for the ECan water consents data.
 
 Consenting Rules as they relate to water permits
 -------------------------------------------------
-
 Intro
 ~~~~~
 There are lots of rules surrounding how we issue water consents and the associated conditions. This document will try to describe as much of the rules as possible for a system developer. Some of these rules WILL have some exceptions, but are not worth creating overly complex rules for a small handful of bad consents.
@@ -48,3 +47,18 @@ These lowflow conditions have trigger flows that require the Take activity to be
 Going forward with our permitting, one permit should have one take for one SW allocation block. But in the past one permit could have multiple takes on multiple allocation blocks. This means that a single permit could have multiple sets of lowflow conditions if they were on multiple allocation blocks.
 
 In general, a permit with a Take on a SW allocation block will have a single set of lowflow conditions on one SW or GW monitoring site. In the past, it was possible for people to have multiple sets of lowflow conditions on multiple SW or GW monitoring sites, but this should not be allowed going forward as the logic and relationships of how to handle those combinations are complicated and unnecessary.
+
+
+Conceptual model
+----------------------------------
+in progress...
+
+Physical model
+----------------
+A physical model was designed for an MS SQL database named ConsentsReporting. An `SQL script <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/TableCreation.sql>`_ has been made to create the tables and relationships. A `database diagram <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/diagrams/CR_data_model_v05.png>`_ has been made to illustrate the tables the relationships in dbeaver. This is the core model that is a representation of the conceptual model.
+
+The source tables used in filling the core physical model is stored as a `yaml file <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/parameters.yml>`_. The tables are all located within ECan's internal network.
+
+Filters to ensure the physical model is complete
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The python scripts to populate and update the core physical model can be found `here <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/process_data.py>`_. Without going into detail, there are many filters in the scripts purely to ensure that the existing data is complete enough to fill the tables and relationships (e.g. there must be a FromDate attribute in the Permit table).
