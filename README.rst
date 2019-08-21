@@ -59,6 +59,8 @@ A physical model was designed for an MS SQL database named ConsentsReporting. An
 
 The source tables used in filling the core physical model is stored as a `yaml file <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/parameters.yml>`_. The tables are all located within ECan's internal network.
 
+The month numbers listed in the tables start from July due to the fact that most requests use the business (or water) year. So July is listed as month 1.
+
 Filters to ensure the physical model is complete
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The python scripts to populate and update the core physical model can be found `here <https://github.com/Data-to-Knowledge/ConsentsReporting/blob/master/process_data.py>`_. Without going into detail, there are many filters in the scripts purely to ensure that the existing data is complete enough to fill the tables and relationships (e.g. there must be a FromDate attribute in the Permit table). A consented or allocated rate or volume of 0 has been converted to null as these are not correct.
