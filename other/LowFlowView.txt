@@ -1,0 +1,3 @@
+SELECT        c.ExtSiteID, c.SiteName, l.NZTMX, l.NZTMY, l.ModifiedDate, l.Geom
+FROM            dbo.ConsentsSites AS c INNER JOIN
+                         dbo.LowFlowSite AS l ON c.SiteID = l.SiteID
