@@ -124,9 +124,13 @@ try:
         site_log2.MeasurementDate = site_log2.MeasurementDate.dt.strftime('%Y-%m-%d')
         site_log2.AppliesFromDate = site_log2.AppliesFromDate.dt.strftime('%Y-%m-%d')
 
+        # Remove potential duplicate sites
+        site_log2.sort_values('MeasurementMethod', ascending=False, inplace=True)
+        site_log3 = site_log2.drop_duplicates(['SiteID', 'RestrDate'])
+
         # Save results
         print('Save results')
-        mssql.to_mssql(site_log2, param['output']['server'], param['output']['database'], table1)
+        mssql.to_mssql(site_log3, param['output']['server'], param['output']['database'], table1)
 
         # Log
         log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(site_log2)))
