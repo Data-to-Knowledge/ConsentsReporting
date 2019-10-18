@@ -50,14 +50,21 @@ try:
 #    print('Last sucessful date is ' + last_date1)
 
     #######################################
-    ### Read in source data
+    ### Read in source data and update accela tables in ConsentsReporting db
     print('--Reading in source data...')
 
     ## Make object to contain the source data
     db = types.SimpleNamespace()
 
     for i, p in param['source data'].items():
-        setattr(db, i, mssql.rd_sql(**p))
+        setattr(db, i, mssql.rd_sql(p['server'], p['database'], p['table'], p['col_names'], rename_cols=p['rename_cols']))
+        if (p['database'] == 'Accela') & (not (p['table'] in ['Ecan.vAct_Water_AssociatedPermits', 'Ecan.vQA_Relationship_Actuals'])):
+            table1 = 'Accela.' + p['table'].split('Ecan.')[1]
+            print(table1)
+            t1 = getattr(db, i).copy().dropna(subset=p['pk'])
+            t1.drop_duplicates(p['pk'], inplace=True)
+            new_ones = mssql.update_from_difference(t1, param['output']['server'], param['output']['database'], table1, on=p['pk'], mod_date_col='ModifiedDate')
+
 
     ######################################
     ### Populate base tables
@@ -265,7 +272,7 @@ try:
     wa1['take_type'] = wa1['take_type'].str.strip().str.title()
     wa1['FromMonth'] = wa1['FromMonth'].str.strip().str.title()
     wa1['ToMonth'] = wa1['ToMonth'].str.strip().str.title()
-    wa1['Include in SW Allocation'] = wa1['Include in SW Allocation'].str.strip().str.title()
+    wa1['IncludeInSwAllocation'] = wa1['IncludeInSwAllocation'].str.strip().str.title()
 
     wa1['AllocatedRate'] = pd.to_numeric(wa1['AllocatedRate'], errors='coerce')
 #    wa1['WapRate'] = pd.to_numeric(wa1['WapRate'], errors='coerce')
@@ -277,16 +284,16 @@ try:
     mon_mapping = {'Jan': 7, 'Feb': 8, 'Mar': 9, 'Apr': 10, 'May': 11, 'Jun': 12, 'Jul': 1, 'Aug': 2, 'Sep': 3, 'Oct': 4, 'Nov': 5, 'Dec': 6}
     wa1.replace({'FromMonth': mon_mapping, 'ToMonth': mon_mapping}, inplace=True)
 
-    wa1.loc[wa1['Include in SW Allocation'] == 'No', 'Include in SW Allocation'] = False
-    wa1.loc[wa1['Include in SW Allocation'] == 'Yes', 'Include in SW Allocation'] = True
+    wa1.loc[wa1['IncludeInSwAllocation'] == 'No', 'IncludeInSwAllocation'] = False
+    wa1.loc[wa1['IncludeInSwAllocation'] == 'Yes', 'IncludeInSwAllocation'] = True
 
     # Check foreign keys
     wa2 = wa1[wa1.RecordNumber.isin(crc1)].copy()
 
     # Filters
     wa3 = wa2[(wa2.AllocatedRate > 0)].copy()
-    wa3.loc[~wa3['Include in SW Allocation'], ['AllocatedRate', 'SD1', 'SD2']] = 0
-    wa4 = wa3.drop('Include in SW Allocation', axis=1).copy()
+    wa3.loc[~wa3['IncludeInSwAllocation'], ['AllocatedRate', 'SD1', 'SD2']] = 0
+    wa4 = wa3.drop('IncludeInSwAllocation', axis=1).copy()
 
     # Find the missing WAPs per consent
     crc_wap_mis1 = wa4.loc[wa4.WAP.isnull(), 'RecordNumber'].unique()
@@ -322,8 +329,15 @@ try:
 
     # Distribute the months
     allo_rates_list = []
+#    c1 = 0
     for val in allo_rates2.itertuples(False, None):
-        mons = range(int(val[3]), int(val[4]) + 1)
+        from_month = val[3]
+        to_month = val[4]
+        if from_month > to_month:
+            mons = list(range(1, to_month + 1))
+#            c1 = c1 + 1
+        else:
+            mons = range(int(val[3]), int(val[4]) + 1)
         d1 = [val + (i,) for i in mons]
         allo_rates_list.extend(d1)
     col_names1 = allo_rates2.columns.tolist()
@@ -352,10 +366,10 @@ try:
     # clean data
     av1['RecordNumber'] = av1['RecordNumber'].str.strip().str.upper()
     av1['take_type'] = av1['take_type'].str.strip().str.title()
-    av1['Include in allocation'] = av1['Include in allocation'].str.strip().str.title()
-    av1.loc[av1['Include in allocation'] == 'No', 'Include in allocation'] = False
-    av1.loc[av1['Include in allocation'] == 'Yes', 'Include in allocation'] = True
-    av1['Include in allocation'] = av1['Include in allocation'].astype(bool)
+    av1['IncludeInAllocation'] = av1['IncludeInAllocation'].str.strip().str.title()
+    av1.loc[av1['IncludeInAllocation'] == 'No', 'IncludeInAllocation'] = False
+    av1.loc[av1['IncludeInAllocation'] == 'Yes', 'IncludeInAllocation'] = True
+    av1['IncludeInAllocation'] = av1['IncludeInAllocation'].astype(bool)
     av1['AllocatedAnnualVolume'] = pd.to_numeric(av1['AllocatedAnnualVolume'], errors='coerce')
 #    av1.loc[av1['AllocatedAnnualVolume'] <= 0, 'AllocatedAnnualVolume'] = 0
     av1 = av1.loc[av1['AllocatedAnnualVolume'] > 0]
@@ -369,9 +383,9 @@ try:
     av2['Surface Water'] = np.nan
     av2.loc[av2.take_type == 'Take Surface Water', 'Surface Water'] = av2.loc[av2.take_type == 'Take Surface Water', 'AllocatedAnnualVolume']
     av3 = av2.drop(['take_type', 'AllocatedAnnualVolume'], axis=1)
-    av4 = av3.set_index(['RecordNumber', 'allo_block', 'Include in allocation']).stack().reset_index()
+    av4 = av3.set_index(['RecordNumber', 'allo_block', 'IncludeInAllocation']).stack().reset_index()
     av4.rename(columns={'level_3': 'HydroFeature', 0: 'AllocatedAnnualVolume', 'allo_block': 'AllocationBlock'}, inplace=True)
-    av4 = av4[av4['Include in allocation']].drop('Include in allocation', axis=1).copy()
+    av4 = av4[av4['IncludeInAllocation']].drop('IncludeInAllocation', axis=1).copy()
 
     # Combine Annual volumes with rates
     grp2 = allo_rates4.groupby(['RecordNumber', 'AllocationBlock', 'HydroFeature'])
