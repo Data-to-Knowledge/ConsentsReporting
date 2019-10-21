@@ -27,8 +27,8 @@ source data:
     server: SQL02Prod
     database: Accela
     table: Ecan.vAct_Water_TakeWaterPermitVolume
-    col_names: [RecordNumber, Activity, Allocation Block, Effective Annual Volume (m3/year), 'Include in allocation?']
-    rename_cols: [RecordNumber, take_type, allo_block, AllocatedAnnualVolume, IncludeInAllocation]
+    col_names: [RecordNumber, Activity, Allocation Block, Effective Annual Volume (m3/year), Full Annual Volume (m3/year), 'Include in allocation?']
+    rename_cols: [RecordNumber, take_type, allo_block, AllocatedAnnualVolume, FullAnnualVolume, IncludeInAllocation]
     pk: [RecordNumber, take_type, allo_block]
 
   water_use:

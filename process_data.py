@@ -388,19 +388,18 @@ try:
     av4 = av4[av4['IncludeInAllocation']].drop('IncludeInAllocation', axis=1).copy()
 
     # Combine Annual volumes with rates
-    grp2 = allo_rates4.groupby(['RecordNumber', 'AllocationBlock', 'HydroFeature'])
-    allo_rates4['wap_count'] = grp2['WAP'].transform('count')
     avr1 = pd.merge(av4, allo_rates4, on=['RecordNumber', 'AllocationBlock', 'HydroFeature'], how='outer', indicator=True)
-    grp3 = allo_rates4.groupby(['RecordNumber', 'HydroFeature'])
-    allo_rates4['wap_count'] = grp3['WAP'].transform('count')
-    mis_wap4 = avr1[avr1._merge == 'left_only'].drop(['WAP', '_merge', 'wap_count', 'FromMonth', 'ToMonth', 'AllocatedRate'], axis=1)
+    mis_wap4 = avr1[avr1._merge == 'left_only'].drop(['WAP', '_merge', 'FromMonth', 'ToMonth', 'AllocatedRate'], axis=1)
     mis_wap5 = pd.merge(mis_wap4, allo_rates4.drop(['AllocationBlock'], axis=1), on=['RecordNumber', 'HydroFeature'], how='left')
     avr2 = avr1[avr1._merge != 'left_only'].drop(['_merge'], axis=1)
-    avr3 = pd.concat([avr2, mis_wap5])
-    avr3['AllocatedAnnualVolume'] = (avr3['AllocatedAnnualVolume'] / avr3['wap_count']).round()
+    avr3 = pd.concat([avr2, mis_wap5], sort=False)
+    grp3 = avr3.groupby(['RecordNumber', 'AllocationBlock', 'HydroFeature'])
+    avr3['AllocatedRateAgg'] = grp3['AllocatedRate'].transform('sum')
+    avr3['ratio'] = avr3['AllocatedRate'] / avr3['AllocatedRateAgg']
+    avr3['AllocatedAnnualVolume'] = (avr3['AllocatedAnnualVolume'] * avr3['ratio']).round()
 
     ## Clean up unnecessary rows
-    avr4 = avr3[(avr3.AllocatedRate > 0) | (avr3.AllocatedAnnualVolume.notnull())].drop('wap_count', axis=1)
+    avr4 = avr3[(avr3.AllocatedRate > 0) | (avr3.AllocatedAnnualVolume.notnull())].drop(['AllocatedRateAgg', 'ratio'], axis=1)
 
     ## Calculate missing volumes
     avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedAnnualVolume'] = (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedRate'] * 0.001*60*60*24*30.42* (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'ToMonth'] - avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'FromMonth'] + 1)).round()
