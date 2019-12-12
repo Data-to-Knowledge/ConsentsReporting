@@ -63,42 +63,42 @@ try:
             print(table1)
             t1 = getattr(db, i).copy().dropna(subset=p['pk'])
             t1.drop_duplicates(p['pk'], inplace=True)
-            new_ones = mssql.update_from_difference(t1, param['output']['server'], param['output']['database'], table1, on=p['pk'], mod_date_col='ModifiedDate')
+            new_ones, _ = mssql.update_from_difference(t1, param['output']['server'], param['output']['database'], table1, on=p['pk'], mod_date_col='ModifiedDate')
 
 
     ######################################
     ### Populate base tables
     print('--Update base tables')
 
-    ## HydroFeature
-    hf1 = pd.DataFrame(param['misc']['HydroFeature'])
+    ## HydroGroup
+    hf1 = pd.DataFrame(param['misc']['HydroGroup'])
     hf1['ModifiedDate'] = run_time_start
 
-    hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroFeature')
+    hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroGroup')
 
-    hf_diff1 = hf1[~hf1.HydroFeature.isin(hf0.HydroFeature)]
+    hf_diff1 = hf1[~hf1.HydroGroup.isin(hf0.HydroGroup)]
 
     if not hf_diff1.empty:
-        mssql.to_mssql(hf_diff1, param['output']['server'], param['output']['database'], 'HydroFeature')
-        hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroFeature')
+        mssql.to_mssql(hf_diff1, param['output']['server'], param['output']['database'], 'HydroGroup')
+        hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroGroup')
 
     ## Activity
     act1 = param['misc']['Activities']['ActivityType']
-    act2 = pd.DataFrame(list(itertools.product(act1, hf0.HydroFeatureID.tolist())), columns=['ActivityType', 'HydroFeatureID'])
+    act2 = pd.DataFrame(list(itertools.product(act1, hf0.HydroGroupID.tolist())), columns=['ActivityType', 'HydroGroupID'])
 
     act2['ModifiedDate'] = run_time_start
 
     act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity')
 
-    act_diff1 = act2[~act2[['ActivityType', 'HydroFeatureID']].isin(act0[['ActivityType', 'HydroFeatureID']]).any(axis=1)]
+    act_diff1 = act2[~act2[['ActivityType', 'HydroGroupID']].isin(act0[['ActivityType', 'HydroGroupID']]).any(axis=1)]
 
     if not act_diff1.empty:
         mssql.to_mssql(act_diff1, param['output']['server'], param['output']['database'], 'Activity')
         act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity')
 
     # Combine activity and hydro features
-    act_types1 = pd.merge(act0[['ActivityID', 'ActivityType', 'HydroFeatureID']], hf0[['HydroFeatureID', 'HydroFeature']], on='HydroFeatureID')
-    act_types1['ActivityName'] = act_types1['ActivityType'] + ' ' + act_types1['HydroFeature']
+    act_types1 = pd.merge(act0[['ActivityID', 'ActivityType', 'HydroGroupID']], hf0[['HydroGroupID', 'HydroGroup']], on='HydroGroupID')
+    act_types1['ActivityName'] = act_types1['ActivityType'] + ' ' + act_types1['HydroGroup']
 
     ## AlloBlock
     ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
@@ -121,20 +121,20 @@ try:
 
     blocks1 = sw_blocks1.union(gw_blocks1)
 
-    ab1 = pd.DataFrame(list(itertools.product(blocks1, hf0.HydroFeatureID.tolist())), columns=['AllocationBlock', 'HydroFeatureID'])
+    ab1 = pd.DataFrame(list(itertools.product(blocks1, hf0.HydroGroupID.tolist())), columns=['AllocationBlock', 'HydroGroupID'])
 
     ab1['ModifiedDate'] = run_time_start
 
     ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
 
-    ab_diff1 = ab1[~ab1[['AllocationBlock', 'HydroFeatureID']].isin(ab0[['AllocationBlock', 'HydroFeatureID']]).any(axis=1)]
+    ab_diff1 = ab1[~ab1[['AllocationBlock', 'HydroGroupID']].isin(ab0[['AllocationBlock', 'HydroGroupID']]).any(axis=1)]
 
     if not ab_diff1.empty:
         mssql.to_mssql(ab_diff1, param['output']['server'], param['output']['database'], 'AlloBlock')
         ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
 
     # Combine alloblock and hydro features
-    ab_types1 = pd.merge(ab0[['AlloBlockID', 'AllocationBlock', 'HydroFeatureID']], hf0[['HydroFeatureID', 'HydroFeature']], on='HydroFeatureID').drop('HydroFeatureID', axis=1)
+    ab_types1 = pd.merge(ab0[['AlloBlockID', 'AllocationBlock', 'HydroGroupID']], hf0[['HydroGroupID', 'HydroGroup']], on='HydroGroupID').drop('HydroGroupID', axis=1)
 
     ## Attributes
     att1 = pd.DataFrame(param['misc']['Attributes'])
@@ -181,7 +181,7 @@ try:
     cs1 = usm_waps1[['ExtSiteID', 'SiteName']].copy()
 #    cs1['SiteType'] = 'WAP'
 
-    new_sites = mssql.update_from_difference(cs1, param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
+    new_sites, _ = mssql.update_from_difference(cs1, param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentsSites', 'pass', '{} sites updated'.format(len(new_sites)))
@@ -190,7 +190,7 @@ try:
     cs_waps2 = pd.merge(cs0, usm_waps1.drop('SiteName', axis=1), on='ExtSiteID')
     cs_waps3 = pd.merge(cs_waps2, db.wap_sd, on='ExtSiteID').drop('ExtSiteID', axis=1).round()
 
-    new_waps = mssql.update_from_difference(cs_waps3, param['output']['server'], param['output']['database'], 'SiteStreamDepletion', on='SiteID', mod_date_col='ModifiedDate')
+    new_waps, _ = mssql.update_from_difference(cs_waps3, param['output']['server'], param['output']['database'], 'SiteStreamDepletion', on='SiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'WAP', 'pass', '{} sites updated'.format(len(new_waps)))
@@ -223,7 +223,7 @@ try:
     permits2['ToDate'] = permits2['ToDate'].dt.date
 
     ## Save results
-    new_permits = mssql.update_from_difference(permits2, param['output']['server'], param['output']['database'], 'Permit', on='RecordNumber', mod_date_col='ModifiedDate')
+    new_permits, _ = mssql.update_from_difference(permits2, param['output']['server'], param['output']['database'], 'Permit', on='RecordNumber', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Permit', 'pass', '{} rows updated'.format(len(new_permits)))
@@ -251,7 +251,7 @@ try:
     pc2 = pc1[pc1.ParentRecordNumber.isin(crc1) & pc1.ChildRecordNumber.isin(crc1)].copy()
 
     ## Save results
-    new_pc = mssql.update_from_difference(pc2, param['output']['server'], param['output']['database'], 'ParentChild', on=['ParentRecordNumber', 'ChildRecordNumber'], mod_date_col='ModifiedDate')
+    new_pc, _ = mssql.update_from_difference(pc2, param['output']['server'], param['output']['database'], 'ParentChild', on=['ParentRecordNumber', 'ChildRecordNumber'], mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ParentChild', 'pass', '{} rows updated'.format(len(new_pc)))
@@ -357,8 +357,8 @@ try:
     allo_rates4 = allo_rates3a.set_index(['FromMonth', 'ToMonth'], append=True).stack()
     allo_rates4.name = 'AllocatedRate'
     allo_rates4 = allo_rates4.reset_index()
-    allo_rates4.rename(columns={'level_5': 'HydroFeature', 'sw_allo_block': 'AllocationBlock'}, inplace=True)
-    allo_rates4 = allo_rates4.drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroFeature', 'WAP'])
+    allo_rates4.rename(columns={'level_5': 'HydroGroup', 'sw_allo_block': 'AllocationBlock'}, inplace=True)
+    allo_rates4 = allo_rates4.drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroGroup', 'WAP'])
 
     ## Allocated Volume
     av1 = allo_vol1.copy()
@@ -384,16 +384,16 @@ try:
     av2.loc[av2.take_type == 'Take Surface Water', 'Surface Water'] = av2.loc[av2.take_type == 'Take Surface Water', 'AllocatedAnnualVolume']
     av3 = av2.drop(['take_type', 'AllocatedAnnualVolume'], axis=1)
     av4 = av3.set_index(['RecordNumber', 'allo_block', 'IncludeInAllocation']).stack().reset_index()
-    av4.rename(columns={'level_3': 'HydroFeature', 0: 'AllocatedAnnualVolume', 'allo_block': 'AllocationBlock'}, inplace=True)
+    av4.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedAnnualVolume', 'allo_block': 'AllocationBlock'}, inplace=True)
     av4 = av4[av4['IncludeInAllocation']].drop('IncludeInAllocation', axis=1).copy()
 
     # Combine Annual volumes with rates
-    avr1 = pd.merge(av4, allo_rates4, on=['RecordNumber', 'AllocationBlock', 'HydroFeature'], how='outer', indicator=True)
+    avr1 = pd.merge(av4, allo_rates4, on=['RecordNumber', 'AllocationBlock', 'HydroGroup'], how='outer', indicator=True)
     mis_wap4 = avr1[avr1._merge == 'left_only'].drop(['WAP', '_merge', 'FromMonth', 'ToMonth', 'AllocatedRate'], axis=1)
-    mis_wap5 = pd.merge(mis_wap4, allo_rates4.drop(['AllocationBlock'], axis=1), on=['RecordNumber', 'HydroFeature'], how='left')
+    mis_wap5 = pd.merge(mis_wap4, allo_rates4.drop(['AllocationBlock'], axis=1), on=['RecordNumber', 'HydroGroup'], how='left')
     avr2 = avr1[avr1._merge != 'left_only'].drop(['_merge'], axis=1)
     avr3 = pd.concat([avr2, mis_wap5], sort=False)
-    grp3 = avr3.groupby(['RecordNumber', 'AllocationBlock', 'HydroFeature'])
+    grp3 = avr3.groupby(['RecordNumber', 'AllocationBlock', 'HydroGroup'])
     avr3['AllocatedRateAgg'] = grp3['AllocatedRate'].transform('sum')
     avr3['ratio'] = avr3['AllocatedRate'] / avr3['AllocatedRateAgg']
     avr3['AllocatedAnnualVolume'] = (avr3['AllocatedAnnualVolume'] * avr3['ratio']).round()
@@ -405,7 +405,7 @@ try:
     avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedAnnualVolume'] = (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedRate'] * 0.001*60*60*24*30.42* (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'ToMonth'] - avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'FromMonth'] + 1)).round()
 
     ## Merge tables for IDs
-    avr5 = pd.merge(avr4, ab_types1, on=['AllocationBlock', 'HydroFeature']).drop(['AllocationBlock', 'HydroFeature'], axis=1).copy()
+    avr5 = pd.merge(avr4, ab_types1, on=['AllocationBlock', 'HydroGroup']).drop(['AllocationBlock', 'HydroGroup'], axis=1).copy()
     avr6 = pd.merge(avr5, wap_site, on='WAP').drop('WAP', axis=1)
 
     ## Update CrcAlloSite table
@@ -414,7 +414,7 @@ try:
     crc_allo['SiteType'] = 'WAP'
 
     # Save results
-    new_crc_allo = mssql.update_from_difference(crc_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crc_allo, rem_crc_allo = mssql.update_from_difference(crc_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'])
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_crc_allo)))
@@ -422,11 +422,18 @@ try:
     # Read db table
     allo_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'])
 
+    # Remove old data if needed
+    if not rem_crc_allo.empty:
+        rem_crc_allo1 = pd.merge(allo_site0, rem_crc_allo, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], 'AllocatedRateVolume', rem_crc_allo1)
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], 'CrcAlloSite', rem_crc_allo1)
+        allo_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'])
+
     ## Update AllocatedRateVolume table
     avr7 = pd.merge(allo_site0, avr6, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
 
     # Save results
-    new_avr = mssql.update_from_difference(avr7, param['output']['server'], param['output']['database'], 'AllocatedRateVolume', on='CrcAlloSiteID', mod_date_col='ModifiedDate')
+    new_avr, _ = mssql.update_from_difference(avr7, param['output']['server'], param['output']['database'], 'AllocatedRateVolume', on='CrcAlloSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedRateVolume', 'pass', '{} rows updated'.format(len(new_avr)))
@@ -491,7 +498,7 @@ try:
     crc_act['SiteType'] = 'WAP'
 
     # Save results
-    new_crc_act = mssql.update_from_difference(crc_act, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crc_act, rem_crc_act = mssql.update_from_difference(crc_act, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'ActivityID', 'SiteID', 'SiteType'])
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crc_act)))
@@ -499,11 +506,30 @@ try:
     # Read db table
     act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
+    # Remove old data if needed
+    if not rem_crc_allo.empty:
+        rem_crc_act1 = pd.merge(act_site0, rem_crc_act, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
+        del_stmt = "delete from {table} where {col} in ({val})"
+
+        del_stmt1 = del_stmt.format(table='ConsentedAttributes', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt1)
+
+        del_stmt2 = del_stmt.format(table='LinkedPermits', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2)
+
+        del_stmt3 = del_stmt.format(table='ConsentedRateVolume', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt3)
+
+        del_stmt4 = del_stmt.format(table='CrcActSite', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt4)
+
+        act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+
     ## Create ConsentedRateVolume table
     crv6 = pd.merge(crv5, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID', 'LowflowCondition'], axis=1)
 
     # Save results
-    new_crv = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
+    new_crv, _ = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv)))
@@ -548,24 +574,24 @@ try:
     crc_act_div['SiteType'] = 'WAP'
 
     # Save results
-    new_crv_div = mssql.update_from_difference(crc_act_div, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crc_div, rem_crc_div = mssql.update_from_difference(crc_act_div, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'ActivityID', 'SiteID', 'SiteType'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crv_div)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crc_div)))
 
     # Read db table
     act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
     ## ConsentedRateVolume
-    crv_div = pd.merge(div3, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID', 'LowflowCondition'], axis=1).dropna(subset=['ConsentedRate', 'ConsentedMultiDayVolume'], how='all')
-    crv_div['FromMonth'] = 1
-    crv_div['ToMonth'] = 12
+    crc_div = pd.merge(div3, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID', 'LowflowCondition'], axis=1).dropna(subset=['ConsentedRate', 'ConsentedMultiDayVolume'], how='all')
+    crc_div['FromMonth'] = 1
+    crc_div['ToMonth'] = 12
 
     # Save results
-    new_crv_div = mssql.update_from_difference(crv_div, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
+    new_crc_div, _ = mssql.update_from_difference(crc_div, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_div)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crc_div)))
 
 
     ###########################################
@@ -624,7 +650,7 @@ try:
     crc_act_wu['SiteType'] = 'WAP'
 
     # Save results
-    new_crv_wu = mssql.update_from_difference(crc_act_wu, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crv_wu, _ = mssql.update_from_difference(crc_act_wu, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crv_wu)))
@@ -638,7 +664,7 @@ try:
     crv_wu['ToMonth'] = 12
 
     # Save results
-    new_crv_wu = mssql.update_from_difference(crv_wu, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
+    new_crv_wu, _ = mssql.update_from_difference(crv_wu, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_wu)))
@@ -656,7 +682,7 @@ try:
     wua4 = pd.merge(wua3, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
 
     # Save results
-    new_wua = mssql.update_from_difference(wua4, param['output']['server'], param['output']['database'], 'ConsentedAttributes', on=['CrcActSiteID', 'AttributeID'], mod_date_col='ModifiedDate')
+    new_wua, _ = mssql.update_from_difference(wua4, param['output']['server'], param['output']['database'], 'ConsentedAttributes', on=['CrcActSiteID', 'AttributeID'], mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedAttributes', 'pass', '{} rows updated'.format(len(new_wua)))
@@ -701,7 +727,7 @@ try:
     lc5.rename(columns={'CrcActSiteID_x': 'CrcActSiteID', 'CrcActSiteID_y': 'OtherCrcActSiteID'}, inplace=True)
 
     ## Save results
-    new_lc = mssql.update_from_difference(lc5, param['output']['server'], param['output']['database'], 'LinkedPermits', on=['CrcActSiteID', 'OtherCrcActSiteID'], mod_date_col='ModifiedDate')
+    new_lc, _ = mssql.update_from_difference(lc5, param['output']['server'], param['output']['database'], 'LinkedPermits', on=['CrcActSiteID', 'OtherCrcActSiteID'], mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LinkedPermits', 'pass', '{} rows updated'.format(len(new_lc)))
@@ -713,7 +739,7 @@ try:
     ## ConsentsSites
     lf_sites1 = lf.sites().reset_index()
 
-    new_sites = mssql.update_from_difference(lf_sites1[['ExtSiteID', 'SiteName']], param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
+    new_sites, _ = mssql.update_from_difference(lf_sites1[['ExtSiteID', 'SiteName']], param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
     sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'])
 
     ## LowFlowSite
@@ -726,7 +752,7 @@ try:
 
     trigs3 = pd.merge(sites1, trigs2, on=['ExtSiteID']).drop('ExtSiteID', axis=1)
 
-    sw_blocks = ab_types1[ab_types1.HydroFeature == 'Surface Water']
+    sw_blocks = ab_types1[ab_types1.HydroGroup == 'Surface Water']
     allo_site1 = allo_site0[['RecordNumber', 'AlloBlockID']].drop_duplicates()
     allo_site2 = allo_site1[allo_site1.AlloBlockID.isin(sw_blocks.AlloBlockID)]
 
@@ -748,7 +774,7 @@ try:
     trigs_allo['SiteAllo'] = False
 
     # Save results
-    new_trigs_allo = mssql.update_from_difference(trigs_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_trigs_allo, rem_trigs_allo = mssql.update_from_difference(trigs_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'])
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_trigs_allo)))
@@ -756,11 +782,23 @@ try:
     # Read db table
     allo_site_trig = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteType': ['LowFlow', 'Residual']})
 
+    # Remove old data if needed
+#    if not rem_trigs_allo.empty:
+#        rem_trigs_allo1 = pd.merge(allo_site_trig, rem_trigs_allo, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
+#
+#        del_stmt = "delete from {table} where {col} in ({val})"
+#
+#        del_stmt1 = del_stmt.format(table='TSLowFlowRestr', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
+#        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt1)
+#
+#        del_stmt2 = del_stmt.format(table='LowFlowConditions', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
+#        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2)
+
     ## Update LowFlowConditions
     trigs5 = pd.merge(allo_site_trig, trigs4, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'], axis=1)
 
     # Save results
-    new_trigs = mssql.update_from_difference(trigs5, param['output']['server'], param['output']['database'], 'LowFlowConditions', on='CrcAlloSiteID', mod_date_col='ModifiedDate')
+    new_trigs, _ = mssql.update_from_difference(trigs5, param['output']['server'], param['output']['database'], 'LowFlowConditions', on='CrcAlloSiteID', mod_date_col='ModifiedDate')
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LowFlowConditions', 'pass', '{} rows updated'.format(len(new_trigs)))

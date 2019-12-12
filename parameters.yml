@@ -87,8 +87,8 @@ source data:
     pk: [ExtSiteID]
 
 misc:
-  HydroFeature:
-    HydroFeature: [Surface Water, Groundwater]
+  HydroGroup:
+    HydroGroup: [Surface Water, Groundwater]
   Activities:
     ActivityType: [Take, Divert, Discharge, Dam, Use]
   Attributes:
