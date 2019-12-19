@@ -213,14 +213,19 @@ try:
     permits1['RecordNumber'] = permits1['RecordNumber'].str.strip().str.upper()
     permits1['ConsentStatus'] = permits1['ConsentStatus'].str.strip()
     permits1['EcanID'] = permits1['EcanID'].str.strip().str.upper()
+    permits1.loc[(permits1['FromDate'] < '1950-01-01'), 'FromDate'] = np.nan
+    permits1.loc[(permits1['ToDate'] < '1950-01-01'), 'ToDate'] = np.nan
 
     ## Filter data
-    permits1 = permits1.drop_duplicates('RecordNumber')
-    permits2 = permits1[(permits1['FromDate'] > '1950-01-01') & (permits1['ToDate'] > '1950-01-01') & (permits1['ToDate'] > permits1['FromDate']) & permits1.NZTMX.notnull() & permits1.NZTMY.notnull() & permits1.ConsentStatus.notnull() & permits1.RecordNumber.notnull() & permits1['EcanID'].notnull()].copy()
+    permits2 = permits1.drop_duplicates('RecordNumber')
+    permits2 = permits2[permits2.ConsentStatus.notnull() & permits2.RecordNumber.notnull() & permits2['EcanID'].notnull()].copy()
+#    permits2 = permits2[(permits2['FromDate'] > '1950-01-01') & (permits2['ToDate'] > '1950-01-01') & (permits2['ToDate'] > permits2['FromDate']) & permits2.NZTMX.notnull() & permits2.NZTMY.notnull() & permits2.ConsentStatus.notnull() & permits2.RecordNumber.notnull() & permits2['EcanID'].notnull()].copy()
 
     ## Convert datetimes to date
     permits2['FromDate'] = permits2['FromDate'].dt.date
     permits2['ToDate'] = permits2['ToDate'].dt.date
+    permits2.loc[permits2['FromDate'].isnull(), 'FromDate'] = '1900-01-01'
+    permits2.loc[permits2['ToDate'].isnull(), 'ToDate'] = '1900-01-01'
 
     ## Save results
     new_permits, _ = mssql.update_from_difference(permits2, param['output']['server'], param['output']['database'], 'Permit', on='RecordNumber', mod_date_col='ModifiedDate')
@@ -310,34 +315,56 @@ try:
 
     wa4 = wa4[wa4.WAP.notnull()].copy()
 
-    # Stream depletion processing
+    # Stream depletion
+    wa4a = pd.merge(wa4, db.wap_sd.rename(columns={'ExtSiteID': 'WAP'}), on='WAP')
+
     wa4['SD'] = wa4['SD1']
 #    wa4.loc[wa4['SD'] < wa4['SD2'], 'SD'] = wa4.loc[wa4['SD'] < wa4['SD2'], 'SD2']
     wa5 = wa4.drop(['SD1', 'SD2'], axis=1)
     wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'SD'] = wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'AllocatedRate']
 
-    # Distribute the rates according to the activity
-#    allo_rates1 = wa5.drop('WapRate', axis=1).copy()
+    ## Distribute the rates according to the stream depletion requirements
+    ## According to the LWRP!
     allo_rates1 = wa5.copy()
-    allo_rates1['Surface Water'] = allo_rates1['AllocatedRate']
-    allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'Surface Water'] = allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'SD']
+    allo_rates1['sd_crc_total'] = allo_rates1.groupby(['RecordNumber', 'take_type', 'sw_allo_block'])['SD'].transform('sum')
+    allo_rates1['rate_crc_total'] = allo_rates1.groupby(['RecordNumber', 'take_type', 'sw_allo_block'])['AllocatedRate'].transform('sum')
+    allo_rates1['sd_ratio'] = allo_rates1['sd_crc_total'] / allo_rates1['rate_crc_total']
+
+    # Volume ratios - According to the LWRP!
+    allo_rates1['sw_vol_ratio'] = 0
+    allo_rates1.loc[(allo_rates1['sd_crc_total'] > 5) | (allo_rates1['sd_ratio'] >= 0.4), 'sw_vol_ratio'] = 0.5
+    allo_rates1.loc[(allo_rates1['sd_crc_total'] > 5) & (allo_rates1['sd_ratio'] >= 0.6), 'sw_vol_ratio'] = 0.75
+    allo_rates1.loc[(allo_rates1['sd_crc_total'] > 5) & (allo_rates1['sd_ratio'] >= 0.9), 'sw_vol_ratio'] = 1
+    allo_rates1.loc[(allo_rates1['take_type'] == 'Take Surface Water'), 'sw_vol_ratio'] = 1
+
+    # Rates
+    gw_bool = allo_rates1['take_type'] == 'Take Groundwater'
+    sw_bool = allo_rates1['take_type'] == 'Take Surface Water'
+    rate_bool = allo_rates1['sd_crc_total'] <= 5
+
+    allo_rates1['Surface Water'] = 0
     allo_rates1['Groundwater'] = 0
-    allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'Groundwater'] = allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'AllocatedRate'] - allo_rates1.loc[allo_rates1.take_type == 'Take Groundwater', 'SD']
-    allo_rates2 = allo_rates1.drop(['take_type', 'AllocatedRate', 'SD'], axis=1)
-#    allo_rates2.loc[allo_rates2['Surface Water'] <= 0, 'Surface Water'] = np.nan
-#    allo_rates2.loc[allo_rates2['Groundwater'] <= 0, 'Groundwater'] = np.nan
+
+    allo_rates1.loc[gw_bool, 'Groundwater'] = allo_rates1.loc[gw_bool, 'AllocatedRate'] - allo_rates1.loc[gw_bool, 'SD']
+    allo_rates1.loc[gw_bool & rate_bool, 'Groundwater'] = allo_rates1.loc[gw_bool & rate_bool, 'AllocatedRate']
+
+    allo_rates1.loc[sw_bool, 'Surface Water'] = allo_rates1.loc[sw_bool, 'AllocatedRate']
+    allo_rates1.loc[gw_bool, 'Surface Water'] = allo_rates1.loc[gw_bool, 'AllocatedRate'] - allo_rates1.loc[gw_bool, 'Groundwater']
+
+    allo_rates2 = allo_rates1.drop(['AllocatedRate', 'SD', 'sd_crc_total', 'sd_ratio','rate_crc_total'], axis=1)
+    allo_rates2.rename(columns={'sw_allo_block': 'AllocationBlock'}, inplace=True)
 
     # Distribute the months
     allo_rates_list = []
 #    c1 = 0
     for val in allo_rates2.itertuples(False, None):
-        from_month = val[3]
-        to_month = val[4]
+        from_month = val[4]
+        to_month = val[5]
         if from_month > to_month:
             mons = list(range(1, to_month + 1))
 #            c1 = c1 + 1
         else:
-            mons = range(int(val[3]), int(val[4]) + 1)
+            mons = range(int(val[4]), int(val[5]) + 1)
         d1 = [val + (i,) for i in mons]
         allo_rates_list.extend(d1)
     col_names1 = allo_rates2.columns.tolist()
@@ -345,7 +372,7 @@ try:
     allo_rates3 = pd.DataFrame(allo_rates_list, columns=col_names1).drop(['FromMonth', 'ToMonth'], axis=1)
 
     # Mean of all months
-    grp1 = allo_rates3.groupby(['RecordNumber', 'sw_allo_block', 'WAP'])
+    grp1 = allo_rates3.groupby(['RecordNumber', 'AllocationBlock', 'WAP'])
     mean1 = grp1[['Groundwater', 'Surface Water']].mean().round(2)
     mon_min = grp1['Month'].min()
     mon_min.name = 'FromMonth'
@@ -357,8 +384,10 @@ try:
     allo_rates4 = allo_rates3a.set_index(['FromMonth', 'ToMonth'], append=True).stack()
     allo_rates4.name = 'AllocatedRate'
     allo_rates4 = allo_rates4.reset_index()
-    allo_rates4.rename(columns={'level_5': 'HydroGroup', 'sw_allo_block': 'AllocationBlock'}, inplace=True)
+    allo_rates4.rename(columns={'level_5': 'HydroGroup'}, inplace=True)
     allo_rates4 = allo_rates4.drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroGroup', 'WAP'])
+#    allo_rates2a = allo_rates2.rename(columns={'sw_allo_block': 'AllocationBlock'})[['RecordNumber', 'AllocationBlock', 'WAP', 'sw_vol_ratio']]
+#    allo_rates4 = pd.merge(allo_rates4, allo_rates2a, on=['RecordNumber', 'AllocationBlock', 'WAP'], how='left')
 
     ## Allocated Volume
     av1 = allo_vol1.copy()
@@ -373,19 +402,25 @@ try:
     av1['AllocatedAnnualVolume'] = pd.to_numeric(av1['AllocatedAnnualVolume'], errors='coerce')
 #    av1.loc[av1['AllocatedAnnualVolume'] <= 0, 'AllocatedAnnualVolume'] = 0
     av1 = av1.loc[av1['AllocatedAnnualVolume'] > 0]
+    av1.rename(columns={'allo_block': 'AllocationBlock'}, inplace=True)
 
     # Check foreign keys
     av2 = av1[av1.RecordNumber.isin(allo_rates4.RecordNumber.unique())].copy()
 
     # Distribute SW and GW allocation
-    av2['Groundwater'] = np.nan
-    av2.loc[av2.take_type == 'Take Groundwater', 'Groundwater'] = av2.loc[av2.take_type == 'Take Groundwater', 'AllocatedAnnualVolume']
-    av2['Surface Water'] = np.nan
-    av2.loc[av2.take_type == 'Take Surface Water', 'Surface Water'] = av2.loc[av2.take_type == 'Take Surface Water', 'AllocatedAnnualVolume']
-    av3 = av2.drop(['take_type', 'AllocatedAnnualVolume'], axis=1)
-    av4 = av3.set_index(['RecordNumber', 'allo_block', 'IncludeInAllocation']).stack().reset_index()
-    av4.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedAnnualVolume', 'allo_block': 'AllocationBlock'}, inplace=True)
-    av4 = av4[av4['IncludeInAllocation']].drop('IncludeInAllocation', axis=1).copy()
+    av3 = pd.merge(av2, allo_rates2.drop_duplicates(['RecordNumber', 'take_type', 'AllocationBlock'])[['RecordNumber', 'take_type', 'AllocationBlock', 'sw_vol_ratio']], on=['RecordNumber', 'take_type', 'AllocationBlock'], how='left')
+    av3.loc[av3['sw_vol_ratio'].isnull() & (av3['take_type'] == 'Take Groundwater'), 'sw_vol_ratio'] = 0
+    av3.loc[av3['sw_vol_ratio'].isnull() & (av3['take_type'] == 'Take Surface Water'), 'sw_vol_ratio'] = 1
+
+    av3 = av3[av3['IncludeInAllocation']].drop(['take_type', 'IncludeInAllocation', 'AllocatedAnnualVolume'], axis=1).copy()
+
+    av3['Surface Water'] = av3['FullAnnualVolume'] * av3[ 'sw_vol_ratio']
+    av3['Groundwater'] = av3['FullAnnualVolume'] - av3['Surface Water']
+    av3.drop(['sw_vol_ratio', 'FullAnnualVolume'], axis=1, inplace=True)
+
+    av4 = av3.set_index(['RecordNumber', 'AllocationBlock']).stack().reset_index()
+    av4.rename(columns={'level_2': 'HydroGroup', 0: 'AllocatedAnnualVolume'}, inplace=True)
+    av4 = av4.groupby(['RecordNumber', 'AllocationBlock', 'HydroGroup']).sum().reset_index()
 
     # Combine Annual volumes with rates
     avr1 = pd.merge(av4, allo_rates4, on=['RecordNumber', 'AllocationBlock', 'HydroGroup'], how='outer', indicator=True)
@@ -396,13 +431,19 @@ try:
     grp3 = avr3.groupby(['RecordNumber', 'AllocationBlock', 'HydroGroup'])
     avr3['AllocatedRateAgg'] = grp3['AllocatedRate'].transform('sum')
     avr3['ratio'] = avr3['AllocatedRate'] / avr3['AllocatedRateAgg']
+    avr3.loc[avr3['ratio'].isnull(), 'ratio'] = 1
     avr3['AllocatedAnnualVolume'] = (avr3['AllocatedAnnualVolume'] * avr3['ratio']).round()
+    avr3.loc[avr3.AllocatedAnnualVolume.isnull(), 'AllocatedAnnualVolume'] = 0
 
     ## Clean up unnecessary rows
-    avr4 = avr3[(avr3.AllocatedRate > 0) | (avr3.AllocatedAnnualVolume.notnull())].drop(['AllocatedRateAgg', 'ratio'], axis=1)
+    avr4 = avr3[~((avr3.AllocatedRate == 0) & (avr3.AllocatedAnnualVolume == 0))].drop(['AllocatedRateAgg', 'ratio'], axis=1)
 
-    ## Calculate missing volumes
-    avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedAnnualVolume'] = (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'AllocatedRate'] * 0.001*60*60*24*30.42* (avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'ToMonth'] - avr4.loc[avr4.AllocatedAnnualVolume.isnull(), 'FromMonth'] + 1)).round()
+    ## Calculate missing volumes and rates
+    ann_bool = avr4.AllocatedAnnualVolume == 0
+    avr4.loc[ann_bool, 'AllocatedAnnualVolume'] = (avr4.loc[ann_bool, 'AllocatedRate'] * 0.001*60*60*24*30.42* (avr4.loc[ann_bool, 'ToMonth'] - avr4.loc[ann_bool, 'FromMonth'] + 1)).round()
+
+    rate_bool = avr4.AllocatedRate == 0
+    avr4.loc[rate_bool, 'AllocatedRate'] = (avr4.loc[rate_bool, 'AllocatedAnnualVolume'] / 60/60/24/30.42/ (avr4.loc[rate_bool, 'ToMonth'] - avr4.loc[rate_bool, 'FromMonth'] + 1) * 1000).round(2)
 
     ## Merge tables for IDs
     avr5 = pd.merge(avr4, ab_types1, on=['AllocationBlock', 'HydroGroup']).drop(['AllocationBlock', 'HydroGroup'], axis=1).copy()
@@ -507,7 +548,7 @@ try:
     act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
 
     # Remove old data if needed
-    if not rem_crc_allo.empty:
+    if not rem_crc_act.empty:
         rem_crc_act1 = pd.merge(act_site0, rem_crc_act, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
         del_stmt = "delete from {table} where {col} in ({val})"
 
@@ -563,6 +604,9 @@ try:
 
     ## Check foreign keys
     div2 = div2[div2.RecordNumber.isin(crc1)].copy()
+
+    ## Check primary keys
+    div2 = div2.drop_duplicates(['RecordNumber', 'WAP'])
 
     ## Join to get the IDs and filter WAPs
     div3 = pd.merge(div2, act_types1[['ActivityID', 'ActivityName']], left_on='DivertType', right_on='ActivityName').drop(['DivertType', 'ActivityName'], axis=1)
