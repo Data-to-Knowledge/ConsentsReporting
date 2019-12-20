@@ -10,8 +10,8 @@ source data:
     server: SQL02Prod
     database: Accela
     table: Ecan.vAct_Water_TakeWaterWAPAllocation
-    col_names: [RecordNumber, Activity, SW Allocation Block, WAP, Allocation Rate (l/s), From Month, To Month, First Stream Depletion Rate, Second Stream Depletion Rate, 'Include in SW Allocation?']
-    rename_cols: [RecordNumber, take_type, sw_allo_block, WAP, AllocatedRate, FromMonth, ToMonth, SD1, SD2, IncludeInSwAllocation]
+    col_names: [RecordNumber, Activity, SW Allocation Block, WAP, Max Rate for WAP (l/s), Allocation Rate (l/s), From Month, To Month, First Stream Depletion Rate, Second Stream Depletion Rate, 'Include in SW Allocation?']
+    rename_cols: [RecordNumber, take_type, sw_allo_block, WAP, WapRate, AllocatedRate, FromMonth, ToMonth, SD1, SD2, IncludeInSwAllocation]
     pk: ['RecordNumber', 'take_type', 'sw_allo_block', 'WAP', 'FromMonth']
 
   wap_sd:

@@ -1,0 +1,1430 @@
+RecordNumber,take_type,sw_allo_block,WAP,WapRate,AllocatedRate,FromMonth,ToMonth,SD1,SD2,ConsentStatus,FromDate,ToDate
+MLB850048,Take Surface Water,A,,75000.0,75000.0,1,12,0.0,0.0,Terminated - Surrendered,1985-09-10,1998-01-21
+SCY790226A.1,Take Surface Water,A,,28130.0,28130.0,1,12,0.0,0.0,Terminated - Expired,1994-04-06,1996-12-01
+SCY790226A,Take Surface Water,A,,28130.0,28130.0,1,12,0.0,0.0,Terminated - Replaced,1979-11-14,1994-04-06
+MLB830063,Take Surface Water,A,,15620.0,15620.0,1,12,0.0,0.0,Terminated - Surrendered,1983-08-09,1995-11-01
+NCY770246,Take Surface Water,A,,12000.0,12000.0,1,12,0.0,0.0,Terminated - Surrendered,1977-11-01,1995-12-19
+SCY870005F,Take Surface Water,A,,12000.0,12000.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1993-12-01
+WTK733171A,Take Surface Water,In Waitaki,,11320.0,11320.0,1,12,0.0,0.0,Terminated - Replaced,1974-08-20,1993-12-06
+WTK733171A.1,Take Surface Water,In Waitaki,,11320.0,11320.0,1,12,0.0,0.0,Terminated - Expired,1993-12-06,2001-10-01
+NCY850422,Take Surface Water,A,,11000.0,11000.0,1,12,0.0,0.0,Terminated - Expired,1985-09-17,1998-06-10
+WTK846591A,Take Surface Water,A,,10000.0,10000.0,1,12,0.0,0.0,Terminated - Surrendered,1985-03-15,1991-05-30
+WTK733081A,Take Surface Water,In Waitaki,,9340.0,9340.0,1,12,0.0,0.0,Terminated - Surrendered,1973-09-04,1993-12-09
+NCY730463,Take Surface Water,A,,8500.0,8500.0,1,12,0.0,0.0,Terminated - Surrendered,1973-10-01,1997-07-09
+NCY770244,Take Surface Water,A,,8200.0,8200.0,1,12,0.0,0.0,Terminated - Surrendered,1977-11-01,1995-12-19
+NCY710089,Take Surface Water,A,,7360.0,7360.0,1,12,0.0,0.0,Terminated - Surrendered,1971-08-07,1995-12-19
+WTK861601A,Take Surface Water,A,,7344.0,7344.0,1,12,0.0,0.0,Terminated - Expired,1986-05-20,2003-01-08
+SCY790150,Take Surface Water,A,,7000.0,7000.0,1,12,0.0,0.0,Terminated - Expired,1977-05-18,1993-03-01
+NCY880386A,Take Surface Water,A,,7000.0,7000.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1997-04-30
+NCY750340,Take Surface Water,A,,6000.0,6000.0,1,12,0.0,0.0,Terminated - Surrendered,1975-07-01,1997-07-09
+NCY810027,Take Surface Water,A,,5900.0,5900.0,1,12,0.0,0.0,Terminated - Surrendered,1981-03-01,1995-12-19
+CRC951326,Take Surface Water,A,,5000.0,5000.0,1,12,0.0,0.0,Terminated - Replaced,1998-06-10,2000-05-31
+CRC900317,Take Surface Water,A,,5000.0,5000.0,1,12,0.0,0.0,Terminated - Expired,1992-01-22,1995-04-30
+WTK836272.1,Take Surface Water,In Waitaki,,5000.0,5000.0,1,12,0.0,0.0,Terminated - Surrendered,1999-08-05,2000-06-12
+CRC971412,Take Surface Water,In Waitaki,,5000.0,5000.0,1,12,0.0,0.0,Terminated - Surrendered,1998-09-11,2001-03-26
+CRC900316,Take Surface Water,A,,5000.0,5000.0,1,12,0.0,0.0,Terminated - Expired,1992-01-22,1995-04-30
+WTK836272,Take Surface Water,In Waitaki,,5000.0,5000.0,1,12,0.0,0.0,Terminated - Replaced,1984-07-05,1999-08-05
+SCY710050,Take Surface Water,A,,4247.0,4247.0,1,12,0.0,0.0,Terminated - Expired,1971-05-12,2001-10-01
+NCY790304,Take Surface Water,A,,4000.0,4000.0,1,12,0.0,0.0,Terminated - Surrendered,1979-09-01,1995-12-19
+NCY790314,Take Surface Water,A,,3930.0,3930.0,1,12,0.0,0.0,Terminated - Surrendered,1979-09-01,1995-12-19
+CRC897372C,Take Surface Water,In Waitaki,,3600.0,3600.0,1,12,0.0,0.0,Terminated - Replaced,1993-09-27,1996-10-30
+SCY820111A,Take Surface Water,A,,3500.0,3500.0,1,12,0.0,0.0,Terminated - Expired,1977-05-18,1993-03-01
+SCY800014D,Take Surface Water,A,,3500.0,3500.0,1,12,0.0,0.0,Terminated - Expired,1980-02-13,1993-06-01
+SCY820042,Take Surface Water,A,,3000.0,3000.0,1,12,0.0,0.0,Terminated - Expired,1982-03-12,1991-12-01
+WTK690213.1,Take Surface Water,In Waitaki,,2840.0,2840.0,1,12,0.0,0.0,Terminated - Surrendered,1992-09-04,1993-06-17
+WTK690213,Take Surface Water,In Waitaki,,2840.0,2840.0,1,12,0.0,0.0,Terminated - Replaced,1987-09-01,1992-09-04
+WTK690211.1,Take Surface Water,In Waitaki,,2840.0,2840.0,1,12,0.0,0.0,Terminated - Surrendered,1992-09-04,1993-06-17
+WTK690211,Take Surface Water,In Waitaki,,2840.0,2840.0,1,12,0.0,0.0,Terminated - Replaced,1969-02-12,1992-09-04
+NCY730136,Take Surface Water,A,,2830.0,2830.0,1,12,0.0,0.0,Terminated - Surrendered,1973-05-01,1995-12-19
+NCY730465,Take Surface Water,A,,2800.0,2800.0,1,12,0.0,0.0,Terminated - Surrendered,1973-10-01,1997-07-09
+SCY820225A,Take Surface Water,A,,2500.0,2500.0,1,12,0.0,0.0,Terminated - Surrendered,1982-11-09,1991-11-14
+NCY720291,Take Surface Water,A,,2379.0,2379.0,1,12,0.0,0.0,Terminated - Surrendered,1972-07-01,1995-12-19
+NCY870368A,Take Surface Water,A,,2300.0,2300.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1999-04-30
+NCY860125A,Take Surface Water,A,,2250.0,2250.0,1,12,0.0,0.0,Terminated - Replaced,1987-04-01,1996-06-10
+CRC890188B,Take Surface Water,A,,2200.0,2200.0,1,12,0.0,0.0,Terminated - Replaced,1990-12-21,1993-03-25
+CRC941247.1,Take Surface Water,A,,2200.0,2200.0,1,12,0.0,0.0,Terminated - Surrendered,2003-04-16,2005-01-28
+CRC941247,Take Surface Water,A,,2200.0,2200.0,1,12,0.0,0.0,Terminated - Replaced,1995-01-19,2003-04-16
+CRC916560A,Take Surface Water,A,,2000.0,2000.0,1,12,0.0,0.0,Terminated - Surrendered,1991-12-19,1900-01-01
+SCY800014A,Take Surface Water,A,,2000.0,2000.0,1,12,0.0,0.0,Terminated - Expired,1980-02-13,1993-06-01
+CRC890850B,Take Surface Water,A,,2000.0,2000.0,1,12,0.0,0.0,Terminated - Expired,1990-03-02,1999-04-30
+MLB910014,Take Surface Water,A,,1650.0,1650.0,1,12,0.0,0.0,Terminated - Expired,1991-10-17,1996-10-16
+NCY870380A,Take Surface Water,A,,1600.0,1600.0,1,12,0.0,0.0,Terminated - Expired,1988-02-26,1999-04-30
+NCY720075,Take Surface Water,A,,1556.0,1556.0,1,12,0.0,0.0,Terminated - Surrendered,1972-07-01,1995-12-19
+WTK813891A,Take Surface Water,In Waitaki,,1500.0,1500.0,1,12,0.0,0.0,Terminated - Expired,1982-02-08,1995-04-30
+SCY870017C,Take Surface Water,A,,1500.0,1500.0,1,12,0.0,0.0,Terminated - Replaced,1987-03-12,1991-10-07
+SCY870017C.1,Take Surface Water,A,,1500.0,1500.0,1,12,0.0,0.0,Terminated - Expired,1991-10-07,1992-12-01
+CRC000661,Take Surface Water,A,,1500.0,1500.0,1,12,0.0,0.0,Terminated - Expired,1999-11-29,2002-11-24
+NCY720289,Take Surface Water,A,,1416.0,1416.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-17,2001-04-23
+SCY770060A,Take Surface Water,A,,1400.0,1400.0,1,12,0.0,0.0,Terminated - Expired,1977-05-18,1993-03-01
+SCY850057B,Take Surface Water,A,,1200.0,1200.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1991-05-01
+SCY850057C,Take Surface Water,A,,1200.0,1200.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1991-05-01
+SCY820024A,Take Surface Water,A,,1200.0,1200.0,1,12,0.0,0.0,Terminated - Surrendered,1982-03-12,1992-09-01
+NCY710152A,Take Surface Water,A,,1132.0,1132.0,1,12,0.0,0.0,Terminated - Expired,1971-11-05,1991-11-04
+WTK722951A,Take Surface Water,In Waitaki,,1130.0,1130.0,1,12,0.0,0.0,Terminated - Surrendered,1972-03-13,1900-01-01
+CRC905356,Take Surface Water,In Waitaki,,1100.0,1100.0,1,12,0.0,0.0,Terminated - Replaced,1991-02-01,1994-02-11
+CRC905356.1,Take Surface Water,In Waitaki,,1100.0,1100.0,1,12,0.0,0.0,Terminated - Replaced,1994-02-11,1999-08-05
+CRC920358A,Take Surface Water,In Waitaki,,1070.0,1070.0,1,12,0.0,0.0,Terminated - Replaced,1992-06-10,1992-10-09
+CRC920358A.1,Take Surface Water,In Waitaki,,1070.0,1070.0,1,12,0.0,0.0,Terminated - Replaced,1992-10-09,1994-08-18
+NCY870272B.1,Take Surface Water,A,,1020.0,1020.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+NCY870272B,Take Surface Water,A,,1020.0,1020.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+CRC951682,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Replaced,1995-05-01,1999-09-08
+CRC930133C,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Replaced,1993-04-08,1994-02-25
+NCY860619,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1987-03-06,1991-04-30
+SCY870005C,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1993-12-01
+CRC930133B,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Replaced,1993-04-08,1994-11-23
+NCY840572A,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1985-02-01,1996-12-24
+CRC930133C.1,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Replaced,1994-02-25,1994-11-23
+CRC921530C.1,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1994-02-25,1995-09-26
+CRC921530B,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Replaced,1993-04-08,1994-02-25
+CRC921530C,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Replaced,1993-04-08,1994-02-25
+NCY850423,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1985-09-17,1998-06-10
+SCY800014C,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1980-02-13,1993-06-01
+CRC921530B.1,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1994-02-25,1995-08-23
+SCY870012B,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1987-03-12,1992-12-01
+CRC930133B.1,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1994-11-23,1995-06-01
+SCY870005A,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1993-12-01
+NCY850442,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Expired,1985-09-17,1998-06-10
+NCY750389,Take Surface Water,A,,1000.0,1000.0,1,12,0.0,0.0,Terminated - Surrendered,1975-07-01,1997-07-09
+SCY850055A,Take Surface Water,A,,990.0,990.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1991-05-01
+CRC916671B,Take Surface Water,A,,990.0,990.0,1,12,0.0,0.0,Terminated - Expired,1991-12-23,1992-12-01
+NCY840652,Take Surface Water,A,,980.0,980.0,1,12,0.0,0.0,Terminated - Surrendered,1978-11-01,1995-12-19
+NCY780334,Take Surface Water,A,,900.0,900.0,1,12,0.0,0.0,Terminated - Surrendered,1978-02-01,1995-12-19
+CRC941177,Take Surface Water,A,,900.0,900.0,1,12,0.0,0.0,Terminated - Replaced,1994-08-29,1995-11-17
+NCY781039,Take Surface Water,A,,900.0,900.0,1,12,0.0,0.0,Terminated - Surrendered,1978-12-01,1995-12-19
+NCY780330A,Take Surface Water,A,,840.0,840.0,1,12,0.0,0.0,Terminated - Surrendered,1978-02-01,1993-03-18
+CRC920803C,Take Surface Water,A,,820.0,820.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-10,2000-11-28
+NCY870332,Take Surface Water,A,,820.0,820.0,1,12,0.0,0.0,Terminated - Surrendered,1987-12-04,1997-07-09
+CRC895030A,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Replaced,1990-04-06,1991-09-05
+CRC895030A.1,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Expired,1991-09-05,1993-12-01
+SCY870017B,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Replaced,1987-03-12,1991-10-07
+SCY870013A,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Expired,1987-03-12,1992-12-01
+SCY870017A,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Replaced,1987-03-12,1991-10-07
+WTK855651A,Take Surface Water,In Waitaki,,800.0,800.0,1,12,0.0,0.0,Terminated - Replaced,1985-11-14,1993-12-17
+CRC890339B.1,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Expired,1995-02-17,2004-05-28
+CRC890339B,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Replaced,1990-12-21,1995-02-17
+WTK855651A.1,Take Surface Water,In Waitaki,,800.0,800.0,1,12,0.0,0.0,Terminated - Expired,1993-12-17,1996-06-30
+SCY870012A,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Expired,1987-03-12,1992-12-01
+SCY870017A.1,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Expired,1991-10-07,1992-12-01
+SCY870017B.1,Take Surface Water,A,,800.0,800.0,1,12,0.0,0.0,Terminated - Expired,1991-10-07,1992-12-01
+WTK846421B.1,Take Surface Water,In Waitaki,,750.0,750.0,1,12,0.0,0.0,Terminated - Replaced,1993-07-01,1998-02-16
+WTK846421B,Take Surface Water,In Waitaki,,750.0,750.0,1,12,0.0,0.0,Terminated - Replaced,1984-10-12,1993-07-01
+WTK846421B.2,Take Surface Water,In Waitaki,,750.0,750.0,1,12,0.0,0.0,Terminated - Surrendered,1998-02-16,1998-11-04
+NCY890427A,Take Surface Water,A,,750.0,750.0,1,12,0.0,0.0,Terminated - Replaced,1989-10-06,1993-08-27
+NCY890427A.1,Take Surface Water,A,,750.0,750.0,1,12,0.0,0.0,Terminated - Surrendered,1993-08-27,1999-04-12
+CRC916099,Take Surface Water,A,,741.0,741.0,1,12,0.0,0.0,Terminated - Surrendered,1992-05-07,1995-12-19
+WTK800012,Take Surface Water,In Waitaki,,710.0,710.0,1,12,0.0,0.0,Terminated - Surrendered,1981-02-25,1986-11-28
+NCY720285,Take Surface Water,A,,708.0,708.0,1,12,0.0,0.0,Terminated - Expired,1969-03-27,2001-10-01
+SCY820026,Take Surface Water,A,,700.0,700.0,1,12,0.0,0.0,Terminated - Replaced,1982-03-12,1992-03-26
+NCY830354,Take Surface Water,A,,700.0,700.0,1,12,0.0,0.0,Terminated - Expired,1983-10-01,1993-04-30
+SCY820026.1,Take Surface Water,A,,700.0,700.0,1,12,0.0,0.0,Terminated - Expired,1992-03-26,1993-06-01
+NCY860570,Take Surface Water,A,,700.0,700.0,1,12,0.0,0.0,Terminated - Expired,1987-02-05,1992-04-30
+NCY710152B,Take Surface Water,A,,679.0,679.0,1,12,0.0,0.0,Terminated - Expired,1971-11-05,1991-11-04
+NCY850444,Take Surface Water,A,,650.0,650.0,1,12,0.0,0.0,Terminated - Expired,1985-09-17,1998-06-10
+MLB900096,Take Surface Water,A,,627.0,627.0,1,12,0.0,0.0,Terminated - Expired,1991-06-18,2001-05-21
+CRC951266,Take Surface Water,A,,600.0,600.0,1,12,0.0,0.0,Terminated - Replaced,1995-06-02,2001-11-14
+NCY860560,Take Surface Water,A,,600.0,600.0,1,12,0.0,0.0,Terminated - Expired,1987-03-06,1992-04-30
+WTK852971C,Take Surface Water,In Waitaki,,570.0,570.0,1,12,0.0,0.0,Terminated - Surrendered,1986-02-10,1992-07-04
+WTK691016B,Take Surface Water,In Waitaki,,570.0,570.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+CRC916063B,Take Surface Water,In Waitaki,,570.0,570.0,1,12,0.0,0.0,Terminated - Replaced,1992-06-10,1992-10-09
+CRC920356A,Take Surface Water,In Waitaki,,570.0,570.0,1,12,0.0,0.0,Terminated - Replaced,1992-05-07,1994-08-18
+WTK852971B,Take Surface Water,In Waitaki,,570.0,570.0,1,12,0.0,0.0,Terminated - Surrendered,1986-02-10,1992-07-04
+WTK691016A,Take Surface Water,In Waitaki,,570.0,570.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK826131B,Take Surface Water,In Waitaki,,568.0,568.0,1,12,0.0,0.0,Terminated - Expired,1983-02-14,1995-12-31
+WTK826131A,Take Surface Water,In Waitaki,,568.0,568.0,1,12,0.0,0.0,Terminated - Expired,1983-02-14,1995-12-31
+NCY880235A,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1988-08-02,1991-04-30
+CRC920358C.1,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1992-10-09,1994-08-18
+WTK813891B,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1982-02-08,1995-04-30
+CRC920358C,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1992-06-10,1992-10-09
+SCY870019A,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1987-03-12,1991-10-07
+CRC920358D,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1992-06-10,1992-10-20
+WTK855651B.1,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1993-12-17,1996-06-30
+SCY800014B,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1980-02-13,1993-06-01
+WTK825961A,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1982-03-08,1994-07-26
+CRC920358D.1,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1994-08-18,1994-10-01
+CRC930134B.1,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1994-11-23,1995-08-23
+CRC930134B,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1993-04-08,1994-11-23
+SCY850037,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1989-07-12,1994-06-01
+CRC930134C.1,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1994-02-23,1994-11-23
+NCY870145A,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Surrendered,1987-10-02,1996-01-23
+CRC930134C.2,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1994-11-23,1995-06-01
+NCY890326B,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1989-07-07,1999-04-30
+CRC950158A,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Cancelled,1995-02-20,2002-09-02
+SCY870019A.1,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Expired,1991-10-07,1992-12-01
+CRC930134C,Take Surface Water,A,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1993-04-08,1994-02-23
+WTK855651B,Take Surface Water,In Waitaki,,500.0,500.0,1,12,0.0,0.0,Terminated - Replaced,1985-11-14,1993-12-17
+NCY840061,Take Surface Water,A,,453.0,453.0,1,12,0.0,0.0,Terminated - Expired,1971-11-05,1991-11-04
+CRC920735,Take Surface Water,A,,450.0,450.0,1,12,0.0,0.0,Terminated - Expired,1993-09-30,2004-05-28
+NCY790310,Take Surface Water,A,,430.0,430.0,1,12,0.0,0.0,Terminated - Surrendered,1979-09-01,1995-12-19
+CRC916053A,Take Surface Water,A,,425.0,425.0,1,12,0.0,0.0,Terminated - Expired,1992-02-13,1995-04-30
+CRC920400A,Take Surface Water,A,,425.0,425.0,1,12,0.0,0.0,Terminated - Expired,1992-05-22,1996-12-01
+WTK691171A,Take Surface Water,In Waitaki,,425.0,425.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-31,1991-08-22
+WTK801181A,Take Surface Water,In Waitaki,,425.0,425.0,1,12,0.0,0.0,Terminated - Expired,1981-01-12,1995-12-31
+NCY880137B,Take Surface Water,A,,425.0,425.0,1,12,0.0,0.0,Terminated - Replaced,1988-09-02,1993-08-27
+WTK690591A.1,Take Surface Water,In Waitaki,,425.0,425.0,1,12,0.0,0.0,Terminated - Surrendered,1991-07-12,1900-01-01
+NCY840498A,Take Surface Water,A,,425.0,425.0,1,12,0.0,0.0,Terminated - Expired,1984-10-01,1991-04-30
+SCY830020A,Take Surface Water,A,,425.0,425.0,1,12,0.0,0.0,Terminated - Expired,1983-02-10,1992-03-01
+WTK690591A,Take Surface Water,In Waitaki,,425.0,425.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-21,1991-07-12
+NCY790312,Take Surface Water,A,,420.0,420.0,1,12,0.0,0.0,Terminated - Surrendered,1979-09-01,1995-12-19
+CRC011900,Take Surface Water,A,,400.0,400.0,1,12,0.0,0.0,Terminated - Expired,2001-05-07,2001-05-31
+NCY890726B,Take Surface Water,A,,400.0,400.0,1,12,0.0,0.0,Terminated - Expired,1989-10-06,2000-02-29
+CRC900045,Take Surface Water,A,,394.0,394.0,1,12,0.0,0.0,Terminated - Replaced,1991-08-28,1994-04-05
+CRC900045.1,Take Surface Water,A,,394.0,394.0,1,12,0.0,0.0,Terminated - Expired,1994-04-05,1995-04-30
+NCY780595,Take Surface Water,A,,380.0,380.0,1,12,0.0,0.0,Terminated - Surrendered,1978-11-01,1995-12-19
+WTK690591B.1,Take Surface Water,In Waitaki,,370.0,370.0,1,12,0.0,0.0,Terminated - Surrendered,1991-07-12,1900-01-01
+WTK690591B,Take Surface Water,In Waitaki,,370.0,370.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-21,1991-07-12
+CRC990306.1,Take Surface Water,B,,362.0,362.0,1,12,0.0,0.0,Terminated - Replaced,2000-02-21,2001-04-11
+CRC905431E,Take Surface Water,A,,360.0,360.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1992-12-01
+CRC905431C,Take Surface Water,A,,360.0,360.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1992-12-01
+WTK843531A,Take Surface Water,A,,350.0,350.0,1,12,0.0,0.0,Terminated - Expired,1984-10-16,1994-12-31
+WTK843531B,Take Surface Water,A,,350.0,350.0,1,12,0.0,0.0,Terminated - Expired,1984-10-16,1994-12-31
+WTK873673,Take Surface Water,A,,350.0,350.0,1,12,0.0,0.0,Terminated - Expired,1998-01-01,1998-06-30
+SCY830258A,Take Surface Water,A,,350.0,350.0,1,12,0.0,0.0,Terminated - Expired,1983-12-15,2001-06-01
+WTK873672,Take Surface Water,A,,350.0,350.0,1,12,0.0,0.0,Terminated - Expired,1900-01-01,1998-06-30
+CRC921556B,Take Surface Water,A,,341.0,341.0,1,12,0.0,0.0,Terminated - Expired,1993-05-06,1995-06-01
+CRC951937,Take Surface Water,A,,341.0,341.0,1,12,0.0,0.0,Terminated - Replaced,1995-05-26,1995-10-04
+CRC905245,Take Surface Water,A,,341.0,341.0,1,12,0.0,0.0,Terminated - Expired,1990-11-02,1992-12-01
+NCY890189.1,Take Surface Water,A,,340.0,340.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,2000-02-29
+WTK690581A,Take Surface Water,In Waitaki,,340.0,340.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-21,1991-07-12
+WTK846501,Take Surface Water,A,,340.0,340.0,1,12,0.0,0.0,Terminated - Expired,1984-10-12,2000-12-31
+WTK844411A,Take Surface Water,A,,340.0,340.0,1,12,0.0,0.0,Terminated - Replaced,1984-10-12,1991-10-10
+NCY780203.1,Take Surface Water,A,,340.0,340.0,1,12,0.0,0.0,Terminated - Surrendered,1996-02-16,2000-11-15
+NCY780203,Take Surface Water,A,,340.0,340.0,1,12,0.0,0.0,Terminated - Replaced,1970-03-26,1996-02-16
+NCY890189,Take Surface Water,A,,340.0,340.0,1,12,0.0,0.0,Terminated - Replaced,1989-10-06,1991-08-29
+NCY780380A,Take Surface Water,A,,300.0,300.0,1,12,0.0,0.0,Terminated - Expired,1978-04-01,2004-03-31
+NCY750391,Take Surface Water,A,,300.0,300.0,1,12,0.0,0.0,Terminated - Surrendered,1975-07-01,1997-07-09
+CRC991295,Take Surface Water,A,,290.0,290.0,1,12,0.0,0.0,Terminated - Replaced,2000-10-12,2001-06-11
+CRC895055B,Take Surface Water,A,,290.0,290.0,1,12,0.0,0.0,Terminated - Expired,1991-02-01,2000-10-12
+SCY710055,Take Surface Water,A,,283.0,283.0,1,12,0.0,0.0,Terminated - Expired,1971-05-12,2002-12-11
+NCY810398A,Take Surface Water,A,,280.0,280.0,1,12,0.0,0.0,Terminated - Surrendered,1981-12-01,1998-10-22
+CRC920728A,Take Surface Water,A,,276.0,276.0,1,12,0.0,0.0,Terminated - Expired,1992-07-16,1996-04-30
+CRC890403A,Take Surface Water,A,,276.0,276.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+CRC951130,Take Surface Water,A,,258.0,258.0,1,12,0.0,0.0,Terminated - Replaced,1995-06-02,2005-10-06
+CRC900690,Take Surface Water,A,,258.0,258.0,1,12,0.0,0.0,Terminated - Expired,1991-09-12,1995-04-30
+CRC900667A,Take Surface Water,A,,250.0,250.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1996-04-30
+CRC970069,Take Surface Water,A,,250.0,250.0,1,12,0.0,0.0,Terminated - Replaced,1998-06-04,2000-01-31
+CRC961452,Take Surface Water,A,,250.0,250.0,1,12,0.0,0.0,Terminated - Replaced,1996-08-16,1998-11-20
+CRC970069.1,Take Surface Water,A,,250.0,250.0,1,12,0.0,0.0,Terminated - Expired,2000-01-31,2000-06-04
+WTK886041B,Take Surface Water,In Waitaki,,250.0,250.0,1,12,0.0,0.0,Terminated - Expired,1989-09-21,1993-06-30
+CRC990306,Take Surface Water,A,,250.0,250.0,1,12,0.0,0.0,Terminated - Replaced,1998-10-02,2000-02-21
+WTK886041A,Take Surface Water,In Waitaki,,250.0,250.0,1,12,0.0,0.0,Terminated - Expired,1989-07-21,1993-06-30
+CRC921455B,Take Surface Water,A,,240.0,240.0,1,12,0.0,0.0,Terminated - Expired,1993-02-04,1995-06-01
+SCY830043B,Take Surface Water,A,,240.0,240.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+CRC905107,Take Surface Water,A,,240.0,240.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+CRC921572G,Take Surface Water,A,,240.0,240.0,1,12,0.0,0.0,Terminated - Expired,1993-06-17,1995-06-01
+SCY830043A,Take Surface Water,A,,240.0,240.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+CRC921572B,Take Surface Water,A,,240.0,240.0,1,12,0.0,0.0,Terminated - Expired,1993-06-17,1995-06-01
+CRC905420B,Take Surface Water,A,,240.0,240.0,1,12,0.0,0.0,Terminated - Expired,1991-06-12,1992-12-01
+WTK803701,Take Surface Water,In Waitaki,,232.0,232.0,1,12,0.0,0.0,Terminated - Expired,1981-04-24,1995-12-31
+CRC895053B.1,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Replaced,1994-04-22,1996-11-28
+CRC905150B,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+SCY850069B,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1991-05-01
+CRC905177E,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-07-01
+CRC905182D,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-07-01
+CRC895053B.2,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1996-11-28,1999-06-01
+WTK872481C,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1988-03-12,1998-06-30
+SCY850069C,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1991-05-01
+CRC905177B,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-07-01
+SCY850065C,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1991-05-01
+CRC905182E,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-07-01
+CRC905182B,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-07-01
+SCY850065B,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1991-05-01
+CRC905386,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1991-03-01,1995-09-01
+CRC895053B,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Replaced,1991-02-01,1994-04-22
+CRC905151B,Take Surface Water,A,,230.0,230.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+SCY710051,Take Surface Water,A,,226.0,226.0,1,12,0.0,0.0,Terminated - Expired,1971-05-12,2001-10-01
+WTK690392,Take Surface Water,In Waitaki,,225.0,225.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-11,1998-03-09
+CRC890841,Take Surface Water,A,,222.0,222.0,1,12,0.0,0.0,Terminated - Expired,1990-03-02,1992-04-30
+SCY870058A,Take Surface Water,A,,220.0,220.0,1,12,0.0,0.0,Terminated - Replaced,1987-12-09,1992-03-17
+CRC921450B,Take Surface Water,A,,220.0,220.0,1,12,0.0,0.0,Terminated - Expired,1993-04-08,1995-05-01
+CRC921450C,Take Surface Water,A,,220.0,220.0,1,12,0.0,0.0,Terminated - Expired,1993-04-08,1995-05-01
+SCY870058A.1,Take Surface Water,A,,220.0,220.0,1,12,0.0,0.0,Terminated - Expired,1992-03-17,1992-12-01
+CRC951605,Take Surface Water,A,,220.0,220.0,1,12,0.0,0.0,Terminated - Replaced,1995-05-12,1999-05-14
+WTK690151,Take Surface Water,In Waitaki,,212.0,212.0,1,12,0.0,0.0,Terminated - Surrendered,1969-01-31,1993-12-08
+CRC000578,Take Surface Water,A,,200.0,200.0,1,12,0.0,0.0,Terminated - Expired,1999-10-29,2001-10-28
+CRC951477,Take Surface Water,In Waitaki,,200.0,200.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-30,1998-10-06
+NCY750448,Take Surface Water,A,,200.0,200.0,1,12,0.0,0.0,Terminated - Surrendered,1975-10-01,1995-12-19
+NCY830101A,Take Surface Water,A,,200.0,200.0,1,12,0.0,0.0,Terminated - Expired,1983-03-01,1994-04-30
+NCY750491A,Take Surface Water,A,,180.0,180.0,1,12,0.0,0.0,Terminated - Surrendered,1975-11-01,2001-05-03
+WTK883772.1,Take Surface Water,In Waitaki,,175.0,175.0,1,12,0.0,0.0,Terminated - Replaced,1995-09-29,2000-01-07
+WTK883772,Take Surface Water,In Waitaki,,175.0,175.0,1,12,0.0,0.0,Terminated - Replaced,1988-05-09,1995-09-29
+WTK883771.1,Take Surface Water,In Waitaki,,175.0,175.0,1,12,0.0,0.0,Terminated - Replaced,1995-09-29,2000-01-07
+WTK883771,Take Surface Water,In Waitaki,,175.0,175.0,1,12,0.0,0.0,Terminated - Replaced,1988-05-09,1995-09-29
+CRC900676C,Take Surface Water,A,,170.0,170.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1997-04-30
+WTK690281,Take Surface Water,In Waitaki,,170.0,170.0,1,12,0.0,0.0,Terminated - Surrendered,1969-02-28,1995-12-19
+WTK845641A,Take Surface Water,In Waitaki,,170.0,170.0,1,12,0.0,0.0,Terminated - Expired,1984-08-10,1999-12-31
+WTK845641B,Take Surface Water,In Waitaki,,170.0,170.0,1,12,0.0,0.0,Terminated - Expired,1984-08-10,1999-12-31
+NCY790742,Take Surface Water,A,,170.0,170.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-21,2001-04-05
+NCY800539,Take Surface Water,A,,169.0,169.0,1,12,0.0,0.0,Terminated - Expired,1969-04-01,2001-10-01
+SCY810089,Take Surface Water,A,,158.0,158.0,1,12,0.0,0.0,Terminated - Expired,1969-02-12,2001-10-01
+NCY880397A,Take Surface Water,A,,152.0,152.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+CRC916213A,Take Surface Water,A,,152.0,152.0,1,12,0.0,0.0,Terminated - Surrendered,1992-03-06,1998-10-06
+CRC905372B,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1995-06-01
+SCY840046B,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,2000-02-18
+CRC905424H,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1991-06-12,1995-06-01
+SCY840046A,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,2000-02-18
+CRC905424E,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1991-06-12,1995-06-01
+CRC931002,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Replaced,1995-02-06,2003-12-10
+WTK880561A,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1988-09-14,1993-06-10
+CRC931002.1,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Replaced,2003-12-10,2003-12-10
+WTK802401,Take Surface Water,In Waitaki,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1981-07-13,1990-12-31
+CRC910213A,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1992-05-06,1996-04-30
+CRC905209.1,Take Surface Water,A,,150.0,150.0,1,12,0.0,0.0,Terminated - Expired,1991-12-18,1995-09-01
+NCY860489B,Take Surface Water,A,,145.0,145.0,1,12,0.0,0.0,Terminated - Expired,1987-08-07,1999-04-30
+NCY840702A,Take Surface Water,A,,142.0,142.0,1,12,0.0,0.0,Terminated - Expired,1985-06-01,1991-04-30
+SCY780010,Take Surface Water,A,,141.0,141.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-13,1991-07-03
+WTK702041A,Take Surface Water,A,,140.0,140.0,1,12,0.0,0.0,Terminated - Expired,1970-01-22,2001-10-01
+WTK690391,Take Surface Water,In Waitaki,,140.0,140.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-11,1998-03-09
+CRC916637B.1,Take Surface Water,A,,140.0,140.0,1,12,0.0,0.0,Terminated - Expired,1995-10-20,1996-12-01
+WTK865661A,Take Surface Water,In Waitaki,,140.0,140.0,1,12,0.0,0.0,Terminated - Surrendered,1986-10-13,1995-11-06
+CRC970476,Take Surface Water,A,,140.0,140.0,1,12,0.0,0.0,Terminated - Surrendered,1999-09-10,2001-11-15
+CRC916637B,Take Surface Water,A,,140.0,140.0,1,12,0.0,0.0,Terminated - Replaced,1991-10-23,1995-10-20
+MLB860052,Take Surface Water,A,,140.0,140.0,1,12,0.0,0.0,Terminated - Surrendered,1986-09-09,1995-11-06
+NCY800272B,Take Surface Water,A,,140.0,140.0,1,12,0.0,0.0,Terminated - Expired,1980-08-01,1994-04-30
+NCY880196,Take Surface Water,A,,135.0,135.0,1,12,0.0,0.0,Terminated - Surrendered,1988-09-02,1997-07-09
+NCY880241D,Take Surface Water,A,,131.0,131.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+NCY810403.1,Take Surface Water,A,,130.0,130.0,1,12,0.0,0.0,Terminated - Surrendered,1994-10-20,1998-01-21
+NCY810403,Take Surface Water,A,,130.0,130.0,1,12,0.0,0.0,Terminated - Replaced,1981-12-01,1994-10-20
+WTK845081A,Take Surface Water,In Waitaki,,120.0,120.0,1,12,0.0,0.0,Terminated - Expired,1984-09-21,1994-12-31
+WTK825991B,Take Surface Water,In Waitaki,,120.0,120.0,1,12,0.0,0.0,Terminated - Surrendered,1982-05-10,1992-03-11
+CRC980746,Take Surface Water,A,,120.0,120.0,1,12,0.0,0.0,Terminated - Expired,1999-06-03,2001-10-01
+SCY810287,Take Surface Water,A,,120.0,120.0,1,12,0.0,0.0,Terminated - Expired,1981-12-10,1997-12-01
+WTK801181C,Take Surface Water,In Waitaki,,120.0,120.0,1,12,0.0,0.0,Terminated - Expired,1981-01-12,1995-12-31
+CRC950409,Take Surface Water,In Waitaki,,120.0,120.0,1,12,0.0,0.0,Terminated - Replaced,1994-10-31,2002-09-19
+NCY850267A,Take Surface Water,A,,120.0,120.0,1,12,0.0,0.0,Terminated - Expired,1985-08-01,1991-04-30
+WTK825991C,Take Surface Water,In Waitaki,,120.0,120.0,1,12,0.0,0.0,Terminated - Surrendered,1982-05-10,1992-03-11
+CRC900385,Take Surface Water,A,,120.0,120.0,1,12,0.0,0.0,Terminated - Replaced,1991-08-28,1994-08-29
+NCY750390,Take Surface Water,A,,120.0,120.0,1,12,0.0,0.0,Terminated - Surrendered,1975-07-01,1997-07-09
+WTK702281B,Take Surface Water,A,,116.0,116.0,1,12,0.0,0.0,Terminated - Replaced,1970-03-31,1991-10-10
+WTK702281A,Take Surface Water,A,,116.0,116.0,1,12,0.0,0.0,Terminated - Replaced,1970-03-31,1991-10-10
+SCY840049B,Take Surface Water,A,,115.0,115.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,2000-02-18
+SCY840049A,Take Surface Water,A,,115.0,115.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,2000-02-18
+NCY880061B.1,Take Surface Water,A,,114.0,114.0,1,12,0.0,0.0,Terminated - Expired,1991-04-28,1991-04-30
+NCY880061B,Take Surface Water,A,,114.0,114.0,1,12,0.0,0.0,Terminated - Replaced,1988-08-05,1991-04-28
+CRC905376B,Take Surface Water,A,,114.0,114.0,1,12,0.0,0.0,Terminated - Replaced,1990-12-07,1993-12-16
+SCY820133,Take Surface Water,A,,113.0,113.0,1,12,0.0,0.0,Terminated - Expired,1987-12-09,1992-06-01
+CRC990979,Take Surface Water,A,,113.0,113.0,1,12,0.0,0.0,Terminated - Replaced,2000-02-29,2004-02-09
+NCY800708,Take Surface Water,A,,113.0,113.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-14,1992-10-15
+CRC905169A,Take Surface Water,A,,113.0,113.0,1,12,0.0,0.0,Terminated - Expired,1992-01-30,1995-09-01
+CRC931003,Take Surface Water,A,,110.0,110.0,1,12,0.0,0.0,Terminated - Replaced,1995-02-06,2001-04-05
+WTK782961A,Take Surface Water,A,,110.0,110.0,1,12,0.0,0.0,Terminated - Expired,1986-02-12,1991-06-30
+WTK690431A,Take Surface Water,A,,110.0,110.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-06,1994-09-30
+CRC992263,Take Surface Water,A,,110.0,110.0,1,12,0.0,0.0,Terminated - Cancelled,1999-04-28,2000-05-04
+WTK690431B,Take Surface Water,A,,110.0,110.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-06,1994-09-30
+WTK702251.1,Take Surface Water,In Waitaki,,110.0,110.0,1,12,0.0,0.0,Terminated - Replaced,2001-03-12,2002-10-15
+WTK702251,Take Surface Water,In Waitaki,,110.0,110.0,1,12,0.0,0.0,Terminated - Replaced,1970-03-18,2001-03-12
+WTK691491B,Take Surface Water,In Waitaki,,110.0,110.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-31,2001-07-27
+WTK691001,Take Surface Water,In Waitaki,,110.0,110.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-23,2001-12-12
+WTK880561B,Take Surface Water,A,,110.0,110.0,1,12,0.0,0.0,Terminated - Expired,1988-09-14,1993-06-30
+WTK690821,Take Surface Water,In Waitaki,,110.0,110.0,1,12,0.0,0.0,Terminated - Expired,1969-03-26,2001-10-01
+WTK691951,Take Surface Water,In Waitaki,,110.0,110.0,1,12,0.0,0.0,Terminated - Replaced,1969-11-12,1998-03-09
+WTK691491A,Take Surface Water,In Waitaki,,110.0,110.0,1,12,0.0,0.0,Terminated - Expired,1969-03-31,2001-10-01
+SCY870058B.1,Take Surface Water,A,,106.0,106.0,1,12,0.0,0.0,Terminated - Expired,1992-03-17,1992-12-01
+SCY870058B,Take Surface Water,A,,106.0,106.0,1,12,0.0,0.0,Terminated - Replaced,1987-12-09,1992-03-17
+WTK855711A,Take Surface Water,In Waitaki,,100.0,100.0,1,12,0.0,0.0,Terminated - Replaced,1985-11-14,1993-12-17
+NCY880344A,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC916172A.1,Take Surface Water,In Waitaki,,100.0,100.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-02,1998-10-06
+CRC952168,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Replaced,1995-07-10,1997-10-03
+WTK691151A,Take Surface Water,In Waitaki,,100.0,100.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-29,1991-06-17
+CRC916124D,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Replaced,1993-07-26,2002-05-03
+WTK855711A.1,Take Surface Water,In Waitaki,,100.0,100.0,1,12,0.0,0.0,Terminated - Expired,1993-12-17,1996-06-30
+CRC916124D.1,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Expired,2002-05-03,2005-06-01
+CRC952168.1,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Replaced,1997-10-03,2002-07-31
+NCY880295,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+CRC916816,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Surrendered,1992-07-16,1996-04-15
+CRC916686A,Take Surface Water,A,,100.0,100.0,1,12,0.0,0.0,Terminated - Replaced,1991-10-23,1996-07-29
+CRC916172A,Take Surface Water,In Waitaki,,100.0,100.0,1,12,0.0,0.0,Terminated - Replaced,1991-12-23,1992-03-02
+CRC920332A,Take Surface Water,In Waitaki,,100.0,100.0,1,12,0.0,0.0,Terminated - Expired,1992-05-07,2001-05-01
+CRC900502,Take Surface Water,A,,91.0,91.0,1,12,0.0,0.0,Terminated - Expired,1991-08-28,1993-04-30
+CRC930443,Take Surface Water,A,,91.0,91.0,1,12,0.0,0.0,Terminated - Replaced,1993-05-21,1994-05-31
+CRC916510D,Take Surface Water,A,,90.0,90.0,1,12,0.0,0.0,Terminated - Replaced,1993-05-20,1994-06-14
+CRC915017B,Take Surface Water,In Waitaki,,90.0,90.0,1,12,0.0,0.0,Terminated - Replaced,1991-03-01,1998-01-29
+CRC915016,Take Surface Water,In Waitaki,,90.0,90.0,1,12,0.0,0.0,Terminated - Replaced,1991-03-01,1998-01-29
+NCY880728,Take Surface Water,A,,90.0,90.0,1,12,0.0,0.0,Terminated - Expired,1989-02-03,1992-04-30
+CRC895026A,Take Surface Water,A,,90.0,90.0,1,12,0.0,0.0,Terminated - Expired,1990-02-02,1992-12-01
+NCY880251,Take Surface Water,A,,90.0,90.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+CRC915017B.1,Take Surface Water,In Waitaki,,90.0,90.0,1,12,0.0,0.0,Terminated - Expired,1998-01-29,2000-03-01
+CRC000843.1,Take Surface Water,A,,88.0,88.0,1,12,0.0,0.0,Terminated - Lapsed,2000-07-06,2001-12-10
+CRC000843,Take Surface Water,A,,88.0,88.0,1,12,0.0,0.0,Terminated - Replaced,1999-12-10,2000-07-06
+CRC992057.1,Take Surface Water,A,,88.0,88.0,1,12,0.0,0.0,Terminated - Lapsed,2000-07-06,2001-05-11
+CRC992057,Take Surface Water,A,,88.0,88.0,1,12,0.0,0.0,Terminated - Replaced,1999-05-13,2000-07-06
+CRC905031D,Take Surface Water,A,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-03-01
+WTK690111A,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Replaced,1969-01-16,1997-05-23
+WTK690811A,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1969-03-26,2001-10-01
+WTK690331B,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-10,1997-05-23
+WTK690611A,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1969-03-24,2002-01-07
+WTK690811C,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1969-03-26,2001-10-01
+WTK690351A,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-11,1992-01-14
+WTK690351B,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-11,1992-01-14
+WTK690811B,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1969-03-26,2001-10-01
+CRC905073,Take Surface Water,A,,85.0,85.0,1,12,0.0,0.0,Terminated - Replaced,1990-07-12,1995-01-06
+WTK690351B.1,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1992-01-14,2001-10-01
+SCY820293,Take Surface Water,A,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1987-09-09,1992-12-01
+WTK690331B.1,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1997-05-23,2001-10-01
+WTK691471B,Take Surface Water,A,,85.0,85.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-31,1991-05-24
+WTK690331A.1,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1997-05-23,2001-10-01
+WTK690111A.1,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1997-05-23,2001-10-01
+WTK691471A,Take Surface Water,A,,85.0,85.0,1,12,0.0,0.0,Terminated - Surrendered,1960-03-31,1991-05-24
+WTK690111B,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Replaced,1969-01-16,1997-05-23
+CRC921583B,Take Surface Water,A,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1993-06-29,1995-06-01
+WTK690331A,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-10,1997-05-23
+WTK690111B.1,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1997-05-23,2001-10-01
+WTK690351A.1,Take Surface Water,In Waitaki,,85.0,85.0,1,12,0.0,0.0,Terminated - Expired,1992-01-14,2001-10-01
+SCY700544,Take Surface Water,A,,84.0,84.0,1,12,0.0,0.0,Terminated - Surrendered,1969-02-12,1991-06-14
+NCY840403,Take Surface Water,A,,83.0,83.0,1,12,0.0,0.0,Terminated - Expired,1984-09-01,1991-04-30
+CRC930143,Take Surface Water,In Waitaki,,80.0,80.0,1,12,0.0,0.0,Terminated - Replaced,1993-05-24,1994-05-31
+CRC970445,Take Surface Water,A,,80.0,80.0,1,12,0.0,0.0,Terminated - Surrendered,1999-07-14,2002-12-02
+NCY880703,Take Surface Water,A,,76.0,76.0,1,12,0.0,0.0,Terminated - Surrendered,1988-12-02,1997-02-05
+SCY690253,Take Surface Water,A,,76.0,76.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,2002-04-17
+SCY790056,Take Surface Water,A,,76.0,76.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+CRC961846.1,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Surrendered,1999-01-26,2002-11-27
+CRC905036B,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+CRC916328.1,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Expired,1995-08-08,1996-04-30
+CRC916328,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-06,1995-08-08
+NCY870277A.1,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+CRC961846,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Replaced,1996-04-29,1999-01-26
+NCY870277A,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+CRC905036A,Take Surface Water,A,,75.0,75.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+CRC917081,Take Surface Water,A,,74.0,74.0,1,12,0.0,0.0,Terminated - Expired,1992-01-24,1996-12-01
+SCY810299,Take Surface Water,A,,74.0,74.0,1,12,0.0,0.0,Terminated - Expired,1986-09-11,1991-12-01
+NCY890520A,Take Surface Water,A,,72.0,72.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+CRC916306A,Take Surface Water,A,,72.0,72.0,1,12,0.0,0.0,Terminated - Surrendered,1991-10-23,1995-12-19
+WTK825971A,Take Surface Water,In Waitaki,,70.0,70.0,1,12,0.0,0.0,Terminated - Replaced,1982-04-05,1998-01-29
+WTK691991,Take Surface Water,A,,70.0,70.0,1,12,0.0,0.0,Terminated - Surrendered,1969-11-21,1991-05-24
+NCY870136.1,Take Surface Water,A,,70.0,70.0,1,12,0.0,0.0,Terminated - Surrendered,1992-04-28,1999-04-12
+CRC992571.1,Take Surface Water,A,,70.0,70.0,1,12,0.0,0.0,Terminated - Surrendered,2001-08-24,2004-11-26
+WTK825971B,Take Surface Water,In Waitaki,,70.0,70.0,1,12,0.0,0.0,Terminated - Replaced,1982-04-05,1998-01-29
+WTK825971A.1,Take Surface Water,In Waitaki,,70.0,70.0,1,12,0.0,0.0,Terminated - Expired,1998-01-29,2002-07-31
+WTK825971B.1,Take Surface Water,In Waitaki,,70.0,70.0,1,12,0.0,0.0,Terminated - Expired,1998-01-29,2002-07-31
+CRC992571,Take Surface Water,A,,70.0,70.0,1,12,0.0,0.0,Terminated - Replaced,1999-07-23,2001-08-24
+NCY870136,Take Surface Water,A,,70.0,70.0,1,12,0.0,0.0,Terminated - Replaced,1987-08-07,1992-04-28
+NCY890360A,Take Surface Water,A,,70.0,70.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-01,1998-10-02
+NCY840404,Take Surface Water,A,,70.0,70.0,1,12,0.0,0.0,Terminated - Expired,1984-09-01,1991-04-30
+NCY800556,Take Surface Water,A,,68.0,68.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-24,1998-03-27
+CRC905277,Take Surface Water,A,,67.0,67.0,1,12,0.0,0.0,Terminated - Expired,1990-12-07,1995-09-01
+CRC940497B,Take Surface Water,In Waitaki,,65.0,65.0,1,12,0.0,0.0,Terminated - Replaced,1993-11-23,1995-06-08
+CRC952086,Take Surface Water,A,,65.0,65.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-31,1999-11-09
+SCY690179,Take Surface Water,A,,63.0,63.0,1,12,0.0,0.0,Terminated - Expired,1984-04-12,1991-09-01
+SCY800290B,Take Surface Water,A,,63.0,63.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+SCY850190,Take Surface Water,A,,63.0,63.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1992-03-01
+CRC916489B,Take Surface Water,A,,63.0,63.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1992-12-01
+NCY800689,Take Surface Water,A,,63.0,63.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-27,1995-09-25
+CRC921893,Take Surface Water,A,,62.0,62.0,1,12,0.0,0.0,Terminated - Expired,1993-01-21,1995-06-01
+SCY790102,Take Surface Water,A,,61.0,61.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+WTK820621A,Take Surface Water,In Waitaki,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1983-01-06,1988-12-31
+CRC895056B,Take Surface Water,In Waitaki,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1990-08-03,1993-06-30
+CRC905092,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+WTK880621,Take Surface Water,In Waitaki,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1989-04-14,1994-12-31
+CRC921456C,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Surrendered,1993-02-25,2000-05-01
+CRC900736,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Surrendered,1992-01-22,1900-01-01
+SCY820164,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1987-03-12,1991-12-01
+WTK691021.1,Take Surface Water,In Waitaki,,60.0,60.0,1,12,0.0,0.0,Terminated - Surrendered,1994-06-28,2000-07-10
+WTK890691B,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1989-05-23,1993-06-30
+CRC921506B,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1993-02-25,1995-06-01
+CRC920144,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Replaced,1992-05-07,1996-06-25
+WTK691021,Take Surface Water,In Waitaki,,60.0,60.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-28,1994-06-28
+NCY870127,Take Surface Water,A,,60.0,60.0,1,12,0.0,0.0,Terminated - Expired,1988-05-06,1992-04-30
+CRC951628.1,Take Surface Water,A,,59.0,59.0,1,12,0.0,0.0,Terminated - Replaced,1997-05-05,1999-04-27
+CRC951628,Take Surface Water,A,,59.0,59.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-31,1997-05-05
+CRC905196,Take Surface Water,A,,59.0,59.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-09-01
+WTK690142,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+SCY750001,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Replaced,1985-02-14,1991-09-05
+WTK690301B,Take Surface Water,In Waitaki,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-02-28,2001-10-01
+WTK690361B.1,Take Surface Water,In Waitaki,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1992-01-14,2001-10-01
+WTK690361B,Take Surface Water,In Waitaki,,57.0,57.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-11,1992-01-14
+WTK691013,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK691015A,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK691017B,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK691017A,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK690951,Take Surface Water,In Waitaki,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-27,2001-10-01
+SCY750001.1,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1991-09-05,1997-12-01
+WTK691011A,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK691011B,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK690301A,Take Surface Water,In Waitaki,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-02-28,2001-10-01
+WTK691014A,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK691012A,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK691012B,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK691015B,Take Surface Water,A,,57.0,57.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+WTK846341,Take Surface Water,In Waitaki,,56.0,56.0,1,12,0.0,0.0,Terminated - Replaced,1984-06-11,1999-02-15
+SCY830157,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+WTK691041A,Take Surface Water,In Waitaki,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+CRC922218B.1,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Surrendered,2002-04-05,2003-07-25
+SCY690473C,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1969-08-13,2001-10-01
+SCY820047,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1991-09-01
+SCY820103,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1969-08-13,2001-10-01
+WTK690631A,Take Surface Water,In Waitaki,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1969-03-18,2001-10-01
+SCY690473B,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1969-08-13,2001-10-01
+CRC922218B,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Replaced,1994-04-06,2002-04-05
+WTK702131A,Take Surface Water,In Waitaki,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1970-03-07,2001-10-01
+SCY830215A,Take Surface Water,A,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1988-02-10,1992-12-01
+WTK691041B,Take Surface Water,In Waitaki,,56.0,56.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+NCY870278B,Take Surface Water,A,,55.0,55.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+NCY870278B.1,Take Surface Water,A,,55.0,55.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+NCY890581,Take Surface Water,A,,53.0,53.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+NCY880427,Take Surface Water,A,,53.0,53.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+CRC905067,Take Surface Water,A,,53.0,53.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+CRC020881,Take Surface Water,Opihi-BA,,51.4,51.4,4,10,0.0,0.0,Terminated - Surrendered,2002-01-17,2005-09-19
+CRC916568.1,Take Surface Water,A,,51.0,51.0,1,12,0.0,0.0,Terminated - Expired,1996-07-16,1999-12-01
+CRC916568,Take Surface Water,A,,51.0,51.0,1,12,0.0,0.0,Terminated - Replaced,1991-10-23,1996-07-16
+CRC951486.1,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Surrendered,2001-08-01,2004-02-23
+CRC921880B,Take Surface Water,In Waitaki,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1992-12-22,2001-10-01
+NCY880425,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1989-02-03,1991-04-30
+CRC951486,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Replaced,1995-09-26,2001-08-01
+NCY880065.1,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Surrendered,1996-08-26,1997-01-21
+CRC905422,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1991-04-19,1992-12-01
+NCY880065,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1996-08-26
+NCY800928,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1969-03-31,2001-10-01
+CRC000927.1,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Replaced,2003-03-14,2010-04-28
+SCY830256,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,1994-06-01
+CRC921277,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1992-12-22,1995-06-01
+NCY820353,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1982-11-01,1992-04-30
+WTK864511,Take Surface Water,In Waitaki,,50.0,50.0,1,12,0.0,0.0,Terminated - Replaced,1986-05-20,1996-05-03
+CRC000927,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Replaced,1999-12-17,2003-03-14
+CRC895029A,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Replaced,1990-02-02,1997-03-24
+WTK864511.1,Take Surface Water,In Waitaki,,50.0,50.0,1,12,0.0,0.0,Terminated - Replaced,1996-05-03,2000-08-25
+CRC895029A.1,Take Surface Water,A,,50.0,50.0,1,12,0.0,0.0,Terminated - Expired,1997-03-24,2000-06-01
+NCY880199,Take Surface Water,A,,49.0,49.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1992-03-26
+SCY850025,Take Surface Water,A,,46.0,46.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+CRC905274,Take Surface Water,A,,46.0,46.0,1,12,0.0,0.0,Terminated - Expired,1990-11-02,1995-09-01
+CRC921506C,Take Surface Water,A,,45.5,45.5,1,12,0.0,0.0,Terminated - Expired,1993-02-25,1995-06-01
+CRC952164.1,Take Surface Water,A,,45.5,45.5,1,12,0.0,0.0,Terminated - Replaced,1997-10-03,2002-07-31
+CRC952164,Take Surface Water,A,,45.5,45.5,1,12,0.0,0.0,Terminated - Replaced,1995-11-09,1997-10-03
+CRC905142,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1990-07-06,1993-12-02
+NCY870281A,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+NCY790730,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-31,1996-01-17
+WTK846521,Take Surface Water,In Waitaki,,45.0,45.0,1,12,0.0,0.0,Terminated - Surrendered,1984-12-10,1999-06-17
+CRC890750,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1989-12-15,1992-04-30
+CRC920790.2,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,2001-10-10,2004-04-20
+NCY870281A.1,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+SCY860020,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1986-04-09,1991-06-01
+WTK846541,Take Surface Water,In Waitaki,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1984-12-10,1999-12-31
+NCY870273A,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+NCY880133B,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1999-04-30
+CRC890861,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Surrendered,1994-10-10,1999-09-30
+SCY850143C,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1987-12-09,1992-12-01
+CRC920816A.1,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,2000-10-02,2004-04-30
+NCY870280B,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+NCY790731,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-31,1996-01-17
+CRC920790.1,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1994-06-13,2001-10-10
+WTK861101C,Take Surface Water,In Waitaki,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1986-07-21,1996-06-30
+CRC920816A,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-10,2000-10-02
+CRC905123,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+CRC920814B,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1992-12-10,2004-04-30
+CRC905087,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1993-06-30
+NCY790449B,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Surrendered,1968-03-27,2001-04-05
+WTK871111B,Take Surface Water,In Waitaki,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1987-09-22,1998-06-30
+CRC905143,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1990-07-06,1993-12-02
+SCY850143B,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1987-12-09,1992-12-01
+WTK845081B,Take Surface Water,In Waitaki,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1984-09-21,1994-12-31
+CRC940475,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-24,2001-07-30
+CRC905081,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+WTK842501,Take Surface Water,In Waitaki,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1984-10-08,1994-04-26
+WTK842501.1,Take Surface Water,In Waitaki,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1994-04-26,1994-12-31
+NCY870280B.1,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+CRC991206,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1999-09-16,2004-09-03
+NCY870273A.1,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+CRC920790,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-24,1994-06-13
+CRC905159,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-06-01
+SCY790186,Take Surface Water,A,,45.0,45.0,1,12,0.0,0.0,Terminated - Expired,1987-07-08,1992-03-01
+WTK836221,Take Surface Water,In Waitaki,,44.0,44.0,1,12,0.0,0.0,Terminated - Replaced,1983-08-25,1995-09-14
+NCY790650,Take Surface Water,A,,43.0,43.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-03,1997-09-03
+NCY790650.1,Take Surface Water,A,,43.0,43.0,1,12,0.0,0.0,Terminated - Expired,1997-09-03,2001-10-01
+CRC915001B,Take Surface Water,A,,43.0,43.0,1,12,0.0,0.0,Terminated - Expired,1991-03-01,1992-12-01
+SCY790048,Take Surface Water,A,,43.0,43.0,1,12,0.0,0.0,Terminated - Expired,1986-08-14,1991-09-01
+WTK690361C.1,Take Surface Water,In Waitaki,,42.0,42.0,1,12,0.0,0.0,Terminated - Expired,1992-01-14,2001-10-01
+SCY870045,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Surrendered,1987-12-09,1991-05-24
+WTK690361C,Take Surface Water,In Waitaki,,42.0,42.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-11,1992-01-14
+CRC895061,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Expired,1990-02-02,1992-12-01
+NCY890276,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+CRC910020,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Replaced,1992-01-22,1994-10-20
+NCY770205A,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Expired,1977-09-01,1992-03-31
+NCY770205B,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Expired,1977-09-01,1992-03-31
+SCY790023,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Expired,1988-12-14,1998-09-01
+CRC916308,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1996-04-30
+NCY890042,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Surrendered,1989-04-07,1997-02-05
+SCY870044,Take Surface Water,A,,42.0,42.0,1,12,0.0,0.0,Terminated - Surrendered,1987-12-09,1991-05-24
+SCY860052A,Take Surface Water,A,,41.0,41.0,1,12,0.0,0.0,Terminated - Expired,1986-11-11,1996-12-01
+CRC917340B,Take Surface Water,A,,41.0,41.0,1,12,0.0,0.0,Terminated - Replaced,1992-06-25,1995-01-03
+SCY830204A,Take Surface Water,A,,41.0,41.0,1,12,0.0,0.0,Terminated - Expired,1987-02-11,1991-12-01
+CRC917340C.1,Take Surface Water,A,,41.0,41.0,1,12,0.0,0.0,Terminated - Expired,1995-01-03,1996-12-01
+CRC917340B.1,Take Surface Water,A,,41.0,41.0,1,12,0.0,0.0,Terminated - Expired,1995-01-03,1996-12-01
+CRC917340C,Take Surface Water,A,,41.0,41.0,1,12,0.0,0.0,Terminated - Replaced,1992-06-25,1995-01-03
+SCY830204B,Take Surface Water,A,,41.0,41.0,1,12,0.0,0.0,Terminated - Expired,1987-02-11,1991-12-01
+NCY870279B,Take Surface Water,A,,40.0,40.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+WTK860893A,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Surrendered,1986-07-21,1991-06-17
+WTK854781B.1,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Surrendered,1992-10-20,2001-04-11
+WTK846371,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Replaced,1984-09-21,1991-09-16
+WTK826151,Take Surface Water,A,,40.0,40.0,1,12,0.0,0.0,Terminated - Expired,1983-02-14,1992-12-31
+WTK860891A,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Surrendered,1986-07-21,1991-06-17
+CRC905111A,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Surrendered,1990-09-07,1999-10-05
+WTK836191,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Replaced,1983-04-11,1991-07-25
+NCY870279B.1,Take Surface Water,A,,40.0,40.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+WTK860893B,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Surrendered,1986-07-21,1991-06-17
+WTK854781B,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Replaced,1986-05-12,1992-10-20
+WTK846371.1,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Surrendered,1991-09-16,1999-04-12
+WTK836191.1,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Expired,1991-07-25,1992-12-31
+NCY890134,Take Surface Water,A,,40.0,40.0,1,12,0.0,0.0,Terminated - Expired,1989-08-04,1991-04-30
+WTK856651A,Take Surface Water,In Waitaki,,40.0,40.0,1,12,0.0,0.0,Terminated - Surrendered,1986-02-12,1994-10-20
+SCY798146,Take Surface Water,A,,39.0,39.0,1,12,0.0,0.0,Terminated - Expired,1988-08-10,1998-09-01
+CRC916554,Take Surface Water,A,,39.0,39.0,1,12,0.0,0.0,Terminated - Replaced,1991-10-23,1995-04-03
+SCY830195,Take Surface Water,A,,39.0,39.0,1,12,0.0,0.0,Terminated - Expired,1986-09-11,1991-09-01
+CRC895063.1,Take Surface Water,A,,39.0,39.0,1,12,0.0,0.0,Terminated - Expired,1992-06-09,1992-12-01
+CRC895063,Take Surface Water,A,,39.0,39.0,1,12,0.0,0.0,Terminated - Replaced,1990-02-02,1992-06-09
+MLB850120,Take Surface Water,A,,38.58,38.58,1,12,0.0,0.0,Terminated - Expired,1986-06-10,1996-06-10
+NCY800583,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+CRC895097C,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-03-01
+SCY840081,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+SCY800448,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1992-03-01
+CRC990023,Take Surface Water,A,,38.0,38.0,4,10,0.0,0.0,Terminated - Replaced,1997-05-26,1998-07-09
+WTK820621B,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1983-01-06,1988-12-31
+NCY880117,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+CRC895097B,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-03-01
+NCY880418,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+SCY840039,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-13,1995-01-04
+NCY880417,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+SCY810120,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1991-09-01
+CRC921579,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-10,1996-06-14
+CRC905417,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1991-04-19,1992-12-01
+SCY790224,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1991-12-01
+CRC905209,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Replaced,1990-09-07,1991-12-18
+CRC916640,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Replaced,1991-10-23,1992-10-09
+CRC921480,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1992-12-22,1995-06-01
+SCY780206,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+CRC895003B,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1989-11-21,1992-12-01
+CRC916633,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1992-12-01
+CRC915066,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Surrendered,1991-06-12,1995-05-10
+CRC950356,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Replaced,1995-05-04,1999-05-06
+NCY880127A,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1997-04-30
+CRC905214,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1995-09-01
+WTK782961B,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1986-02-12,1991-06-30
+CRC916095,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1992-02-04,1999-09-10
+NCY880324,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+SCY780236,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Surrendered,1988-05-11,1993-02-26
+SCY880017,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Expired,1988-10-12,1992-03-01
+CRC930509,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Replaced,1993-09-13,1998-11-10
+CRC950356.1,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Replaced,1999-05-06,1999-11-24
+CRC895002,Take Surface Water,A,,38.0,38.0,1,12,0.0,0.0,Terminated - Surrendered,1989-11-21,1991-05-24
+NCY880246,Take Surface Water,A,,37.0,37.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+SCY840018,Take Surface Water,A,,37.0,37.0,1,12,0.0,0.0,Terminated - Replaced,1984-07-12,1991-09-05
+SCY810131,Take Surface Water,A,,37.0,37.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+NCY880426,Take Surface Water,A,,37.0,37.0,1,12,0.0,0.0,Terminated - Expired,1989-02-03,1991-04-30
+SCY840018A,Take Surface Water,A,,37.0,37.0,1,12,0.0,0.0,Terminated - Replaced,1984-07-12,1991-09-05
+SCY840018A.1,Take Surface Water,A,,37.0,37.0,1,12,0.0,0.0,Terminated - Surrendered,1991-09-05,1996-01-23
+WTK691441,Take Surface Water,In Waitaki,,37.0,37.0,1,12,0.0,0.0,Terminated - Surrendered,1969-04-01,1992-01-17
+SCY840018.1,Take Surface Water,A,,37.0,37.0,1,12,0.0,0.0,Terminated - Surrendered,1991-09-05,1996-01-23
+CRC905114,Take Surface Water,A,,36.0,36.0,1,12,0.0,0.0,Terminated - Expired,1990-06-06,1995-06-01
+CRC951969,Take Surface Water,A,,36.0,36.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-30,1999-04-27
+CRC905230A,Take Surface Water,A,,36.0,36.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1995-09-01
+CRC915031,Take Surface Water,A,,36.0,36.0,1,12,0.0,0.0,Terminated - Expired,1991-04-19,1999-09-10
+NCY880241C,Take Surface Water,A,,36.0,36.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+CRC905230B,Take Surface Water,A,,36.0,36.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1995-09-01
+CRC905392,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1991-02-01,1995-09-01
+CRC916377,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1991-09-20,1995-09-01
+NCY800744,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1969-03-28,2001-10-01
+CRC916380,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1995-09-01
+WTK841521C,Take Surface Water,In Waitaki,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1984-09-21,1994-12-31
+CRC916378,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1991-09-20,1995-09-01
+CRC916383D,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1995-09-01
+NCY890649,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+CRC916379B,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1995-09-01
+SCY840069,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1989-06-14,1999-09-01
+CRC905102,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1992-12-01
+NCY880076,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Expired,1988-06-03,1991-04-30
+WTK841501,Take Surface Water,In Waitaki,,35.0,35.0,1,12,0.0,0.0,Terminated - Replaced,1984-10-12,1996-05-28
+SCY790115,Take Surface Water,A,,35.0,35.0,1,12,0.0,0.0,Terminated - Replaced,1988-11-09,1998-02-16
+NCY880093,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1988-06-03,1991-04-30
+NCY870278C,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+SCY770137B,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Replaced,1989-10-11,1997-05-12
+NCY870274B,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+SCY850194,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+SCY820008,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1988-12-14,1998-09-01
+SCY820326,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+CRC905264A,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1990-12-07,1992-12-01
+SCY770137A.1,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1997-05-12,2000-06-01
+CRC915008,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Replaced,1991-03-01,1995-11-22
+NCY870274B.1,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+SCY770137A,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Replaced,1989-10-11,1997-05-12
+CRC905060,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1990-07-12,1995-06-01
+NCY870278C.1,Take Surface Water,A,,34.0,34.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+CRC905409B,Take Surface Water,A,,33.0,33.0,1,12,0.0,0.0,Terminated - Expired,1991-02-01,1995-09-01
+CRC960987,Take Surface Water,A,,33.0,33.0,1,12,0.0,0.0,Terminated - Surrendered,1996-01-31,1998-10-22
+MLB790028,Take Surface Water,A,,32.8,32.8,1,12,0.0,0.0,Terminated - Expired,1979-07-10,1989-07-10
+NCY880352,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC920283,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-25,1994-02-23
+SCY830134,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1988-10-12,1998-12-01
+CRC905418,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Replaced,1991-10-23,1993-03-12
+SCY870035,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1987-08-12,1992-03-01
+SCY820037,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1987-03-12,1992-03-01
+CRC895027B,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1990-02-02,1992-12-01
+WTK836291A.1,Take Surface Water,In Waitaki,,32.0,32.0,1,12,0.0,0.0,Terminated - Surrendered,1991-12-18,1992-06-16
+WTK836291B.1,Take Surface Water,In Waitaki,,32.0,32.0,1,12,0.0,0.0,Terminated - Surrendered,1991-12-18,1992-06-16
+CRC905382,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1991-04-19,1992-12-01
+WTK836291B,Take Surface Water,In Waitaki,,32.0,32.0,1,12,0.0,0.0,Terminated - Replaced,1983-11-28,1991-12-18
+WTK836291A,Take Surface Water,In Waitaki,,32.0,32.0,1,12,0.0,0.0,Terminated - Replaced,1983-11-28,1991-12-18
+CRC916681B,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1999-12-01
+CRC916683,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Replaced,1991-10-23,1996-12-17
+CRC905125.1,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1992-02-13,1995-06-01
+CRC971343,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1997-09-05,2001-10-01
+CRC940832,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Replaced,1994-03-04,1994-05-17
+CRC895051,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1990-02-02,1992-12-01
+SCY868061,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+SCY868062,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+NCY890381,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1989-10-06,1992-04-30
+SCY800047,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1986-11-11,1991-09-01
+SCY800046,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1986-11-11,1991-09-01
+CRC905418.1,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1993-03-12,1996-12-01
+CRC916579,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Replaced,1991-11-07,1997-04-24
+CRC905103,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1992-12-01
+WTK864531B,Take Surface Water,In Waitaki,,32.0,32.0,1,12,0.0,0.0,Terminated - Cancelled,1987-12-23,1999-12-21
+NCY880531,Take Surface Water,A,,32.0,32.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+CRC920560B,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Expired,1993-02-25,1999-09-01
+NCY850184.1,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Expired,1994-10-20,2001-10-01
+NCY800597,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-26,1996-02-27
+SCY790193A,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Expired,1987-07-08,1992-03-01
+NCY850184,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Replaced,1969-12-01,1994-10-20
+SCY830215C,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Expired,1988-02-10,1992-12-01
+SCY780070,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Expired,1988-08-10,1993-11-23
+NCY850153,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Expired,1969-03-31,2001-10-01
+SCY820086,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Expired,1987-03-12,1992-06-01
+CRC981646,Take Surface Water,A,,31.0,31.0,1,12,0.0,0.0,Terminated - Replaced,1998-05-15,1998-06-30
+CRC920476,Take Surface Water,A,,30.5,30.5,1,12,0.0,0.0,Terminated - Replaced,1992-10-29,1994-08-15
+CRC920476.1,Take Surface Water,A,,30.5,30.5,1,12,0.0,0.0,Terminated - Expired,1994-08-15,2004-04-30
+WTK876011A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1988-03-12,1996-01-17
+NCY870280C.1,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+WTK846571B.1,Take Surface Water,In Waitaki,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1994-07-12,1995-12-31
+CRC890901,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1991-09-12,1993-04-30
+NCY890429,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+NCY890393A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-01,2000-09-29
+NCY890421,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+CRC921598A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1992-10-16,1993-04-30
+CRC921599A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1992-10-16,1993-04-30
+NCY880708,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1997-04-30
+CRC922107,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1993-03-11,1995-05-17
+WTK856611,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1985-07-12,1991-03-25
+NCY880706,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1997-04-30
+NCY890326A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-07-07,1999-04-30
+CRC890875,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1990-04-06,1999-04-30
+WTK854781A,Take Surface Water,In Waitaki,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1986-05-12,1992-10-20
+CRC917365,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1992-03-26,1996-04-30
+CRC895058,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1990-02-02,1992-12-01
+CRC890849,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+SCY820064,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1992-03-01
+CRC895054B,Take Surface Water,In Waitaki,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1991-02-01,1992-08-07
+CRC900486C,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1991-04-24,2000-07-06
+CRC905169B,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1992-01-30,1995-09-01
+SCY820349,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1982-12-09,1992-12-01
+CRC905218,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1990-10-05,1992-06-24
+SCY810001,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1989-09-13,1996-05-29
+CRC905222,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1990-12-11,1995-09-01
+CRC905222A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1990-11-02,1995-09-01
+CRC905429,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1991-03-01,1992-12-01
+SCY820114,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+SCY820092,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1987-05-13,1992-06-01
+CRC915080,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1991-06-12,1999-07-14
+WTK854781A.1,Take Surface Water,In Waitaki,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1992-10-20,2001-04-11
+CRC916306C,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1991-10-23,1995-12-19
+CRC905121,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1992-12-01
+CRC905170,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1992-01-30,1995-09-01
+CRC905223A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1990-11-02,1995-09-01
+SCY800100,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-07-12,2000-05-01
+SCY830049,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1987-12-09,1992-09-18
+NCY870109,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1987-12-04,1992-04-30
+CRC916635,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1992-12-01
+CRC890502,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1990-03-02,1991-08-21
+WTK861601C,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1986-05-20,1994-01-12
+CRC915035,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1991-04-19,1994-07-11
+NCY870280C,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+CRC970356,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1996-12-09,2001-06-05
+WTK893311,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-09-21,1993-06-30
+NCY830203,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1983-08-01,1991-04-30
+WTK876001,Take Surface Water,In Waitaki,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-03-12,1998-06-30
+WTK835071,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-03-17,1993-06-30
+NCY880230A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+CRC971658,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1998-01-07,2001-06-07
+CRC890502.1,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1991-08-21,1992-04-30
+CRC971657,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1998-01-07,1998-10-02
+WTK846571B,Take Surface Water,In Waitaki,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1985-02-12,1994-07-12
+CRC981333,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1998-04-03,2001-10-16
+CRC970356.1,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,2001-06-05,2001-08-30
+NCY880271,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC900486C.1,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,2000-07-06,2004-04-30
+CRC915035.1,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1994-07-11,1995-09-01
+SCY770029,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1989-05-10,2003-01-21
+NCY880127B,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1997-04-30
+NCY880090,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY880595,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+NCY880707,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1997-04-30
+SCY790015,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1988-12-14,2003-12-10
+NCY880326,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1988-08-05,1998-11-04
+NCY790460,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-21,1999-11-15
+NCY890410,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+CRC960092,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-30,2002-05-13
+NCY870071A,Take Surface Water,A,,30.0,30.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+CRC905405,Take Surface Water,A,,29.0,29.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1992-12-01
+CRC930064,Take Surface Water,A,,29.0,29.0,1,12,0.0,0.0,Terminated - Expired,1993-03-25,1995-06-01
+CRC930065A,Take Surface Water,A,,29.0,29.0,1,12,0.0,0.0,Terminated - Expired,1993-03-25,1995-06-01
+CRC905404,Take Surface Water,A,,29.0,29.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1995-09-01
+SCY880030,Take Surface Water,A,,29.0,29.0,1,12,0.0,0.0,Terminated - Surrendered,1989-08-09,1999-10-11
+WTK690371A,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-11,1991-12-13
+WTK702301,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1970-03-25,1991-06-11
+CRC900688,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1991-08-28,1995-04-30
+WTK690491B.1,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1992-11-27,2002-08-05
+WTK864701B.1,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1992-02-03,1995-11-01
+SCY820372B,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,1992-12-01
+SCY690473D,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1969-08-13,2001-10-01
+NCY720287,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1969-03-17,2001-10-01
+SCY800082,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1988-10-12,1995-12-19
+WTK690261,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1969-02-25,2001-10-01
+CRC905379,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1991-02-01,1995-09-01
+WTK691351,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1969-03-31,2001-10-01
+WTK854231A,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1986-05-12,1900-01-01
+CRC951776.1,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Replaced,2001-08-08,2002-04-30
+CRC916060,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Replaced,1992-02-04,1994-07-01
+SCY690473A,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1969-08-13,2001-10-01
+WTK690491B,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Replaced,1990-03-17,1992-11-27
+WTK864701B,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Replaced,1987-12-23,1992-02-03
+CRC905264B,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1990-12-07,1992-12-01
+WTK690491A.1,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1992-11-27,2002-08-05
+WTK702291A,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1970-03-25,1991-09-03
+WTK690291B,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1969-02-28,2001-10-01
+WTK690491A,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-17,1992-11-27
+CRC900676D,Take Surface Water,A,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1992-03-06,1996-03-06
+WTK690291A,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Expired,1969-02-28,2001-10-01
+WTK690381A,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-11,1991-12-13
+WTK690381B,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-11,1991-12-13
+WTK854231B,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1986-05-12,1900-01-01
+CRC951776,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Replaced,1995-11-02,2001-08-08
+WTK690371B,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-11,1991-12-13
+WTK691621B,Take Surface Water,In Waitaki,,28.0,28.0,1,12,0.0,0.0,Terminated - Replaced,1969-05-26,2001-02-15
+NCY870275A,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+CRC900351,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1993-04-30
+SCY830098,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Surrendered,1986-12-11,1991-05-24
+CRC916263,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1996-04-30
+SCY820193,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1989-02-08,1997-06-01
+CRC905135,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1992-12-01
+CRC900350,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1993-04-30
+WTK853091,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1986-02-12,1991-06-30
+CRC895048,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1990-02-02,1992-12-01
+WTK865591,Take Surface Water,In Waitaki,,27.0,27.0,1,12,0.0,0.0,Terminated - Surrendered,1986-02-12,1991-07-19
+NCY870275A.1,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+CRC930721,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Surrendered,1993-08-12,1999-09-15
+NCY870282C,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+NCY870282C.1,Take Surface Water,A,,27.0,27.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+CRC950355,Take Surface Water,A,,26.5,26.5,1,12,0.0,0.0,Terminated - Replaced,1994-11-18,2001-04-04
+CRC950355.1,Take Surface Water,Opihi-BA,,26.5,26.5,1,12,0.0,0.0,Terminated - Surrendered,2001-04-04,2002-09-04
+NCY890664,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+SCY870042,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+SCY830043C,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+NCY890204,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1989-08-04,1991-04-30
+CRC922097,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1993-01-16,1996-04-30
+SCY690429,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1969-08-13,2001-10-01
+NCY880202,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+NCY880397B,Take Surface Water,A,,26.0,26.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+CRC921525,Take Surface Water,A,,25.3,25.3,1,12,0.0,0.0,Terminated - Expired,1993-02-25,2001-12-13
+NCY870282B,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+SCY780179,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+SCY790238,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+NCY870258,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1988-05-06,1992-04-30
+SCY880023,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1989-04-12,1992-03-01
+CRC905200,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-09-01
+CRC915081B,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1991-06-12,1996-12-01
+CRC895001,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1989-11-21,1992-12-01
+CRC900686.1,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1994-07-13,1996-04-30
+NCY880500,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+CRC920817B.1,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1994-02-16,1999-12-23
+NCY880313A,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+NCY840670,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-10,2001-04-11
+CRC905174,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1990-09-07,1995-07-01
+NCY880033B,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,2001-04-30
+CRC900686,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-06,1994-07-13
+CRC916388,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-06,1995-04-03
+SCY880026,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1989-04-12,1991-07-22
+SCY820058B,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+CRC970462.1,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,2000-02-10,2000-11-15
+NCY830182,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1983-07-01,1991-09-26
+SCY870003,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1991-09-01
+SCY820353,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1989-05-10,1992-09-01
+NCY880033C,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1988-10-07,2000-05-01
+WTK841521A,Take Surface Water,In Waitaki,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1984-09-21,1994-12-31
+WTK864331,Take Surface Water,In Waitaki,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1986-07-21,1994-12-01
+NCY780224,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1900-01-01,2001-10-01
+CRC920179,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1992-03-04,1996-12-01
+SCY810121,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1991-09-01
+NCY780132A,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1969-03-11,2001-10-01
+CRC970532,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1999-07-14,2002-08-22
+NCY880730,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1989-02-03,1991-05-15
+CRC921141,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1992-07-16,1996-04-30
+NCY880521,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1988-11-04,1995-05-31
+SCY820058A,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+SCY840058,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-13,1991-05-24
+CRC917249,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1992-01-24,1992-07-20
+NCY890600,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1989-10-06,1992-04-30
+CRC920257,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1992-03-25,1996-12-01
+NCY870282B.1,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+SCY820336,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1986-06-12,1991-09-01
+SCY790093,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-13,1999-04-12
+CRC920817B,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-10,1994-02-16
+CRC921880D,Take Surface Water,In Waitaki,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1992-12-22,2001-10-01
+SCY880026.1,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1991-07-22,1992-03-01
+CRC921570,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1992-10-09,1995-11-01
+CRC970462,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1999-09-10,2000-02-10
+SCY800035,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+NCY800636,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-28,2001-04-23
+NCY880521.1,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1995-05-31,2000-05-04
+CRC916497,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1991-12-02,1996-12-01
+CRC921527,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1993-03-11,1996-06-17
+CRC920528,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1992-06-25,1996-12-01
+CRC952682,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-31,2001-03-30
+CRC916510B,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1993-05-20,1994-06-14
+CRC920817B.2,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1999-12-23,2003-09-15
+CRC916482,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1999-12-01
+SCY820057,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+NCY780299,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Expired,1969-03-18,2001-10-01
+CRC960088,Take Surface Water,A,,25.0,25.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-30,2002-04-08
+CRC960934,Take Surface Water,A,,24.0,24.0,1,12,0.0,0.0,Terminated - Replaced,1995-12-13,1997-04-09
+CRC916667,Take Surface Water,A,,24.0,24.0,1,12,0.0,0.0,Terminated - Expired,1991-12-02,1996-04-30
+CRC922088,Take Surface Water,A,,24.0,24.0,1,12,0.0,0.0,Terminated - Surrendered,1993-02-25,1996-04-30
+SCY840033,Take Surface Water,A,,24.0,24.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+WTK690681A,Take Surface Water,In Waitaki,,24.0,24.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-24,1993-04-21
+NCY800818,Take Surface Water,A,,24.0,24.0,1,12,0.0,0.0,Terminated - Expired,1969-12-22,2001-10-01
+NCY800782,Take Surface Water,A,,24.0,24.0,1,12,0.0,0.0,Terminated - Surrendered,1970-03-23,1992-02-03
+CRC905109B,Take Surface Water,A,,24.0,24.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1995-06-01
+WTK690681B,Take Surface Water,In Waitaki,,24.0,24.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-24,1993-04-21
+CRC981583,Take Surface Water,A,,23.5,23.5,1,12,0.0,0.0,Terminated - Surrendered,1998-03-27,2004-06-08
+NCY880343,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+NCY890398,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+NCY870276B.1,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+NCY880329,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+NCY890395,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+NCY880066.1,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1996-08-26,1997-04-30
+CRC972161.1,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Replaced,1997-03-25,2003-03-17
+NCY880361,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC890330,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1989-10-06,1992-04-30
+WTK690571A,Take Surface Water,In Waitaki,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1969-03-24,2001-12-13
+CRC917304,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1992-03-26,1999-04-30
+NCY870276B,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+NCY880385,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+NCY880096,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+CRC916156,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1996-04-30
+NCY880102,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-06-03,1991-04-30
+CRC915046,Take Surface Water,In Waitaki,,23.0,23.0,1,12,0.0,0.0,Terminated - Surrendered,1991-06-12,1999-12-22
+NCY880040,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+NCY880066,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1996-08-26
+SCY840060,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1989-06-14,1999-09-01
+CRC916733,Take Surface Water,A,,23.0,23.0,4,10,0.0,0.0,Terminated - Expired,1991-11-07,1999-04-30
+SCY840024,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Surrendered,1986-10-09,1991-06-18
+CRC910019,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1992-01-22,1994-04-30
+NCY880263,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC920477,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1993-02-02,1994-04-30
+NCY890008,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+CRC972161,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Replaced,1995-08-31,1997-03-25
+NCY880031,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-05-06,1992-04-30
+CRC905125,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Replaced,1990-07-06,1992-02-13
+CRC916384,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1999-12-01
+CRC916135,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1996-04-30
+NCY880397C,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+SCY800441,Take Surface Water,A,,23.0,23.0,1,12,0.0,0.0,Terminated - Expired,1987-05-13,1992-03-01
+SCY820312,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Expired,1987-03-12,1991-06-01
+NCY810385,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Expired,1981-12-01,1991-04-30
+NCY880320,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+NCY880061A,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Replaced,1988-08-05,1991-04-28
+SCY790070,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,1992-12-01
+NCY870281B.1,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+MLB830075,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Expired,1983-10-11,1993-10-11
+NCY880061A.1,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Expired,1992-04-28,1992-04-30
+NCY870281B,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+NCY800711,Take Surface Water,A,,22.0,22.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-28,2001-04-23
+NCY880237,Take Surface Water,A,,21.0,21.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+CRC916666,Take Surface Water,A,,21.0,21.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1999-04-30
+CRC001293,Take Surface Water,A,,21.0,21.0,1,12,0.0,0.0,Terminated - Surrendered,2000-03-03,2005-03-16
+NCY890447,Take Surface Water,A,,21.0,21.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+CRC890975,Take Surface Water,A,,21.0,21.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1993-04-30
+NCY800909,Take Surface Water,A,,21.0,21.0,1,12,0.0,0.0,Terminated - Expired,1969-03-21,2001-10-01
+NCY880180,Take Surface Water,A,,21.0,21.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+CRC990761,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1998-12-04,2004-09-15
+CRC980340,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1997-11-03,2000-03-10
+CRC961882,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1996-05-31,1997-08-04
+CRC981418,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1999-02-11,2002-08-22
+WTK864371A.1,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1993-12-17,1996-06-30
+NCY890549,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-01,1900-01-01
+CRC962385,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Replaced,1996-07-22,1996-10-17
+CRC972716,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1997-11-17,2004-01-30
+WTK888062,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1989-04-14,1999-01-01
+WTK864371A,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Replaced,1986-05-19,1993-12-17
+CRC916350,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1992-03-06,1998-12-09
+WTK836281,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Replaced,1983-11-28,1991-12-18
+CRC960260,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Lapsed,1995-11-02,1997-10-26
+CRC962385.1,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1996-10-17,2004-05-18
+WTK864371B.1,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1993-12-17,1996-06-30
+CRC971259,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1997-09-29,2002-03-19
+NCY880375,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC916820,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1992-09-24,1999-04-30
+WTK864371B,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Replaced,1986-05-19,1993-12-17
+WTK861751,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1986-06-30,1996-01-23
+NCY880453,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+NCY880431,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+NCY890325,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1989-07-07,1991-04-30
+CRC917031,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1991-12-20,1992-12-01
+WTK836281.1,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1991-12-18,1992-06-16
+CRC890675B.1,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1991-12-23,1999-04-30
+CRC890675B,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Replaced,1991-12-23,1991-12-23
+SCY770122,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Surrendered,1988-10-12,1997-04-29
+SCY820039,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1986-12-11,1992-03-01
+WTK691261B,Take Surface Water,In Waitaki,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1969-03-31,2001-10-01
+CRC980186,Take Surface Water,A,,20.0,20.0,1,12,0.0,0.0,Terminated - Expired,1997-09-18,1998-09-17
+CRC916216,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1999-04-30
+WTK864512,Take Surface Water,In Waitaki,,19.0,19.0,1,12,0.0,0.0,Terminated - Replaced,1986-05-20,1996-05-03
+CRC916693,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1991-10-23,1999-12-01
+WTK834741,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Replaced,1989-03-17,1993-08-13
+CRC916109,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1996-04-30
+WTK864512.1,Take Surface Water,In Waitaki,,19.0,19.0,1,12,0.0,0.0,Terminated - Replaced,1996-05-03,2000-08-25
+CRC900030,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1993-04-30
+NCY870279C.1,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1991-08-29,1992-04-30
+CRC950356.2,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1999-11-24,2005-04-27
+CRC921560,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1992-12-22,1995-06-01
+SCY820153,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1986-11-11,1991-09-01
+SCY808177,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,1999-12-01
+NCY890650,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1992-04-30
+NCY880264,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+NCY870279C,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1991-08-29
+SCY790269,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1986-06-12,1991-06-01
+NCY880847,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY880396,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+NCY890301,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1989-07-07,1991-04-30
+SCY830028,Take Surface Water,A,,19.0,19.0,1,12,0.0,0.0,Terminated - Expired,1988-02-10,1992-12-01
+CRC921445,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Expired,1993-04-02,2001-10-01
+NCY890540,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+CRC890925,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1997-04-30
+NCY880252B,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1997-04-30
+CRC910021,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Replaced,1992-01-22,1994-10-20
+WTK733241,Take Surface Water,In Waitaki,,18.0,18.0,1,12,0.0,0.0,Terminated - Expired,1973-12-31,1993-12-31
+NCY880879,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY880845,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Surrendered,1989-10-31,1900-01-01
+NCY800649,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Expired,1969-03-21,2001-10-01
+NCY790773,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Replaced,1970-03-19,1992-09-11
+NCY850177,Take Surface Water,A,,18.0,18.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-20,2001-04-05
+CRC000486.1,Take Surface Water,Opihi-BN,,17.0,17.0,1,12,0.0,0.0,Terminated - Lapsed,2001-03-30,2002-03-13
+CRC951741,Take Surface Water,A,,17.0,17.0,1,12,0.0,0.0,Terminated - Surrendered,1995-05-16,1999-11-23
+CRC921475C,Take Surface Water,A,,17.0,17.0,1,12,0.0,0.0,Terminated - Expired,1992-12-22,1995-06-01
+CRC000486,Take Surface Water,A,,17.0,17.0,1,12,0.0,0.0,Terminated - Replaced,2000-03-13,2001-03-30
+CRC905193A,Take Surface Water,A,,17.0,17.0,1,12,0.0,0.0,Terminated - Expired,1990-12-11,1992-12-01
+CRC905193C,Take Surface Water,A,,17.0,17.0,1,12,0.0,0.0,Terminated - Expired,1990-12-11,1992-12-01
+CRC916257,Take Surface Water,A,,16.0,16.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1995-08-01
+NCY880316,Take Surface Water,A,,16.0,16.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC915026,Take Surface Water,A,,16.0,16.0,1,12,0.0,0.0,Terminated - Surrendered,1991-04-19,1999-07-09
+NCY800658,Take Surface Water,A,,15.8,15.8,1,12,0.0,0.0,Terminated - Replaced,1969-03-27,1999-06-14
+MLB830103,Take Surface Water,A,,15.13,15.13,1,12,0.0,0.0,Terminated - Expired,1983-12-13,1993-12-13
+CRC992596A,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,2001-10-30,2004-06-01
+CRC992596B,Take Surface Water,B,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,2001-10-30,2004-01-30
+WTK774871A,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1988-04-26,2004-10-20
+NCY890386,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-10-06,1992-04-30
+NCY880370,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+WTK802400,Take Surface Water,In Waitaki,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1981-07-13,1990-12-31
+CRC900193,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1993-04-30
+CRC920458,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1992-04-10,1996-12-01
+NCY800927,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1969-03-31,2001-10-01
+WTK691051B,Take Surface Water,In Waitaki,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-28,1992-09-30
+CRC920582,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1992-06-25,1994-06-14
+SCY780200,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1988-12-14,1998-12-01
+CRC916817,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1993-09-23,2001-06-07
+NCY880299,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+CRC920650,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1992-12-24,2002-09-11
+CRC916331B,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-06,1993-05-24
+NCY890049,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1989-04-07,1996-11-01
+NCY880432,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+NCY890155,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY880230B,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+NCY890119,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1989-04-07,1996-11-13
+CRC900665,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1991-08-28,1995-04-30
+NCY890064,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-03-03,1997-04-30
+CRC922037,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-18,2002-10-21
+NCY850307,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1985-10-01,1991-04-30
+CRC921396,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1992-11-16,2000-06-01
+NCY880029,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1988-05-06,1991-04-30
+NCY890161,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY880118,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+NCY880732,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-02-03,1991-04-30
+NCY890482,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+CRC890959,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,2001-04-30
+NCY780095.1,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1998-11-06,2001-10-01
+CRC930556,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1993-08-02,1996-04-30
+NCY800561,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-31,1996-06-26
+CRC961396,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1996-03-01,2004-05-28
+CRC920161,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1992-05-22,1998-10-22
+CRC961554,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1996-11-18,1998-11-02
+NCY800561.1,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1996-06-26,2001-10-01
+NCY800663.1,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1992-05-06,2001-10-01
+CRC950462,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1994-12-19,1995-06-08
+WTK691051A,Take Surface Water,In Waitaki,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-28,1992-09-30
+CRC900684,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1991-08-28,1993-04-30
+CRC920582.1,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1994-06-14,1996-04-30
+CRC916331A,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-06,1993-05-24
+NCY890027,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-03-03,1997-04-30
+NCY780095,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-28,1998-11-06
+CRC895092,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1990-04-06,1993-03-01
+SCY820040,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1987-05-13,1992-03-01
+CRC930587,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1993-08-02,1999-04-30
+CRC940505B,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1993-12-03,2003-06-20
+CRC890275B,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-11-21,1999-04-30
+SCY800432,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-12-01
+CRC922037.1,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Expired,2002-10-21,2003-05-01
+CRC917327,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1992-03-26,1998-11-11
+NCY800663,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-31,1992-05-06
+SCY880052,Take Surface Water,A,,15.0,15.0,1,12,0.0,0.0,Terminated - Surrendered,1989-04-06,1993-11-11
+CRC951673,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1995-04-27,1996-05-31
+CRC980031,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1997-08-01,2001-04-24
+WTK864701A,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1987-12-23,1992-02-03
+NCY780081,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1970-03-01,2001-10-01
+SCY700204,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1970-08-12,1995-12-05
+NCY880330B,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC000747.1,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,2000-03-15,2001-11-15
+CRC950321,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1994-10-31,1995-01-19
+NCY780078,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1970-03-01,2001-10-01
+CRC950318,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1994-10-31,1995-01-19
+SCY800040,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1988-09-16,1995-11-23
+CRC905204,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Surrendered,1991-02-01,1996-01-23
+SCY800040.1,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1995-11-23,1997-04-01
+WTK690361A.1,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1992-01-14,2001-10-01
+NCY850165,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1974-02-01,1999-09-30
+SCY800040.2,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1997-04-01,1998-09-01
+CRC916080,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1992-02-04,1995-08-01
+WTK698411,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1969-02-06,1992-10-12
+WTK690881,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-27,1991-06-21
+WTK698411.1,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1992-10-12,2001-10-01
+CRC000747,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1999-11-17,2000-03-15
+WTK698101,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1969-01-16,2001-10-01
+WTK690401,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-11,1992-09-30
+NCY880330A,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+WTK853441,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1986-02-12,1991-06-30
+SCY850103,Take Surface Water,A,,14.0,14.0,1,12,0.0,0.0,Terminated - Expired,1985-07-11,1991-06-01
+WTK864701A.1,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Surrendered,1992-02-03,1995-11-01
+WTK690361A,Take Surface Water,In Waitaki,,14.0,14.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-11,1992-01-14
+CRC915009,Take Surface Water,A,,13.0,13.0,1,12,0.0,0.0,Terminated - Replaced,1991-03-01,1992-04-07
+WTK841981,Take Surface Water,In Waitaki,,13.0,13.0,1,12,0.0,0.0,Terminated - Replaced,1984-09-21,1994-06-28
+CRC915009.1,Take Surface Water,A,,13.0,13.0,1,12,0.0,0.0,Terminated - Expired,1992-04-07,1995-09-01
+CRC002119,Take Surface Water,A,,13.0,13.0,1,12,0.0,0.0,Terminated - Replaced,2000-09-05,2004-06-02
+CRC900627,Take Surface Water,A,,13.0,13.0,1,12,0.0,0.0,Terminated - Expired,1990-11-06,1993-04-30
+CRC920515,Take Surface Water,A,,13.0,13.0,1,12,0.0,0.0,Terminated - Surrendered,1992-06-05,2002-11-05
+NCY870082,Take Surface Water,A,,13.0,13.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+MLB830078,Take Surface Water,A,,12.5,12.5,1,12,0.0,0.0,Terminated - Expired,1900-01-01,1993-10-11
+NCY880262.1,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Surrendered,1995-11-03,1997-01-21
+CRC921488.1,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Expired,1997-07-10,2001-11-09
+CRC905251,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1995-09-01
+WTK864221,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Surrendered,1986-11-19,1991-05-22
+SCY810048B,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+SCY810048A,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+NCY880262,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1995-11-03
+CRC921488,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Replaced,1992-12-10,1997-07-10
+CRC900626,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Expired,1990-11-06,1993-04-30
+SCY850132,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Surrendered,1985-02-14,1999-06-04
+CRC916722,Take Surface Water,A,,12.0,12.0,1,12,0.0,0.0,Terminated - Expired,1991-12-02,1992-12-01
+MLB830012,Take Surface Water,A,,11.57,11.57,1,12,0.0,0.0,Terminated - Expired,1983-02-08,1993-02-08
+CRC971105,Take Surface Water,A,,11.4,11.4,1,12,0.0,0.0,Terminated - Surrendered,1997-09-29,2003-06-17
+CRC905096.1,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1991-12-12,1995-06-01
+CRC905096,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Replaced,1990-07-06,1991-12-12
+NCY840669,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1970-03-25,2001-10-01
+NCY880360,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+NCY880356,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+NCY880416,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+NCY880355,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC905009,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Surrendered,1990-04-06,1999-08-31
+CRC930172.1,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1995-05-31,1996-04-30
+CRC921174,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1992-08-14,2002-12-01
+NCY780655,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Replaced,1969-04-02,1997-10-07
+SCY820335,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1987-09-09,1992-12-01
+SCY790042,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1986-06-12,1991-09-01
+CRC900307,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1990-10-05,1993-04-30
+CRC890848,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1993-04-30
+NCY780655.1,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1997-10-07,2001-10-01
+CRC916713,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Replaced,1992-07-16,1993-04-27
+NCY880412,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+CRC930172,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Replaced,1993-02-26,1995-05-31
+NCY880839,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1989-02-03,1991-04-30
+NCY890060,Take Surface Water,A,,11.0,11.0,1,12,0.0,0.0,Terminated - Expired,1989-04-07,1997-09-29
+SCY810106,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+CRC916781,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1991-12-02,1998-07-17
+CRC905106,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1992-12-01
+NCY880245B,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+CRC991483,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Replaced,1999-03-30,2001-02-07
+SCY882062,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Replaced,1989-04-12,1997-05-27
+SCY820017,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1992-06-01
+SCY820019,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1987-04-08,1992-06-01
+CRC991483.2,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,2002-09-25,2004-03-24
+CRC991483.1,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Replaced,2001-02-07,2002-09-25
+WTK846430D,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1986-11-03,2000-12-31
+WTK815891,Take Surface Water,In Waitaki,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1981-12-14,1995-12-31
+WTK841201,Take Surface Water,In Waitaki,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1984-04-18,1999-12-31
+CRC930292,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1993-04-02,1996-03-06
+WTK840531,Take Surface Water,In Waitaki,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1984-04-18,1999-12-31
+NCY890152,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1989-06-02,1991-07-15
+CRC920332C,Take Surface Water,In Waitaki,,10.0,10.0,1,12,0.0,0.0,Terminated - Replaced,1992-05-07,1999-08-02
+SCY898037,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-13,1996-11-01
+WTK846430K,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1986-11-03,2000-12-31
+WTK846430B,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1986-11-03,2000-12-31
+NCY870095B,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+WTK846430F,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1986-11-03,2000-12-31
+NCY880491B,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+NCY800579,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1970-03-26,2001-05-03
+CRC961306,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1996-06-19,2003-02-17
+CRC895065,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1990-02-02,2001-09-01
+CRC916731,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1992-03-26,1999-04-30
+SCY790132,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1988-12-14,1992-06-23
+WTK846430H,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1986-11-03,2000-12-31
+SCY800434,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1989-09-13,1999-03-01
+CRC961732,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1996-04-01,2000-08-03
+WTK846430M,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1986-11-03,2000-12-31
+CRC905090,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1990-07-12,1992-12-01
+CRC921885,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Replaced,1992-11-16,1999-05-14
+NCY880491A,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+WTK846430J,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1986-11-03,2000-12-31
+CRC900663,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1991-08-28,1993-04-30
+CRC940446,Take Surface Water,A,,10.0,10.0,1,12,0.0,0.0,Terminated - Surrendered,1995-02-10,2003-11-21
+WTK835781,Take Surface Water,In Waitaki,,10.0,10.0,1,12,0.0,0.0,Terminated - Expired,1983-04-11,1993-12-31
+CRC930553,Take Surface Water,A,,9.5,9.5,1,12,0.0,0.0,Terminated - Expired,1993-06-11,2001-04-30
+NCY880229,Take Surface Water,A,,9.0,9.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+NCY800925,Take Surface Water,A,,9.0,9.0,1,12,0.0,0.0,Terminated - Expired,1969-03-31,2001-10-01
+CRC905412.1,Take Surface Water,A,,9.0,9.0,1,12,0.0,0.0,Terminated - Surrendered,1992-12-09,2000-02-24
+NCY810205,Take Surface Water,A,,9.0,9.0,1,12,0.0,0.0,Terminated - Expired,1981-08-01,1991-04-30
+NCY880247,Take Surface Water,A,,9.0,9.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+CRC900509,Take Surface Water,A,,9.0,9.0,1,12,0.0,0.0,Terminated - Surrendered,1991-08-28,2002-08-22
+CRC905412,Take Surface Water,A,,9.0,9.0,1,12,0.0,0.0,Terminated - Replaced,1991-02-01,1992-12-09
+CRC921573,Take Surface Water,A,,8.3,8.3,1,12,0.0,0.0,Terminated - Expired,1992-10-02,2002-06-01
+CRC922159.1,Take Surface Water,In Waitaki,,8.0,8.0,1,12,0.0,0.0,Terminated - Replaced,1998-06-19,1998-07-03
+SCY880058,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1989-06-14,1992-09-01
+SCY880032,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Surrendered,1988-12-14,1995-12-19
+CRC922159,Take Surface Water,In Waitaki,,8.0,8.0,1,12,0.0,0.0,Terminated - Replaced,1993-03-05,1998-06-19
+CRC971652,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Surrendered,1997-06-05,2003-04-16
+NCY770161A,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1977-08-01,1995-04-30
+CRC916708,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Replaced,1991-11-28,2003-07-10
+CRC922159.2,Take Surface Water,In Waitaki,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1998-07-03,2000-06-01
+WTK826121.1,Take Surface Water,In Waitaki,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1992-03-02,1992-12-31
+NCY880089,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1989-02-03,1992-04-30
+NCY880532,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Replaced,1988-11-04,1995-12-11
+WTK826121,Take Surface Water,In Waitaki,,8.0,8.0,1,12,0.0,0.0,Terminated - Replaced,1982-12-13,1992-03-02
+NCY880532.1,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1995-12-11,1997-04-30
+CRC900450,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1991-09-12,1993-04-30
+SCY888041,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1989-02-08,1992-09-01
+CRC900423,Take Surface Water,A,,8.0,8.0,1,12,0.0,0.0,Terminated - Expired,1991-09-12,1997-04-03
+CRC920487B,Take Surface Water,A,,7.6,7.6,1,12,0.0,0.0,Terminated - Surrendered,1992-08-21,1996-07-25
+CRC921424,Take Surface Water,A,,7.6,7.6,1,12,0.0,0.0,Terminated - Expired,1992-10-09,1996-04-30
+CRC916536,Take Surface Water,A,,7.5,7.5,1,12,0.0,0.0,Terminated - Replaced,1991-11-07,1995-12-11
+CRC916536.1,Take Surface Water,A,,7.5,7.5,1,12,0.0,0.0,Terminated - Expired,1995-12-11,2004-05-03
+NCY890040,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY850391,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1985-12-01,1991-04-30
+CRC900042,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1993-04-30
+NCY790572B,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Surrendered,1970-03-31,1992-01-15
+SCY830142A,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1983-06-09,1994-09-01
+CRC900811,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1992-08-27,1996-04-30
+NCY800709.1,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Surrendered,1992-06-15,2001-04-05
+NCY880880,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+CRC920354A,Take Surface Water,In Waitaki,,7.0,7.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-25,1999-08-05
+NCY800777A,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-27,1991-04-29
+NCY780424B,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1978-06-01,1994-04-30
+NCY800564,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-31,2001-04-11
+CRC890905,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1990-03-02,1992-04-30
+NCY880446,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1988-10-07,1991-04-30
+CRC920355A,Take Surface Water,In Waitaki,,7.0,7.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-25,1999-08-05
+NCY800709,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-21,1992-06-15
+NCY710078,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Expired,1969-01-21,2001-10-01
+SCY880019,Take Surface Water,A,,7.0,7.0,1,12,0.0,0.0,Terminated - Surrendered,1989-02-08,1992-07-15
+CRC922100,Take Surface Water,A,,6.1,6.1,1,12,0.0,0.0,Terminated - Expired,1993-01-16,1995-06-01
+CRC916421,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1991-11-07,1999-04-30
+CRC960507,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1996-04-19,2006-04-17
+CRC916778B,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Replaced,1991-12-23,2002-10-11
+CRC916685,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Replaced,1992-02-27,1993-05-24
+CRC905172,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1990-11-02,1992-12-01
+WTK846601A,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1985-02-11,1994-12-31
+NCY890229B,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+CRC900297.1,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,2000-01-20,2001-04-30
+NCY880411,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+NCY880039,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1988-09-02,1991-04-30
+CRC900486B,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Replaced,1991-04-24,2000-07-06
+CRC900297,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Replaced,1990-09-07,2000-01-20
+SCY810162,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1986-09-11,1991-09-01
+NCY870215,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1987-11-06,1992-04-30
+CRC905034.1,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1994-10-21,1995-03-01
+WTK864301,Take Surface Water,In Waitaki,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,1986-03-12,1996-06-30
+CRC905034,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Replaced,1990-06-11,1994-10-21
+CRC041488,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,2004-02-26,2004-04-30
+CRC900486B.1,Take Surface Water,A,,6.0,6.0,1,12,0.0,0.0,Terminated - Expired,2000-07-06,2004-04-30
+CRC971903,Take Surface Water,A,,5.5,5.5,1,12,0.0,0.0,Terminated - Replaced,1997-05-02,1998-06-26
+CRC922179B,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1993-01-16,2002-12-01
+CRC916498B.1,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1996-02-15,1999-04-30
+NCY880171,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+NCY888035,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Surrendered,1988-07-01,1991-05-31
+NCY870072B,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+WTK860641A,Take Surface Water,In Waitaki,,5.0,5.0,1,12,0.0,0.0,Terminated - Surrendered,1986-07-14,1991-05-24
+WTK690863,Take Surface Water,In Waitaki,,5.0,5.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-27,1991-04-15
+NCY880017A,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Surrendered,1988-03-31,1999-02-09
+CRC916194,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1999-04-30
+WTK690843,Take Surface Water,In Waitaki,,5.0,5.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-27,1991-04-15
+NCY880012,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1988-05-06,1999-04-30
+NCY880176B,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1991-04-30
+CRC915077,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1992-01-28,1992-09-01
+NCY820034,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1982-04-01,1998-04-30
+NCY880190,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+CRC990135,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Surrendered,1998-09-11,2002-11-07
+CRC980512,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Replaced,1998-05-22,2000-04-11
+CRC915052,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1991-06-12,1992-12-01
+NCY870095A,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+CRC916061B,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1991-12-23,1992-12-01
+CRC916498B,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Replaced,1991-12-19,1996-02-15
+MLB780040,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1978-05-09,1983-05-09
+SCY770062,Take Surface Water,A,,5.0,5.0,1,12,0.0,0.0,Terminated - Expired,1977-06-08,1993-03-01
+MLB820056,Take Surface Water,A,,4.6,4.6,1,12,0.0,0.0,Terminated - Expired,1982-10-12,1992-10-12
+CRC920983,Take Surface Water,A,,4.5,4.5,1,12,0.0,0.0,Terminated - Expired,1992-07-02,2002-09-01
+CRC930469,Take Surface Water,A,,4.5,4.5,1,12,0.0,0.0,Terminated - Surrendered,1993-05-21,1996-03-06
+CRC905377,Take Surface Water,A,,4.5,4.5,1,12,0.0,0.0,Terminated - Expired,1991-04-19,1992-12-01
+CRC916689,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Replaced,1991-11-07,1995-03-13
+SCY790153,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1979-09-12,1994-09-01
+CRC921520,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1993-03-12,2002-12-01
+CRC917019,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Surrendered,1992-03-26,1998-08-07
+NCY890203,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1989-08-04,1991-04-30
+CRC916514,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-06,1992-05-19
+SCY850020,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Surrendered,1989-06-14,1999-04-12
+SCY880039,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Surrendered,1989-02-08,1997-04-29
+CRC916689.1,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1995-03-13,1999-04-30
+SCY820347,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1982-12-09,1992-12-01
+NCY880187A,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+CRC916065,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Surrendered,1991-10-23,1995-11-27
+CRC930344B,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Replaced,1993-04-30,1996-04-18
+SCY850076,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1985-06-13,1997-09-01
+CRC916662,Take Surface Water,A,,4.0,4.0,1,12,0.0,0.0,Terminated - Expired,1992-05-07,2004-04-30
+NCY800565,Take Surface Water,A,,3.8,3.8,1,12,0.0,0.0,Terminated - Expired,1900-01-01,2001-10-01
+CRC921487,Take Surface Water,A,,3.8,3.8,1,12,0.0,0.0,Terminated - Surrendered,1992-11-16,2001-03-02
+CRC920820,Take Surface Water,A,,3.7,3.7,1,12,0.0,0.0,Terminated - Expired,1992-11-12,2004-04-30
+CRC920759,Take Surface Water,A,,3.5,3.5,1,12,0.0,0.0,Terminated - Expired,1992-08-14,2003-04-30
+CRC920302,Take Surface Water,A,,3.3,3.3,1,12,0.0,0.0,Terminated - Expired,1992-06-05,2003-04-30
+CRC900077B,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Surrendered,1992-03-06,1993-03-15
+NCY790759,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1969-03-21,2001-10-01
+CRC952646,Take Surface Water,In Waitaki,,3.0,3.0,1,12,0.0,0.0,Terminated - Replaced,1996-02-09,1999-08-05
+CRC940468,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Replaced,1992-07-16,1993-10-12
+CRC916120,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Replaced,1992-03-06,1996-04-19
+NCY870129,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1987-08-07,1992-04-30
+CRC916171B,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1991-12-23,1992-12-01
+NCY890033,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY890019,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+NCY870241,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1987-11-06,1992-04-30
+NCY870072A,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+CRC921510B,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1992-12-11,2002-12-01
+SCY830017,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1987-11-10,1992-12-01
+CRC922228,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Lapsed,1993-03-12,2003-12-12
+NCY870091,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1987-10-02,1992-04-30
+SCY880064,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1989-10-11,1992-06-01
+NCY890604,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Surrendered,1989-09-01,1995-11-27
+WTK846581B,Take Surface Water,In Waitaki,,3.0,3.0,1,12,0.0,0.0,Terminated - Surrendered,1986-05-20,1991-08-23
+NCY890194,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1989-08-04,1991-04-30
+NCY800562B,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1969-03-13,2001-10-01
+NCY800562A,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1969-03-13,2001-10-01
+NCY800814A,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1969-03-07,2001-10-01
+NCY880540,Take Surface Water,A,,3.0,3.0,1,12,0.0,0.0,Terminated - Expired,1988-12-02,1991-04-30
+CRC952646.1,Take Surface Water,In Waitaki,,3.0,3.0,1,12,0.0,0.0,Terminated - Surrendered,1999-08-05,2000-09-07
+NCY780211B,Take Surface Water,A,,2.2,2.2,1,12,0.0,0.0,Terminated - Expired,1969-05-09,2001-10-01
+CRC915076,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1991-06-12,1999-03-01
+CRC900009,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1989-05-01,1992-04-30
+WTK865511,Take Surface Water,In Waitaki,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1986-11-19,2001-06-30
+CRC900210B,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1991-12-03,2003-04-30
+CRC916590,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1992-03-06,1999-04-30
+SCY820061,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Surrendered,1988-04-13,1991-04-22
+CRC961147,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Surrendered,1996-01-11,2000-03-10
+CRC916511B,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Replaced,1993-05-20,1994-06-14
+SCY750028,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1985-02-14,1994-06-01
+NCY790745,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1969-03-27,2001-10-01
+NCY790871A,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1970-03-27,2001-10-01
+NCY800775,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Surrendered,1969-03-31,1991-07-13
+NCY870062B,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+NCY890082,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+SCY730103,Take Surface Water,A,,2.0,2.0,1,12,0.0,0.0,Terminated - Expired,1983-10-13,1994-09-01
+CRC920057,Take Surface Water,A,,1.8,1.8,1,12,0.0,0.0,Terminated - Surrendered,1992-05-22,1998-11-24
+CRC962348.1,Take Surface Water,A,,1.67,1.67,1,12,0.0,0.0,Terminated - Expired,1999-05-14,2005-02-12
+CRC962348,Take Surface Water,A,,1.67,1.67,1,12,0.0,0.0,Terminated - Replaced,1996-08-08,1999-05-14
+CRC930507,Take Surface Water,A,,1.61,1.61,1,12,0.0,0.0,Terminated - Expired,1993-05-28,1999-04-30
+CRC920699B,Take Surface Water,A,,1.6,1.6,1,12,0.0,0.0,Terminated - Expired,1992-07-16,2004-04-30
+CRC920723.2,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Expired,2000-12-04,2003-04-30
+CRC930548,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Replaced,1993-06-18,1996-02-02
+CRC022118.1,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Expired,2002-03-08,2003-04-30
+NCY890364,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Expired,1989-10-06,1992-04-30
+CRC922015,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Expired,1992-12-18,2003-04-30
+CRC022118,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Replaced,1992-12-18,2002-03-08
+CRC920654,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Surrendered,1992-05-22,1999-10-27
+CRC920723.1,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Replaced,2000-05-04,2000-12-04
+CRC920723,Take Surface Water,A,,1.5,1.5,1,12,0.0,0.0,Terminated - Replaced,1992-06-05,2000-05-04
+CRC916346B,Take Surface Water,A,,1.4,1.4,1,12,0.0,0.0,Terminated - Expired,1992-09-24,2004-04-30
+MLB870091,Take Surface Water,A,,1.3,1.3,1,12,0.0,0.0,Terminated - Expired,1988-02-10,1993-10-11
+CRC940983,Take Surface Water,A,,1.26,1.26,1,12,0.0,0.0,Terminated - Surrendered,1994-05-26,2002-08-22
+NCY870240,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1987-11-06,1992-04-30
+CRC895047.2,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1998-09-17,2001-10-30
+CRC895047.1,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Replaced,1992-11-06,1998-09-17
+NCY850498,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1986-04-01,1900-01-01
+SCY700206,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1970-08-12,2001-10-01
+NCY870116,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1987-08-07,1992-04-30
+NCY800647,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Replaced,1969-06-13,1995-11-22
+NCY870070,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+NCY870176,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1987-09-04,1992-04-30
+NCY880241A,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1991-04-30
+WTK870061,Take Surface Water,In Waitaki,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1987-11-11,1997-03-14
+NCY830097,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1983-03-01,1900-01-01
+NCY880298,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Replaced,1988-10-07,1996-12-09
+CRC895047,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Replaced,1990-02-02,1992-11-06
+NCY890498,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1991-04-30
+NCY890051,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1989-10-31,1991-04-30
+CRC900530,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1991-08-28,1993-04-30
+NCY890140,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1989-09-01,1992-04-30
+NCY800651,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Replaced,1969-03-29,2001-03-30
+CRC900072B,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1990-08-03,1993-04-30
+CRC900047,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1990-07-06,1993-04-30
+CRC900393,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1991-09-12,1995-04-30
+NCY810217B,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1981-08-01,1992-04-30
+SCY740123,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1984-04-12,1999-09-01
+WTK846551,Take Surface Water,In Waitaki,,1.0,1.0,1,12,0.0,0.0,Terminated - Replaced,1985-02-11,1996-06-25
+CRC916735A,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1991-11-07,1996-04-30
+NCY800647.1,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Replaced,1995-11-22,1999-03-18
+CRC920207,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1992-06-05,2002-11-07
+CRC920406,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1992-05-21,2004-04-30
+CRC930572,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1993-06-11,1996-03-22
+CRC920660,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1992-07-16,2002-10-09
+CRC900072A,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1990-08-03,1993-04-30
+CRC920681,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1992-07-02,2003-04-30
+WTK846331,Take Surface Water,In Waitaki,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1984-08-10,1996-07-08
+NCY800651.1,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,2001-03-30,2001-10-01
+CRC921167,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1992-08-21,1996-03-06
+CRC981694,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Lapsed,1999-09-23,2007-09-30
+CRC900589,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1992-02-04,1994-04-30
+NCY870093,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1987-07-03,1992-04-30
+NCY800578,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Surrendered,1970-03-31,2001-01-22
+NCY880185,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1988-08-05,1997-04-30
+NCY780114D,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1970-03-13,2001-10-01
+NCY870351,Take Surface Water,A,,1.0,1.0,1,12,0.0,0.0,Terminated - Expired,1988-02-05,1992-04-30
+CRC900006,Take Surface Water,A,,0.89,0.89,1,12,0.0,0.0,Terminated - Replaced,1990-04-06,1996-11-05
+CRC900006.1,Take Surface Water,A,,0.89,0.89,1,12,0.0,0.0,Terminated - Expired,1996-11-05,2001-04-30
+NCY890034,Take Surface Water,A,,0.8,0.8,1,12,0.0,0.0,Terminated - Expired,1989-06-02,1999-04-30
+NCY880170,Take Surface Water,A,,0.8,0.8,1,12,0.0,0.0,Terminated - Expired,1988-07-01,1999-04-30
+SCY800097,Take Surface Water,A,,0.75,0.75,1,12,0.0,0.0,Terminated - Expired,1989-06-14,1999-06-01
+CRC916260C,Take Surface Water,A,,0.71,0.71,1,12,0.0,0.0,Terminated - Expired,1992-03-12,1996-12-01
+CRC916260B,Take Surface Water,A,,0.71,0.71,1,12,0.0,0.0,Terminated - Expired,1992-03-12,1996-12-01
+CRC921830,Take Surface Water,A,,0.7,0.7,1,12,0.0,0.0,Terminated - Surrendered,1999-07-05,2002-03-18
+MLB850051,Take Surface Water,A,,0.68,0.68,1,12,0.0,0.0,Terminated - Expired,1985-10-08,1995-10-08
+CRC941248,Take Surface Water,A,,0.55,0.55,1,12,0.0,0.0,Terminated - Replaced,1994-06-29,1996-10-17
+WTK865101,Take Surface Water,In Waitaki,,0.5,0.5,1,12,0.0,0.0,Terminated - Surrendered,1986-06-12,2000-10-05
+MLB780041,Take Surface Water,A,,0.5,0.5,1,12,0.0,0.0,Terminated - Expired,1978-05-09,1983-05-09
+CRC900500,Take Surface Water,A,,0.5,0.5,1,12,0.0,0.0,Terminated - Expired,1991-10-06,2001-04-30
+CRC920682B,Take Surface Water,A,,0.4,0.4,1,12,0.0,0.0,Terminated - Surrendered,1992-07-02,2003-01-15
+SCY850133,Take Surface Water,A,,0.4,0.4,1,12,0.0,0.0,Terminated - Surrendered,1985-02-14,1999-06-04
+SCY890044,Take Surface Water,A,,0.4,0.4,1,12,0.0,0.0,Terminated - Expired,1989-10-11,2000-12-01
+CRC920680B,Take Surface Water,A,,0.4,0.4,1,12,0.0,0.0,Terminated - Replaced,1992-07-03,1993-02-05
+CRC920680B.1,Take Surface Water,A,,0.4,0.4,1,12,0.0,0.0,Terminated - Expired,1993-02-05,2003-04-30
+CRC900292,Take Surface Water,A,,0.3,0.3,1,12,0.0,0.0,Terminated - Surrendered,1991-09-12,1997-02-17
+CRC920001,Take Surface Water,A,,0.29,0.29,1,12,0.0,0.0,Terminated - Expired,1992-01-24,1996-04-30
+CRC920379,Take Surface Water,A,,0.2,0.2,1,12,0.0,0.0,Terminated - Surrendered,1992-05-22,2000-09-07
+NCY800865,Take Surface Water,A,,0.2,0.2,1,12,0.0,0.0,Terminated - Surrendered,1969-03-18,2000-11-28
+CRC920478C,Take Surface Water,A,,0.2,0.2,1,12,0.0,0.0,Terminated - Expired,1992-07-03,2003-03-30
+CRC910010,Take Surface Water,A,,0.2,0.2,1,12,0.0,0.0,Terminated - Surrendered,1992-01-22,2002-12-17
+CRC920470,Take Surface Water,A,,0.2,0.2,1,12,0.0,0.0,Terminated - Surrendered,1992-04-10,1996-10-04
+NCY850113,Take Surface Water,A,,0.1,0.1,1,12,0.0,0.0,Terminated - Expired,1969-03-03,2001-10-01
+CRC050527,Take Surface Water,A,,33.75,0.0,1,12,0.0,0.0,Terminated - Replaced,2005-01-24,2005-07-25
+CRC951969.1,Take Surface Water,A,,36.0,0.0,1,12,0.0,0.0,Terminated - Surrendered,1999-04-27,2010-11-25
+CRC951628.2,Take Surface Water,A,,59.0,0.0,1,12,0.0,0.0,Terminated - Surrendered,1999-04-27,2010-11-25
+CRC981239,Take Surface Water,A,,7.5,0.0,1,12,0.0,0.0,Terminated - Lapsed,1998-08-28,2000-08-28
+CRC972161.2,Take Surface Water,A,,23.0,0.0,1,12,0.0,0.0,Terminated - Replaced,2003-03-17,2010-04-28
+CRC063391,Take Surface Water,A,,180.48,0.0,1,12,0.0,0.0,Terminated - Replaced,2006-10-30,2010-07-02
+CRC063391.1,Take Surface Water,A,,180.48,0.0,1,12,0.0,0.0,Terminated - Lapsed,2010-07-02,2011-12-31
+CRC972161.3,Take Surface Water,A,,23.0,0.0,1,12,0.0,0.0,Terminated - Surrendered,2010-04-28,2011-02-07
