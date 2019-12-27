@@ -1,0 +1,2 @@
+pdsql>=1.2.18
+pyyaml
