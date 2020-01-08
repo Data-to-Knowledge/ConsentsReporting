@@ -1,0 +1,5 @@
+server: 172.23.92.195
+database: ConsentsReporting
+tables: ['reporting.CrcAlloSiteSumm']
+username: Null
+password: Null
