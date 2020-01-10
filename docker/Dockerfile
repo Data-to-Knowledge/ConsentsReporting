@@ -1,13 +1,9 @@
-FROM python:3.7-buster
+FROM python:3.7-slim
 
-WORKDIR /app
-COPY ./ .
+COPY requirements.txt util.py process_data.py ts_processing.py reporting_tables.py reporting_tables_ts.py main.py ./
 
-# RUN apt-get update && apt-get install -y curl gnupg
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
-RUN apt-get update && ACCEPT_EULA=Y apt-get install -y unixodbc-dev msodbcsql17
+RUN apt-get update && apt-get install -y unixodbc-dev gcc g++
 
-RUN python3 -m pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT ["python", "main.py"]
+CMD ["python", "main.py", "parameters.yml"]

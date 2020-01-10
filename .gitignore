@@ -14,3 +14,7 @@ scripts/__pycache__/
 # due to using tox and pytest
 .tox
 .cache
+
+# Docker parameters
+docker/param*.yml
+docker/sql-checks/param*.yml

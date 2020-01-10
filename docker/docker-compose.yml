@@ -1,0 +1,6 @@
+version: "3.7"
+services:
+  CR-process:
+    image: mullenkamp/ConsentsReporting
+    volumes:
+      - C:\ecan\git\ConsentsReporting\docker\parameters-dev.yml:/parameters.yml
