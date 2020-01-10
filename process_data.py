@@ -4,7 +4,7 @@ Created on Thu Jun  7 11:41:44 2018
 
 @author: MichaelEK
 """
-import os
+import argparse
 import types
 import pandas as pd
 import numpy as np
@@ -23,9 +23,16 @@ try:
     #####################################
     ### Read parameters file
 
-    base_dir = os.path.realpath(os.path.dirname(__file__))
+    # base_dir = os.path.realpath(os.path.dirname(__file__))
 
-    with open(os.path.join(base_dir, 'parameters.yml')) as param:
+#    with open(os.path.join(base_dir, 'parameters-dev.yml')) as param:
+#        param = yaml.safe_load(param)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('yaml_path')
+    args = parser.parse_args()
+
+    with open(args.yaml_path) as param:
         param = yaml.safe_load(param)
 
     ## Integrety checks
@@ -57,13 +64,14 @@ try:
     db = types.SimpleNamespace()
 
     for i, p in param['source data'].items():
-        setattr(db, i, mssql.rd_sql(p['server'], p['database'], p['table'], p['col_names'], rename_cols=p['rename_cols']))
+        setattr(db, i, mssql.rd_sql(p['server'], p['database'], p['table'], p['col_names'], rename_cols=p['rename_cols'], username=p['username'], password=p['password']))
         if (p['database'] == 'Accela') & (not (p['table'] in ['Ecan.vAct_Water_AssociatedPermits', 'Ecan.vQA_Relationship_Actuals'])):
             table1 = 'Accela.' + p['table'].split('Ecan.')[1]
             print(table1)
             t1 = getattr(db, i).copy().dropna(subset=p['pk'])
             t1.drop_duplicates(p['pk'], inplace=True)
-            new_ones, _ = mssql.update_from_difference(t1, param['output']['server'], param['output']['database'], table1, on=p['pk'], mod_date_col='ModifiedDate')
+            print('update in db')
+            new_ones, _ = mssql.update_from_difference(t1, param['output']['server'], param['output']['database'], table1, on=p['pk'], mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
 
     ######################################
@@ -74,13 +82,13 @@ try:
     hf1 = pd.DataFrame(param['misc']['HydroGroup'])
     hf1['ModifiedDate'] = run_time_start
 
-    hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroGroup')
+    hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroGroup', username=param['output']['username'], password=param['output']['password'])
 
     hf_diff1 = hf1[~hf1.HydroGroup.isin(hf0.HydroGroup)]
 
     if not hf_diff1.empty:
-        mssql.to_mssql(hf_diff1, param['output']['server'], param['output']['database'], 'HydroGroup')
-        hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroGroup')
+        mssql.to_mssql(hf_diff1, param['output']['server'], param['output']['database'], 'HydroGroup', username=param['output']['username'], password=param['output']['password'])
+        hf0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'HydroGroup', username=param['output']['username'], password=param['output']['password'])
 
     ## Activity
     act1 = param['misc']['Activities']['ActivityType']
@@ -88,20 +96,20 @@ try:
 
     act2['ModifiedDate'] = run_time_start
 
-    act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity')
+    act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity', username=param['output']['username'], password=param['output']['password'])
 
     act_diff1 = act2[~act2[['ActivityType', 'HydroGroupID']].isin(act0[['ActivityType', 'HydroGroupID']]).any(axis=1)]
 
     if not act_diff1.empty:
-        mssql.to_mssql(act_diff1, param['output']['server'], param['output']['database'], 'Activity')
-        act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity')
+        mssql.to_mssql(act_diff1, param['output']['server'], param['output']['database'], 'Activity', username=param['output']['username'], password=param['output']['password'])
+        act0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Activity', username=param['output']['username'], password=param['output']['password'])
 
     # Combine activity and hydro features
     act_types1 = pd.merge(act0[['ActivityID', 'ActivityType', 'HydroGroupID']], hf0[['HydroGroupID', 'HydroGroup']], on='HydroGroupID')
     act_types1['ActivityName'] = act_types1['ActivityType'] + ' ' + act_types1['HydroGroup']
 
     ## AlloBlock
-    ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
+    ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock', username=param['output']['username'], password=param['output']['password'])
 
     sw_blocks1 = pd.Series(db.wap_allo['sw_allo_block'].unique())
     gw_blocks1 = pd.Series(db.allocated_volume['allo_block'].unique())
@@ -125,13 +133,13 @@ try:
 
     ab1['ModifiedDate'] = run_time_start
 
-    ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
+    ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock', username=param['output']['username'], password=param['output']['password'])
 
     ab_diff1 = ab1[~ab1[['AllocationBlock', 'HydroGroupID']].isin(ab0[['AllocationBlock', 'HydroGroupID']]).any(axis=1)]
 
     if not ab_diff1.empty:
-        mssql.to_mssql(ab_diff1, param['output']['server'], param['output']['database'], 'AlloBlock')
-        ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock')
+        mssql.to_mssql(ab_diff1, param['output']['server'], param['output']['database'], 'AlloBlock', username=param['output']['username'], password=param['output']['password'])
+        ab0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'AlloBlock', username=param['output']['username'], password=param['output']['password'])
 
     # Combine alloblock and hydro features
     ab_types1 = pd.merge(ab0[['AlloBlockID', 'AllocationBlock', 'HydroGroupID']], hf0[['HydroGroupID', 'HydroGroup']], on='HydroGroupID').drop('HydroGroupID', axis=1)
@@ -140,13 +148,13 @@ try:
     att1 = pd.DataFrame(param['misc']['Attributes'])
     att1['ModifiedDate'] = run_time_start
 
-    att0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes')
+    att0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes', username=param['output']['username'], password=param['output']['password'])
 
     att_diff1 = att1[~att1.Attribute.isin(att0.Attribute)]
 
     if not att_diff1.empty:
-        mssql.to_mssql(att_diff1, param['output']['server'], param['output']['database'], 'Attributes')
-        att0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes')
+        mssql.to_mssql(att_diff1, param['output']['server'], param['output']['database'], 'Attributes', username=param['output']['username'], password=param['output']['password'])
+        att0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes', username=param['output']['username'], password=param['output']['password'])
 
     ##################################################
     ### Sites and streamdepletion
@@ -181,19 +189,19 @@ try:
     cs1 = usm_waps1[['ExtSiteID', 'SiteName']].copy()
 #    cs1['SiteType'] = 'WAP'
 
-    new_sites, _ = mssql.update_from_difference(cs1, param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
+    new_sites, _ = mssql.update_from_difference(cs1, param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentsSites', 'pass', '{} sites updated'.format(len(new_sites)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentsSites', 'pass', '{} sites updated'.format(len(new_sites)), username=param['output']['username'], password=param['output']['password'])
 
-    cs0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'])
+    cs0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'], username=param['output']['username'], password=param['output']['password'])
     cs_waps2 = pd.merge(cs0, usm_waps1.drop('SiteName', axis=1), on='ExtSiteID')
     cs_waps3 = pd.merge(cs_waps2, db.wap_sd, on='ExtSiteID').drop('ExtSiteID', axis=1).round()
 
-    new_waps, _ = mssql.update_from_difference(cs_waps3, param['output']['server'], param['output']['database'], 'SiteStreamDepletion', on='SiteID', mod_date_col='ModifiedDate')
+    new_waps, _ = mssql.update_from_difference(cs_waps3, param['output']['server'], param['output']['database'], 'SiteStreamDepletion', on='SiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'WAP', 'pass', '{} sites updated'.format(len(new_waps)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'WAP', 'pass', '{} sites updated'.format(len(new_waps)), username=param['output']['username'], password=param['output']['password'])
 
     ## Read db table
 #    wap0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'SiteStreamDepletion')
@@ -228,13 +236,13 @@ try:
     permits2.loc[permits2['ToDate'].isnull(), 'ToDate'] = '1900-01-01'
 
     ## Save results
-    new_permits, _ = mssql.update_from_difference(permits2, param['output']['server'], param['output']['database'], 'Permit', on='RecordNumber', mod_date_col='ModifiedDate')
+    new_permits, _ = mssql.update_from_difference(permits2, param['output']['server'], param['output']['database'], 'Permit', on='RecordNumber', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Permit', 'pass', '{} rows updated'.format(len(new_permits)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Permit', 'pass', '{} rows updated'.format(len(new_permits)), username=param['output']['username'], password=param['output']['password'])
 
     ## Read db table
-    permits0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Permit')
+    permits0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Permit', username=param['output']['username'], password=param['output']['password'])
 
     ##################################################
     ### Parent-Child
@@ -256,19 +264,19 @@ try:
     pc2 = pc1[pc1.ParentRecordNumber.isin(crc1) & pc1.ChildRecordNumber.isin(crc1)].copy()
 
     ## Save results
-    new_pc, _ = mssql.update_from_difference(pc2, param['output']['server'], param['output']['database'], 'ParentChild', on=['ParentRecordNumber', 'ChildRecordNumber'], mod_date_col='ModifiedDate')
+    new_pc, _ = mssql.update_from_difference(pc2, param['output']['server'], param['output']['database'], 'ParentChild', on=['ParentRecordNumber', 'ChildRecordNumber'], mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ParentChild', 'pass', '{} rows updated'.format(len(new_pc)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ParentChild', 'pass', '{} rows updated'.format(len(new_pc)), username=param['output']['username'], password=param['output']['password'])
 
     ## Read db table
-    pc0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ParentChild')
+    pc0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ParentChild', username=param['output']['username'], password=param['output']['password'])
 
     #################################################
     ### AllocatedRatesVolumes
     print('--Update Allocation tables')
 
-    attr1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes', ['AttributeID', 'Attribute'])
+    attr1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'Attributes', ['AttributeID', 'Attribute'], username=param['output']['username'], password=param['output']['password'])
 
     ## Rates
     # Clean data
@@ -455,29 +463,29 @@ try:
     crc_allo['SiteType'] = 'WAP'
 
     # Save results
-    new_crc_allo, rem_crc_allo = mssql.update_from_difference(crc_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'])
+    new_crc_allo, rem_crc_allo = mssql.update_from_difference(crc_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'], username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_crc_allo)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_crc_allo)), username=param['output']['username'], password=param['output']['password'])
 
     # Read db table
-    allo_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'])
+    allo_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
 
     # Remove old data if needed
     if not rem_crc_allo.empty:
         rem_crc_allo1 = pd.merge(allo_site0, rem_crc_allo, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
-        mssql.del_table_rows(param['output']['server'], param['output']['database'], 'AllocatedRateVolume', rem_crc_allo1)
-        mssql.del_table_rows(param['output']['server'], param['output']['database'], 'CrcAlloSite', rem_crc_allo1)
-        allo_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'])
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], 'AllocatedRateVolume', rem_crc_allo1, username=param['output']['username'], password=param['output']['password'])
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], 'CrcAlloSite', rem_crc_allo1, username=param['output']['username'], password=param['output']['password'])
+        allo_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
 
     ## Update AllocatedRateVolume table
     avr7 = pd.merge(allo_site0, avr6, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
 
     # Save results
-    new_avr, _ = mssql.update_from_difference(avr7, param['output']['server'], param['output']['database'], 'AllocatedRateVolume', on='CrcAlloSiteID', mod_date_col='ModifiedDate')
+    new_avr, _ = mssql.update_from_difference(avr7, param['output']['server'], param['output']['database'], 'AllocatedRateVolume', on='CrcAlloSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedRateVolume', 'pass', '{} rows updated'.format(len(new_avr)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'AllocatedRateVolume', 'pass', '{} rows updated'.format(len(new_avr)), username=param['output']['username'], password=param['output']['password'])
 
     #################################################
     ### ConsentedRateVolume
@@ -539,13 +547,13 @@ try:
     crc_act['SiteType'] = 'WAP'
 
     # Save results
-    new_crc_act, rem_crc_act = mssql.update_from_difference(crc_act, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'ActivityID', 'SiteID', 'SiteType'])
+    new_crc_act, rem_crc_act = mssql.update_from_difference(crc_act, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'ActivityID', 'SiteID', 'SiteType'], username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crc_act)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crc_act)), username=param['output']['username'], password=param['output']['password'])
 
     # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
 
     # Remove old data if needed
     if not rem_crc_act.empty:
@@ -553,30 +561,30 @@ try:
         del_stmt = "delete from {table} where {col} in ({val})"
 
         del_stmt1 = del_stmt.format(table='ConsentedAttributes', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
-        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt1)
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt1, username=param['output']['username'], password=param['output']['password'])
 
         del_stmt2a = del_stmt.format(table='LinkedPermits', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
-        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2a)
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2a, username=param['output']['username'], password=param['output']['password'])
 
         del_stmt2b = del_stmt.format(table='LinkedPermits', col='OtherCrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
-        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2b)
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2b, username=param['output']['username'], password=param['output']['password'])
 
         del_stmt3 = del_stmt.format(table='ConsentedRateVolume', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
-        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt3)
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt3, username=param['output']['username'], password=param['output']['password'])
 
         del_stmt4 = del_stmt.format(table='CrcActSite', col='CrcActSiteID', val=', '.join(rem_crc_act1.CrcActSiteID.astype(str).tolist()))
-        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt4)
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt4, username=param['output']['username'], password=param['output']['password'])
 
-        act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+        act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
 
     ## Create ConsentedRateVolume table
     crv6 = pd.merge(crv5, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID', 'LowflowCondition'], axis=1)
 
     # Save results
-    new_crv, _ = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
+    new_crv, _ = mssql.update_from_difference(crv6, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv)), username=param['output']['username'], password=param['output']['password'])
 
     ###########################################
     ### Diverts
@@ -621,13 +629,13 @@ try:
     crc_act_div['SiteType'] = 'WAP'
 
     # Save results
-    new_crc_div, rem_crc_div = mssql.update_from_difference(crc_act_div, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'ActivityID', 'SiteID', 'SiteType'])
+    new_crc_div, rem_crc_div = mssql.update_from_difference(crc_act_div, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'ActivityID', 'SiteID', 'SiteType'], username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crc_div)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crc_div)), username=param['output']['username'], password=param['output']['password'])
 
     # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
 
     ## ConsentedRateVolume
     crc_div = pd.merge(div3, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID', 'LowflowCondition'], axis=1).dropna(subset=['ConsentedRate', 'ConsentedMultiDayVolume'], how='all')
@@ -635,10 +643,10 @@ try:
     crc_div['ToMonth'] = 12
 
     # Save results
-    new_crc_div, _ = mssql.update_from_difference(crc_div, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
+    new_crc_div, _ = mssql.update_from_difference(crc_div, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crc_div)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crc_div)), username=param['output']['username'], password=param['output']['password'])
 
 
     ###########################################
@@ -697,13 +705,13 @@ try:
     crc_act_wu['SiteType'] = 'WAP'
 
     # Save results
-    new_crv_wu, _ = mssql.update_from_difference(crc_act_wu, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate')
+    new_crv_wu, _ = mssql.update_from_difference(crc_act_wu, param['output']['server'], param['output']['database'], 'CrcActSite', on=['RecordNumber', 'ActivityID', 'SiteID'], mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crv_wu)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSite', 'pass', '{} rows updated'.format(len(new_crv_wu)), username=param['output']['username'], password=param['output']['password'])
 
     # Read db table
-    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'])
+    act_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcActSite', ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
 
     ## ConsentedRateVolume
     crv_wu = pd.merge(wu6, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID'])[['CrcActSiteID', 'ConsentedRate', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod']].dropna(subset=['ConsentedRate', 'ConsentedMultiDayVolume'], how='all')
@@ -711,10 +719,10 @@ try:
     crv_wu['ToMonth'] = 12
 
     # Save results
-    new_crv_wu, _ = mssql.update_from_difference(crv_wu, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate')
+    new_crv_wu, _ = mssql.update_from_difference(crv_wu, param['output']['server'], param['output']['database'], 'ConsentedRateVolume', on='CrcActSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_wu)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedRateVolume', 'pass', '{} rows updated'.format(len(new_crv_wu)), username=param['output']['username'], password=param['output']['password'])
 
     ## Attributes
     cols1 = ['RecordNumber', 'ActivityID', 'SiteID']
@@ -729,10 +737,10 @@ try:
     wua4 = pd.merge(wua3, act_site0, on=['RecordNumber', 'ActivityID', 'SiteID']).drop(['RecordNumber', 'ActivityID', 'SiteID'], axis=1)
 
     # Save results
-    new_wua, _ = mssql.update_from_difference(wua4, param['output']['server'], param['output']['database'], 'ConsentedAttributes', on=['CrcActSiteID', 'AttributeID'], mod_date_col='ModifiedDate')
+    new_wua, _ = mssql.update_from_difference(wua4, param['output']['server'], param['output']['database'], 'ConsentedAttributes', on=['CrcActSiteID', 'AttributeID'], mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedAttributes', 'pass', '{} rows updated'.format(len(new_wua)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'ConsentedAttributes', 'pass', '{} rows updated'.format(len(new_wua)), username=param['output']['username'], password=param['output']['password'])
 
     #################################################
     ### Linked Consents
@@ -774,27 +782,32 @@ try:
     lc5.rename(columns={'CrcActSiteID_x': 'CrcActSiteID', 'CrcActSiteID_y': 'OtherCrcActSiteID'}, inplace=True)
 
     ## Save results
-    new_lc, _ = mssql.update_from_difference(lc5, param['output']['server'], param['output']['database'], 'LinkedPermits', on=['CrcActSiteID', 'OtherCrcActSiteID'], mod_date_col='ModifiedDate')
+    new_lc, _ = mssql.update_from_difference(lc5, param['output']['server'], param['output']['database'], 'LinkedPermits', on=['CrcActSiteID', 'OtherCrcActSiteID'], mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LinkedPermits', 'pass', '{} rows updated'.format(len(new_lc)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LinkedPermits', 'pass', '{} rows updated'.format(len(new_lc)), username=param['output']['username'], password=param['output']['password'])
 
     ###############################################
     ### Lowflows tables
     print('--Lowflows')
 
-    ## ConsentsSites
-    lf_sites1 = lf.sites().reset_index()
+    ## Assign database parameters to the lowflows module
+    lf.read_data.lf_server = param['misc']['lowflows']['server']
+    lf.read_data.hydrotel_server = param['misc']['hydrotel']['server']
+    lf.read_data.usm_server = param['source data']['sites']['server']
 
-    new_sites, _ = mssql.update_from_difference(lf_sites1[['ExtSiteID', 'SiteName']], param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate')
-    sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'])
+    ## ConsentsSites
+    lf_sites1 = lf.sites(username=param['misc']['lowflows']['username'], password=param['misc']['lowflows']['password']).reset_index()
+
+    new_sites, _ = mssql.update_from_difference(lf_sites1[['ExtSiteID', 'SiteName']], param['output']['server'], param['output']['database'], 'ConsentsSites', on='ExtSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
+    sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'], username=param['output']['username'], password=param['output']['password'])
 
     ## LowFlowSite
     lf_sites2 = pd.merge(sites1, lf_sites1, on='ExtSiteID').drop(['ExtSiteID', 'SiteName'], axis=1)
-    new_lf_sites = mssql.update_from_difference(lf_sites2, param['output']['server'], param['output']['database'], 'LowFlowSite', on='SiteID', mod_date_col='ModifiedDate')
+    new_lf_sites = mssql.update_from_difference(lf_sites2, param['output']['server'], param['output']['database'], 'LowFlowSite', on='SiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     ## Make lowflow conditions tables
-    trigs1 = lf.crc_trigs().reset_index()
+    trigs1 = lf.crc_trigs(username=param['misc']['lowflows']['username'], password=param['misc']['lowflows']['password']).reset_index()
     trigs2 = trigs1.sort_values(['IsActive', 'ExtSiteID', 'RecordNumber', 'MinAllocation', 'BandNumber'], ascending=[False, True, True, True, True]).drop_duplicates(['RecordNumber', 'ExtSiteID']).drop('IsActive', axis=1)
 
     trigs3 = pd.merge(sites1, trigs2, on=['ExtSiteID']).drop('ExtSiteID', axis=1)
@@ -821,13 +834,13 @@ try:
     trigs_allo['SiteAllo'] = False
 
     # Save results
-    new_trigs_allo, rem_trigs_allo = mssql.update_from_difference(trigs_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'])
+    new_trigs_allo, rem_trigs_allo = mssql.update_from_difference(trigs_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'], username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_trigs_allo)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_trigs_allo)), username=param['output']['username'], password=param['output']['password'])
 
     # Read db table
-    allo_site_trig = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteType': ['LowFlow', 'Residual']})
+    allo_site_trig = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteType': ['LowFlow', 'Residual']}, username=param['output']['username'], password=param['output']['password'])
 
     # Remove old data if needed
 #    if not rem_trigs_allo.empty:
@@ -845,16 +858,14 @@ try:
     trigs5 = pd.merge(allo_site_trig, trigs4, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'], axis=1)
 
     # Save results
-    new_trigs, _ = mssql.update_from_difference(trigs5, param['output']['server'], param['output']['database'], 'LowFlowConditions', on='CrcAlloSiteID', mod_date_col='ModifiedDate')
+    new_trigs, _ = mssql.update_from_difference(trigs5, param['output']['server'], param['output']['database'], 'LowFlowConditions', on='CrcAlloSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LowFlowConditions', 'pass', '{} rows updated'.format(len(new_trigs)))
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LowFlowConditions', 'pass', '{} rows updated'.format(len(new_trigs)), username=param['output']['username'], password=param['output']['password'])
 
 ## If failure
 
 except Exception as err:
     err1 = err
     print(err1)
-    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Some Table', 'fail', str(err1)[:299])
-
-
+    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'Some Table', 'fail', str(err1)[:299], username=param['output']['username'], password=param['output']['password'])
