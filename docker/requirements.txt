@@ -1,0 +1,6 @@
+pdsql==1.2.22
+pymssql==2.1.4
+pyyaml
+lowflows==0.1.2
+geopandas==0.6.2
+pandas==0.25.3

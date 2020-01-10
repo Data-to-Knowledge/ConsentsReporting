@@ -24,7 +24,7 @@ try:
     ## ConsentsReporting Tables
     permit_table = 'Permit'
     allo_block_table = 'AlloBlock'
-    hydro_feature_table = 'HydroFeature'
+    hydro_feature_table = 'HydroGroup'
     sites_table = 'ConsentsSites'
     crc_allo_table = 'CrcAlloSite'
     allo_rates_table = 'AllocatedRateVolume'
@@ -51,8 +51,8 @@ try:
 
     ## Read base data
     permit1 = mssql.rd_sql(param['output']['server'], param['output']['database'], permit_table, ['RecordNumber', 'ConsentStatus', 'FromDate', 'ToDate'])
-    allo_block1 = mssql.rd_sql(param['output']['server'], param['output']['database'], allo_block_table, ['AlloBlockID', 'AllocationBlock', 'HydroFeatureID'])
-    hf1 = mssql.rd_sql(param['output']['server'], param['output']['database'], hydro_feature_table, ['HydroFeatureID', 'HydroFeature'])
+    allo_block1 = mssql.rd_sql(param['output']['server'], param['output']['database'], allo_block_table, ['AlloBlockID', 'AllocationBlock', 'HydroGroupID'])
+    hf1 = mssql.rd_sql(param['output']['server'], param['output']['database'], hydro_feature_table, ['HydroGroupID', 'HydroGroup'])
     sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], sites_table, ['SiteID', 'ExtSiteID'])
     crc_allo_id1 = mssql.rd_sql(param['output']['server'], param['output']['database'], crc_allo_table, ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteAllo': [1]})
     crc_allo1 = mssql.rd_sql(param['output']['server'], param['output']['database'], allo_rates_table, ['CrcAlloSiteID', 'AllocatedRate', 'AllocatedAnnualVolume', 'FromMonth', 'ToMonth'])
@@ -70,13 +70,13 @@ try:
     ## Allocations
     crc_allo2 = pd.merge(crc_allo_id1, crc_allo1, on='CrcAlloSiteID').drop('CrcAlloSiteID', axis=1)
     crc_allo3 = pd.merge(allo_block1, crc_allo2, on='AlloBlockID').drop('AlloBlockID', axis=1)
-    crc_allo4 = pd.merge(hf1, crc_allo3, on='HydroFeatureID').drop('HydroFeatureID', axis=1)
+    crc_allo4 = pd.merge(hf1, crc_allo3, on='HydroGroupID').drop('HydroGroupID', axis=1)
     crc_allo5 = pd.merge(sites1, crc_allo4, on='SiteID').drop('SiteID', axis=1)
     crc_allo6 = pd.merge(permit1, crc_allo5, on='RecordNumber')
     crc_allo7 = pd.merge(crc_allo6, crc_attr3, on='RecordNumber')
 
     ## Save results
-    new_allo = mssql.update_from_difference(crc_allo7, param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', on=['RecordNumber', 'AllocationBlock', 'HydroFeature', 'ExtSiteID'], mod_date_col='ModifiedDate')
+    new_allo, rem_allo = mssql.update_from_difference(crc_allo7, param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', on=['RecordNumber', 'AllocationBlock', 'HydroGroup', 'ExtSiteID'], mod_date_col='ModifiedDate', remove_rows=True)
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm', 'pass', '{} rows updated'.format(len(new_allo)))

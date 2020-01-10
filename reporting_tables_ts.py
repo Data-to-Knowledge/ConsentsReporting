@@ -69,9 +69,13 @@ try:
         # Process the results
         site_summ1 = lf.site_summary_ts(str(last_date2), str(today1), only_active=only_active).reset_index()
 
+        # Remove potential duplicate sites
+        site_summ1.sort_values('MeasurementMethod', ascending=False, inplace=True)
+        site_summ2 = site_summ1.drop_duplicates(['ExtSiteID', 'RestrDate'])
+
         # Save results
         print('Save results')
-        mssql.to_mssql(site_summ1, param['output']['server'], param['output']['database'], table1, schema=schema1)
+        mssql.to_mssql(site_summ2, param['output']['server'], param['output']['database'], table1, schema=schema1)
 
         # Log
         log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, last_date1, table1, 'pass', '{} rows updated'.format(len(site_summ1)))

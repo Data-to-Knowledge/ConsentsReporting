@@ -1,0 +1,3 @@
+UPDATE dbo.LowFlowSite
+SET Geom = geometry::STGeomFromText('POINT(NZTMX, NZTMY)', 2193);
+
