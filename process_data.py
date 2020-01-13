@@ -4,6 +4,7 @@ Created on Thu Jun  7 11:41:44 2018
 
 @author: MichaelEK
 """
+import os
 import argparse
 import types
 import pandas as pd
@@ -17,14 +18,15 @@ import util
 
 pd.options.display.max_columns = 10
 run_time_start = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+print(run_time_start)
 
 try:
 
     #####################################
     ### Read parameters file
 
-    # base_dir = os.path.realpath(os.path.dirname(__file__))
-
+#    base_dir = os.path.realpath(os.path.dirname(__file__))
+#
 #    with open(os.path.join(base_dir, 'parameters-dev.yml')) as param:
 #        param = yaml.safe_load(param)
 
@@ -287,10 +289,11 @@ try:
     wa1['ToMonth'] = wa1['ToMonth'].str.strip().str.title()
     wa1['IncludeInSwAllocation'] = wa1['IncludeInSwAllocation'].str.strip().str.title()
 
-    wa1['AllocatedRate'] = pd.to_numeric(wa1['AllocatedRate'], errors='coerce')
-#    wa1['WapRate'] = pd.to_numeric(wa1['WapRate'], errors='coerce')
-    wa1['SD1'] = pd.to_numeric(wa1['SD1'], errors='coerce')
-#    wa1['SD2'] = pd.to_numeric(wa1['SD2'], errors='coerce')
+    wa1['AllocatedRate'] = pd.to_numeric(wa1['AllocatedRate'], errors='coerce').round(2)
+    wa1['WapRate'] = pd.to_numeric(wa1['WapRate'], errors='coerce').round(2)
+    wa1['VolumeDaily'] = pd.to_numeric(wa1['VolumeDaily'], errors='coerce').astype(int)
+    wa1['VolumeWeekly'] = pd.to_numeric(wa1['VolumeWeekly'], errors='coerce').astype(int)
+    wa1['Volume150Day'] = pd.to_numeric(wa1['Volume150Day'], errors='coerce').astype(int)
 
     wa1.loc[wa1['FromMonth'] == 'Migration: Not Classified', 'FromMonth'] = 'Jul'
     wa1.loc[wa1['ToMonth'] == 'Migration: Not Classified', 'ToMonth'] = 'Jun'
@@ -324,55 +327,76 @@ try:
     wa4 = wa4[wa4.WAP.notnull()].copy()
 
     # Stream depletion
-    wa4a = pd.merge(wa4, db.wap_sd.rename(columns={'ExtSiteID': 'WAP'}), on='WAP')
+    wa4a = pd.merge(wa4, db.wap_sd.rename(columns={'ExtSiteID': 'WAP'}), on='WAP').drop(['SD1_NZTMX', 'SD1_NZTMY', 'SD1_30Day', 'SD2_NZTMX', 'SD2_NZTMY', 'SD2_7Day', 'SD2_30Day', 'SD2_150Day', 'SD1', 'SD2'], axis=1)
 
-    wa4['SD'] = wa4['SD1']
-#    wa4.loc[wa4['SD'] < wa4['SD2'], 'SD'] = wa4.loc[wa4['SD'] < wa4['SD2'], 'SD2']
-    wa5 = wa4.drop(['SD1', 'SD2'], axis=1)
-    wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'SD'] = wa5.loc[wa5['SD'] > wa5['AllocatedRate'], 'AllocatedRate']
+    wa4a['SD1_7Day'] = pd.to_numeric(wa4a['SD1_7Day'], errors='coerce').round(0)
+    wa4a['SD1_150Day'] = pd.to_numeric(wa4a['SD1_150Day'], errors='coerce').round(0)
 
     ## Distribute the rates according to the stream depletion requirements
     ## According to the LWRP!
-    allo_rates1 = wa5.copy()
-    allo_rates1['sd_crc_total'] = allo_rates1.groupby(['RecordNumber', 'take_type', 'sw_allo_block'])['SD'].transform('sum')
-    allo_rates1['rate_crc_total'] = allo_rates1.groupby(['RecordNumber', 'take_type', 'sw_allo_block'])['AllocatedRate'].transform('sum')
-    allo_rates1['sd_ratio'] = allo_rates1['sd_crc_total'] / allo_rates1['rate_crc_total']
 
-    # Volume ratios - According to the LWRP!
-    allo_rates1['sw_vol_ratio'] = 0
-    allo_rates1.loc[(allo_rates1['sd_crc_total'] > 5) | (allo_rates1['sd_ratio'] >= 0.4), 'sw_vol_ratio'] = 0.5
-    allo_rates1.loc[(allo_rates1['sd_crc_total'] > 5) & (allo_rates1['sd_ratio'] >= 0.6), 'sw_vol_ratio'] = 0.75
-    allo_rates1.loc[(allo_rates1['sd_crc_total'] > 5) & (allo_rates1['sd_ratio'] >= 0.9), 'sw_vol_ratio'] = 1
-    allo_rates1.loc[(allo_rates1['take_type'] == 'Take Surface Water'), 'sw_vol_ratio'] = 1
+    allo_rates1 = wa4a.copy()
 
-    # Rates
+    # Convert 7-day volumes and 150-day volumes to rates in l/s
+    allo_rates1['RateDaily'] = (allo_rates1['VolumeDaily'] / 24 / 60 / 60) * 1000
+    allo_rates1['RateWeekly'] = (allo_rates1['VolumeWeekly'] / 7 / 24 / 60 / 60) * 1000
+    allo_rates1['Rate150Day'] = (allo_rates1['Volume150Day'] / 150 / 24 / 60 / 60) * 1000
+
+    # SD categories - According to the LWRP!
+    rate_bool = (allo_rates1['Rate150Day'] * (allo_rates1['SD1_150Day'] * 0.01)) > 5
+
+    allo_rates1['sd_cat'] = 'low'
+    allo_rates1.loc[rate_bool | (allo_rates1['SD1_150Day'] >= 40), 'sd_cat'] = 'moderate'
+    allo_rates1.loc[(allo_rates1['SD1_7Day'] >= 60) & (allo_rates1['SD1_150Day'] >= 60), 'sd_cat'] = 'high'
+    allo_rates1.loc[(allo_rates1['SD1_7Day'] >= 90), 'sd_cat'] = 'direct'
+    allo_rates1.loc[(allo_rates1['take_type'] == 'Take Surface Water'), 'sd_cat'] = 'direct'
+
+    # Assign volume ratios
+    allo_rates1['sw_vol_ratio'] = 1
+    allo_rates1.loc[allo_rates1.sd_cat == 'low', 'sw_vol_ratio'] = 0
+    allo_rates1.loc[allo_rates1.sd_cat == 'moderate', 'sw_vol_ratio'] = 0.5
+    allo_rates1.loc[allo_rates1.sd_cat == 'high', 'sw_vol_ratio'] = 0.75
+    allo_rates1.loc[allo_rates1.sd_cat == 'direct', 'sw_vol_ratio'] = 1
+
+    # Assign Rates
     gw_bool = allo_rates1['take_type'] == 'Take Groundwater'
     sw_bool = allo_rates1['take_type'] == 'Take Surface Water'
-    rate_bool = allo_rates1['sd_crc_total'] <= 5
+
+    low_bool = allo_rates1.sd_cat == 'low'
+    mod_bool = allo_rates1.sd_cat == 'moderate'
+    high_bool = allo_rates1.sd_cat == 'high'
+    direct_bool = allo_rates1.sd_cat == 'direct'
 
     allo_rates1['Surface Water'] = 0
     allo_rates1['Groundwater'] = 0
 
-    allo_rates1.loc[gw_bool, 'Groundwater'] = allo_rates1.loc[gw_bool, 'AllocatedRate'] - allo_rates1.loc[gw_bool, 'SD']
-    allo_rates1.loc[gw_bool & rate_bool, 'Groundwater'] = allo_rates1.loc[gw_bool & rate_bool, 'AllocatedRate']
+    allo_rates1.loc[low_bool, 'Groundwater'] = allo_rates1.loc[low_bool, 'Rate150Day']
+    allo_rates1.loc[mod_bool | high_bool, 'Surface Water'] = allo_rates1.loc[mod_bool | high_bool, 'Rate150Day'] * (allo_rates1.loc[mod_bool | high_bool, 'SD1_150Day'] * 0.01)
+    allo_rates1.loc[mod_bool | high_bool, 'Groundwater'] = allo_rates1.loc[mod_bool | high_bool, 'Rate150Day']  - allo_rates1.loc[mod_bool | high_bool, 'Surface Water']
+
+#    allo_rates1.loc[gw_bool, 'Surface Water'] = allo_rates1.loc[gw_bool, 'Rate150Day'] - allo_rates1.loc[gw_bool, 'Groundwater']
+    allo_rates1.loc[direct_bool & gw_bool, 'Surface Water'] = allo_rates1.loc[direct_bool & gw_bool, 'RateDaily']
 
     allo_rates1.loc[sw_bool, 'Surface Water'] = allo_rates1.loc[sw_bool, 'AllocatedRate']
-    allo_rates1.loc[gw_bool, 'Surface Water'] = allo_rates1.loc[gw_bool, 'AllocatedRate'] - allo_rates1.loc[gw_bool, 'Groundwater']
 
-    allo_rates2 = allo_rates1.drop(['AllocatedRate', 'SD', 'sd_crc_total', 'sd_ratio','rate_crc_total'], axis=1)
-    allo_rates2.rename(columns={'sw_allo_block': 'AllocationBlock'}, inplace=True)
+    allo_rates2 = allo_rates1.drop(['AllocatedRate', 'SD1_7Day', 'SD1_150Day', 'RateDaily', 'RateWeekly', 'Rate150Day', 'sd_cat', 'VolumeDaily', 'VolumeWeekly', 'Volume30Day', 'Volume150Day', 'WapRate'], axis=1)
+    allo_rates2 = allo_rates2.rename(columns={'sw_allo_block': 'AllocationBlock'}).sort_values(['RecordNumber', 'WAP'])
 
     # Distribute the months
+    cols1 = allo_rates2.columns.tolist()
+    from_mon_pos = cols1.index('FromMonth')
+    to_mon_pos = cols1.index('ToMonth')
+
     allo_rates_list = []
 #    c1 = 0
     for val in allo_rates2.itertuples(False, None):
-        from_month = val[4]
-        to_month = val[5]
+        from_month = int(val[from_mon_pos])
+        to_month = int(val[to_mon_pos])
         if from_month > to_month:
             mons = list(range(1, to_month + 1))
 #            c1 = c1 + 1
         else:
-            mons = range(int(val[4]), int(val[5]) + 1)
+            mons = range(from_month, to_month + 1)
         d1 = [val + (i,) for i in mons]
         allo_rates_list.extend(d1)
     col_names1 = allo_rates2.columns.tolist()
@@ -394,8 +418,6 @@ try:
     allo_rates4 = allo_rates4.reset_index()
     allo_rates4.rename(columns={'level_5': 'HydroGroup'}, inplace=True)
     allo_rates4 = allo_rates4.drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroGroup', 'WAP'])
-#    allo_rates2a = allo_rates2.rename(columns={'sw_allo_block': 'AllocationBlock'})[['RecordNumber', 'AllocationBlock', 'WAP', 'sw_vol_ratio']]
-#    allo_rates4 = pd.merge(allo_rates4, allo_rates2a, on=['RecordNumber', 'AllocationBlock', 'WAP'], how='left')
 
     ## Allocated Volume
     av1 = allo_vol1.copy()
@@ -420,11 +442,12 @@ try:
     av3.loc[av3['sw_vol_ratio'].isnull() & (av3['take_type'] == 'Take Groundwater'), 'sw_vol_ratio'] = 0
     av3.loc[av3['sw_vol_ratio'].isnull() & (av3['take_type'] == 'Take Surface Water'), 'sw_vol_ratio'] = 1
 
-    av3 = av3[av3['IncludeInAllocation']].drop(['take_type', 'IncludeInAllocation', 'AllocatedAnnualVolume'], axis=1).copy()
-
     av3['Surface Water'] = av3['FullAnnualVolume'] * av3[ 'sw_vol_ratio']
     av3['Groundwater'] = av3['FullAnnualVolume'] - av3['Surface Water']
     av3.drop(['sw_vol_ratio', 'FullAnnualVolume'], axis=1, inplace=True)
+
+    # Include rows where they are listed as "Include in Allocation"
+    av3 = av3[av3['IncludeInAllocation']].drop(['take_type', 'IncludeInAllocation', 'AllocatedAnnualVolume'], axis=1).copy()
 
     av4 = av3.set_index(['RecordNumber', 'AllocationBlock']).stack().reset_index()
     av4.rename(columns={'level_2': 'HydroGroup', 0: 'AllocatedAnnualVolume'}, inplace=True)
@@ -518,7 +541,7 @@ try:
     crv2 = crv2[crv2.RecordNumber.isin(crc1)].copy()
 
     ## Aggregate take types for counts and min/max month
-    grp4 = wa5.groupby(['RecordNumber', 'take_type', 'WAP'])
+    grp4 = wa4a.groupby(['RecordNumber', 'take_type', 'WAP'])
     mon_min = grp4['FromMonth'].min()
     mon_min.name = 'FromMonth'
     mon_max = grp4['ToMonth'].max()
