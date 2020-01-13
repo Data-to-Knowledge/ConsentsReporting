@@ -307,9 +307,9 @@ try:
     wa2 = wa1[wa1.RecordNumber.isin(crc1)].copy()
 
     # Filters
-    wa3 = wa2[(wa2.AllocatedRate > 0)].copy()
-    wa3.loc[~wa3['IncludeInSwAllocation'], ['AllocatedRate', 'SD1', 'SD2']] = 0
-    wa4 = wa3.drop('IncludeInSwAllocation', axis=1).copy()
+    wa4 = wa2[(wa2.AllocatedRate > 0)].copy()
+#    wa3.loc[~wa3['IncludeInSwAllocation'], ['AllocatedRate', 'SD1', 'SD2']] = 0
+#    wa4 = wa3.drop('IncludeInSwAllocation', axis=1).copy()
 
     # Find the missing WAPs per consent
     crc_wap_mis1 = wa4.loc[wa4.WAP.isnull(), 'RecordNumber'].unique()
@@ -429,10 +429,12 @@ try:
     av1.loc[av1['IncludeInAllocation'] == 'No', 'IncludeInAllocation'] = False
     av1.loc[av1['IncludeInAllocation'] == 'Yes', 'IncludeInAllocation'] = True
     av1['IncludeInAllocation'] = av1['IncludeInAllocation'].astype(bool)
-    av1['AllocatedAnnualVolume'] = pd.to_numeric(av1['AllocatedAnnualVolume'], errors='coerce')
+#    av1['AllocatedAnnualVolume'] = pd.to_numeric(av1['AllocatedAnnualVolume'], errors='coerce').astype(int)
+    av1['FullAnnualVolume'] = pd.to_numeric(av1['FullAnnualVolume'], errors='coerce').astype(int)
 #    av1.loc[av1['AllocatedAnnualVolume'] <= 0, 'AllocatedAnnualVolume'] = 0
-    av1 = av1.loc[av1['AllocatedAnnualVolume'] > 0]
+#    av1 = av1.loc[av1['AllocatedAnnualVolume'] > 0]
     av1.rename(columns={'allo_block': 'AllocationBlock'}, inplace=True)
+    av1.drop('AllocatedAnnualVolume', axis=1, inplace=True)
 
     # Check foreign keys
     av2 = av1[av1.RecordNumber.isin(allo_rates4.RecordNumber.unique())].copy()
@@ -446,10 +448,7 @@ try:
     av3['Groundwater'] = av3['FullAnnualVolume'] - av3['Surface Water']
     av3.drop(['sw_vol_ratio', 'FullAnnualVolume'], axis=1, inplace=True)
 
-    # Include rows where they are listed as "Include in Allocation"
-    av3 = av3[av3['IncludeInAllocation']].drop(['take_type', 'IncludeInAllocation', 'AllocatedAnnualVolume'], axis=1).copy()
-
-    av4 = av3.set_index(['RecordNumber', 'AllocationBlock']).stack().reset_index()
+    av4 = av3.drop(['IncludeInAllocation', 'take_type'], axis=1).set_index(['RecordNumber', 'AllocationBlock']).stack().reset_index()
     av4.rename(columns={'level_2': 'HydroGroup', 0: 'AllocatedAnnualVolume'}, inplace=True)
     av4 = av4.groupby(['RecordNumber', 'AllocationBlock', 'HydroGroup']).sum().reset_index()
 
@@ -467,7 +466,18 @@ try:
     avr3.loc[avr3.AllocatedAnnualVolume.isnull(), 'AllocatedAnnualVolume'] = 0
 
     ## Clean up unnecessary rows
-    avr4 = avr3[~((avr3.AllocatedRate == 0) & (avr3.AllocatedAnnualVolume == 0))].drop(['AllocatedRateAgg', 'ratio'], axis=1)
+    avr3a = avr3[~((avr3.AllocatedRate == 0) & (avr3.AllocatedAnnualVolume == 0))].drop(['AllocatedRateAgg', 'ratio'], axis=1)
+
+    ## Deal with the "Include in Allocation" fields
+    avr3b = pd.merge(avr3a, av3[['RecordNumber', 'AllocationBlock', 'IncludeInAllocation']], on=['RecordNumber', 'AllocationBlock'], how='left').drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroGroup', 'WAP'])
+    ww1 = wa4.rename(columns={'sw_allo_block': 'AllocationBlock'})
+    avr3c = pd.merge(avr3b, ww1[['RecordNumber', 'AllocationBlock', 'WAP', 'IncludeInSwAllocation']], on=['RecordNumber', 'AllocationBlock', 'WAP'], how='left').drop_duplicates(['RecordNumber', 'AllocationBlock', 'HydroGroup', 'WAP'])
+
+    avr3c.loc[avr3c.IncludeInAllocation.isnull(), 'IncludeInAllocation'] = True
+    avr3c.loc[avr3c.IncludeInSwAllocation.isnull(), 'IncludeInSwAllocation'] = True
+
+    avr4 = avr3c[(avr3c.HydroGroup == 'Surface Water') | (avr3c.IncludeInAllocation)].drop('IncludeInAllocation', axis=1)
+    avr4 = avr4[(avr4.HydroGroup == 'Groundwater') | (avr4.IncludeInSwAllocation)].drop('IncludeInSwAllocation', axis=1)
 
     ## Calculate missing volumes and rates
     ann_bool = avr4.AllocatedAnnualVolume == 0
