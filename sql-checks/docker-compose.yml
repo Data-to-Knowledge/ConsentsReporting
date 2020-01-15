@@ -3,4 +3,4 @@ services:
   sql-check:
     image: mullenkamp/sql-server-check:latest
     volumes:
-      - C:\ecan\git\ConsentsReporting\docker\sql-checks\parameters-dev.yml:/parameters.yml
+      - C:\ecan\git\ConsentsReporting\sql-checks\parameters-dev.yml:/parameters.yml
