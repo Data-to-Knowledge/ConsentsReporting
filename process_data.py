@@ -303,6 +303,8 @@ try:
     wa1.loc[wa1['IncludeInSwAllocation'] == 'No', 'IncludeInSwAllocation'] = False
     wa1.loc[wa1['IncludeInSwAllocation'] == 'Yes', 'IncludeInSwAllocation'] = True
 
+    wa1.replace({'sw_allo_block': {'In Waitaki': 'A'}}, inplace=True)
+
     # Check foreign keys
     wa4 = wa1[wa1.RecordNumber.isin(crc1)].copy()
 

@@ -37,6 +37,11 @@ args = parser.parse_args()
 with open(args.yaml_path) as param:
     param = yaml.safe_load(param)
 
+## Assign database parameters to the lowflows module
+lf.read_data.lf_server = param['misc']['lowflows']['server']
+lf.read_data.hydrotel_server = param['misc']['hydrotel']['server']
+lf.read_data.usm_server = param['source data']['sites']['server']
+
 try:
     ######################################
     ### TSLowFlowRestr
