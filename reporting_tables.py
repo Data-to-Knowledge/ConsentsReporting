@@ -75,11 +75,28 @@ try:
     crc_allo6 = pd.merge(permit1, crc_allo5, on='RecordNumber')
     crc_allo7 = pd.merge(crc_allo6, crc_attr3, on='RecordNumber')
 
-    ## Save results
-    new_allo, rem_allo = mssql.update_from_difference(crc_allo7, param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', on=['RecordNumber', 'AllocationBlock', 'HydroGroup', 'ExtSiteID'], mod_date_col='ModifiedDate', remove_rows=True, username=param['output']['username'], password=param['output']['password'])
+
+    ## Determine which rows should be updated
+    old_allo = mssql.rd_sql(param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm')
+
+    diff_dict = mssql.compare_dfs(old_allo.drop(['ModifiedDate'], axis=1), crc_allo7, on=['RecordNumber', 'AllocationBlock', 'HydroGroup', 'ExtSiteID'])
+
+    both1 = pd.concat([diff_dict['new'], diff_dict['diff']])
+
+    rem1 = diff_dict['remove']
+
+    ## Update data if needed
+    if not both1.empty:
+        both1['ModifiedDate'] = run_time_start
+        mssql.update_table_rows(both1, param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', on=['RecordNumber', 'AllocationBlock', 'HydroGroup', 'ExtSiteID'], username=param['output']['username'], password=param['output']['password'])
+
+    if not rem1.empty:
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', rem1, username=param['output']['username'], password=param['output']['password'])
+
+#    new_allo, rem_allo = mssql.update_from_difference(crc_allo7, param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', on=['RecordNumber', 'AllocationBlock', 'HydroGroup', 'ExtSiteID'], mod_date_col='ModifiedDate', remove_rows=True, username=param['output']['username'], password=param['output']['password'])
 
     # Log
-    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm', 'pass', '{} rows updated'.format(len(new_allo)), username=param['output']['username'], password=param['output']['password'])
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm', 'pass', '{} rows updated'.format(len(both1)), username=param['output']['username'], password=param['output']['password'])
 
 except Exception as err:
     err1 = err

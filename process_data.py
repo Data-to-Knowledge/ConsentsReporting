@@ -359,6 +359,7 @@ try:
     mon_max = grp1['Month'].max()
     mon_max.name = 'ToMonth'
     wa6 = pd.concat([mean1, mon_min, mon_max, include1], axis=1).reset_index()
+    wa6['HydroGroup'] = 'Surface Water'
 
     ## Allocated Volume
     av1 = allo_vol1.copy()
@@ -376,9 +377,10 @@ try:
 #    av1 = av1.loc[av1['AllocatedAnnualVolume'] > 0]
     av1.rename(columns={'allo_block': 'AllocationBlock'}, inplace=True)
     av1.drop('AllocatedAnnualVolume', axis=1, inplace=True)
+#    av1.replace({'AllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
 
     ## Combine volumes with rates
-    wa7 = pd.merge(av1, wa6, on=['RecordNumber', 'take_type', 'AllocationBlock'])
+    wa7 = pd.merge(av1, wa6, on=['RecordNumber', 'take_type'])
 
     ## Distribute the volumes by WapRate
     wa8 = wa7.copy()
@@ -396,6 +398,15 @@ try:
     wa9['SD1_7Day'] = pd.to_numeric(wa9['SD1_7Day'], errors='coerce').round(0)
     wa9['SD1_150Day'] = pd.to_numeric(wa9['SD1_150Day'], errors='coerce').round(0)
 
+    ## Combine with aquifer test storativity
+    aq1 = db.wap_aquifer_test.dropna(subset=['storativity']).copy()
+    aq1.rename(columns={'ExtSiteID': 'WAP'}, inplace=True)
+    aq2 = aq1.groupby('WAP')['storativity'].mean().dropna().reset_index()
+    aq2.storativity = True
+
+    wa9 = pd.merge(wa9, aq2, on='WAP', how='left')
+    wa9.loc[wa9.storativity.isnull(), 'storativity'] = False
+
     ## Distribute the rates according to the stream depletion requirements
     ## According to the LWRP!
 
@@ -410,7 +421,8 @@ try:
     rate_bool = (allo_rates1['Rate150Day'] * (allo_rates1['SD1_150Day'] * 0.01)) > 5
 
     allo_rates1['sd_cat'] = 'low'
-    allo_rates1.loc[rate_bool | (allo_rates1['SD1_150Day'] >= 40), 'sd_cat'] = 'moderate'
+#    allo_rates1.loc[(rate_bool | (allo_rates1['SD1_150Day'] >= 40)) & allo_rates1.storativity, 'sd_cat'] = 'moderate'
+    allo_rates1.loc[(rate_bool | (allo_rates1['SD1_150Day'] >= 40)), 'sd_cat'] = 'moderate'
     allo_rates1.loc[(allo_rates1['SD1_150Day'] >= 60), 'sd_cat'] = 'high'
     allo_rates1.loc[(allo_rates1['SD1_7Day'] >= 90), 'sd_cat'] = 'direct'
     allo_rates1.loc[(allo_rates1['take_type'] == 'Take Surface Water'), 'sd_cat'] = 'direct'
@@ -436,9 +448,9 @@ try:
     rates1['Surface Water'] = 0
     rates1['Groundwater'] = 0
 
-    rates1.loc[low_bool, 'Groundwater'] = rates1.loc[low_bool, 'Rate150Day']
+    rates1.loc[:, 'Groundwater'] = rates1.loc[:, 'Rate150Day']
     rates1.loc[mod_bool | high_bool, 'Surface Water'] = rates1.loc[mod_bool | high_bool, 'Rate150Day'] * (rates1.loc[mod_bool | high_bool, 'SD1_150Day'] * 0.01)
-    rates1.loc[mod_bool | high_bool, 'Groundwater'] = rates1.loc[mod_bool | high_bool, 'Rate150Day']  - rates1.loc[mod_bool | high_bool, 'Surface Water']
+    rates1.loc[(mod_bool & rates1.storativity) | high_bool, 'Groundwater'] = rates1.loc[(mod_bool & rates1.storativity) | high_bool, 'Rate150Day']  - rates1.loc[(mod_bool & rates1.storativity) | high_bool, 'Surface Water']
 
 #    allo_rates1.loc[gw_bool, 'Surface Water'] = allo_rates1.loc[gw_bool, 'Rate150Day'] - allo_rates1.loc[gw_bool, 'Groundwater']
     rates1.loc[direct_bool & gw_bool, 'Surface Water'] = rates1.loc[direct_bool & gw_bool, 'RateDaily']
@@ -449,10 +461,13 @@ try:
     rates2.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedRate'}, inplace=True)
     rates3 = rates2.set_index(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'WAP'])
 
-    # Assign volumes
+    # Assign volumes with discount exception
     vols1 = allo_rates1.copy()
     vols1['Surface Water'] = vols1['FullAnnualVolume'] * vols1['sw_vol_ratio']
-    vols1['Groundwater'] = vols1['FullAnnualVolume'] - vols1['Surface Water']
+    vols1['Groundwater'] = vols1['FullAnnualVolume']
+
+    discount_bool = (vols1.sd_cat == 'moderate') & (vols1.storativity)
+    vols1.loc[discount_bool, 'Groundwater'] = vols1.loc[discount_bool, 'FullAnnualVolume'] - vols1.loc[discount_bool, 'Surface Water']
 
     vols2 = vols1[['Groundwater', 'Surface Water']].stack().reset_index()
     vols2.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedAnnualVolume'}, inplace=True)
@@ -473,7 +488,9 @@ try:
     rate_bool = rv4.AllocatedRate == 0
     rv4.loc[rate_bool, 'AllocatedRate'] = np.floor((rv4.loc[rate_bool, 'AllocatedAnnualVolume'] / 60/60/24/30.42/ (rv4.loc[rate_bool, 'ToMonth'] - rv4.loc[rate_bool, 'FromMonth'] + 1) * 1000))
 
-    rv4 = rv4[~((rv4['AllocatedAnnualVolume'] == 0) & (rv4['AllocatedRate'] == 0))].copy()
+    rv4 = rv4[(rv4['AllocatedAnnualVolume'] > 0) | (rv4['AllocatedRate'] > 0)].copy()
+    rv4.loc[rv4['AllocatedAnnualVolume'].isnull(), 'AllocatedAnnualVolume'] = 0
+    rv4.loc[rv4['AllocatedRate'].isnull(), 'AllocatedRate'] = 0
 
     ## Convert the rates and volumes to integers
     rv4['AllocatedAnnualVolume'] = rv4['AllocatedAnnualVolume'].round().astype(int)
@@ -488,8 +505,17 @@ try:
     crc_allo['SiteAllo'] = True
     crc_allo['SiteType'] = 'WAP'
 
+    ## Determine which rows should be updated
+#    old_crc_allo = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', where_in={'SiteAllo': [1], 'SiteType': ['WAP']})
+#
+#    diff_dict = mssql.compare_dfs(old_crc_allo.drop(['CrcAlloSiteID', 'ModifiedDate'], axis=1), crc_allo, on=['RecordNumber', 'AlloBlockID', 'SiteID'])
+#
+#    both1 = pd.concat([diff_dict['new'], diff_dict['diff']])
+#
+#    rem1 = diff_dict['remove']
+
     # Save results
-    new_crc_allo, rem_crc_allo = mssql.update_from_difference(crc_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'], username=param['output']['username'], password=param['output']['password'])
+    new_crc_allo, rem_crc_allo = mssql.update_from_difference(crc_allo, param['output']['server'], param['output']['database'], 'CrcAlloSite', on=['RecordNumber', 'AlloBlockID', 'SiteID'], mod_date_col='ModifiedDate', where_cols=['SiteID', 'SiteType'], username=param['output']['username'], password=param['output']['password'])
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSite', 'pass', '{} rows updated'.format(len(new_crc_allo)), username=param['output']['username'], password=param['output']['password'])
