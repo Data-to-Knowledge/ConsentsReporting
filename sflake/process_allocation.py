@@ -302,11 +302,27 @@ try:
     ## Combine with permit data
     rv5 = pd.merge(rv4, permits2[['RecordNumber', 'ConsentStatus', 'FromDate', 'ToDate']], on='RecordNumber')
 
+    ## Combine with other Wap data
+    waps1 = waps[['Wap', 'SpatialUnitID', 'Combined']].rename(columns={'SpatialUnitID': 'GwId'})
+    rv6 = pd.merge(rv5, waps1, on='Wap')
+
+    ## Aggregate to zone (for GW) for active consents
+    gw1 = rv6[((rv6.HydroGroup == 'Groundwater') | ((rv6.HydroGroup == 'Surface Water') & (rv6.Combined))) & (rv6.ConsentStatus.isin(['Issued - Active', 'Issued - Inactive', 'Application in Process', 'Issued - s124 Continuance']))].copy()
+    zone1 = gw1.groupby(['GwId', 'AllocationBlock', 'ConsentStatus'])[['AllocatedRate', 'AllocatedAnnualVolume']].sum().reset_index()
+
     ## Save results
     print('Save results')
-    rv5['EffectiveFromDate'] = run_time_start
+
+    # Detailed table
+    rv6['EffectiveFromDate'] = run_time_start
     out_param = param['source data']['allo_calc']
-    sf.to_table(rv5, out_param['table'], out_param['username'], out_param['password'], out_param['account'], out_param['database'], out_param['schema'], True)
+    sf.to_table(rv6, out_param['table'], out_param['username'], out_param['password'], out_param['account'], out_param['database'], out_param['schema'], True)
+
+    # Zone summary
+    zone1['EffectiveFromDate'] = run_time_start
+    out_param = param['source data']['gw_zone_allo']
+    sf.to_table(zone1, out_param['table'], out_param['username'], out_param['password'], out_param['account'], out_param['database'], out_param['schema'], True)
+
 
 ## If failure
 
