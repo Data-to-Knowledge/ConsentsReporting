@@ -41,7 +41,7 @@ def get_json_from_api():
     return r.json()
 
 
-def json_filters(json_lst):
+def json_filters(json_lst, only_operative=True, only_gw=True):
     """
 
     """
@@ -51,6 +51,13 @@ def json_filters(json_lst):
         if j['spatialUnit']:
             j['managementUnit'] = [m for m in j['managementUnit'] if (m['parameterType'] == 'Allocation Block')]
             json_lst1.append(j)
+
+    if only_operative:
+        json_lst1 = [j for j in json_lst1 if (j['status']['status'] == 'Operative') and (pd.Timestamp(j['status']['fromDate']) <= today1)]
+
+    ## Select only GW limits and combined GW/SW limits
+    if only_gw:
+        json_lst1 = [j for j in json_lst1 if j['hydroUnit'] != ['Surface Water']]
 
     return json_lst1
 
@@ -148,7 +155,49 @@ def process_limit_data(json_lst):
     return l_data1, t_data1, units
 
 
+def assign_notes(sg_df):
+    """
 
+    """
+    ### Label joint s units
+    sp2c = sg_df.drop_duplicates(subset=['id', 'spatialId']).copy()
+    sp2c['joint_units'] = sp2c.groupby('id').spatialId.transform(lambda x: ', '.join(x))
+    sp2c['unit_count'] = sp2c.groupby('id').spatialId.transform('count')
+    sp2c.loc[sp2c['unit_count'] == 1, 'joint_units'] = ''
+    sp2d = sp2c.set_index(['id', 'spatialId', 'HydroGroup'])['joint_units']
+
+    ### Label joint hydro groups
+    sp2e = sg_df.drop_duplicates(subset=['HydroGroup', 'id']).copy()
+    sp2e['hydro_count'] = sp2e.groupby('id').spatialId.transform('count')
+    sp2f = sp2e.set_index(['id', 'spatialId', 'HydroGroup'])['hydro_count']
+#    sp2c.loc[sp2c['hydro_count'] == 1, 'joint_hydro'] = ''
+
+    ## Join joint_hydro to main table
+    sp3 = sg_df.set_index(['id', 'spatialId', 'HydroGroup'])
+    sp4 = pd.concat([sp3, sp2d, sp2f], axis=1).reset_index()
+    sp4.loc[sp4.hydro_count.isnull(), 'hydro_count'] = 1
+    sp4.loc[sp4.joint_units.isnull(), 'joint_units'] = ''
+
+    ## Create notes
+    front_note = '**Notes:**  '
+    joint_hydro_notes = 'Allocation limits for this allocation zone are combined between surface water and groundwater.'
+    joint_units_notes = 'The allocation limits are shared jointly across these zones: '
+    note_template = """{begin}
+    {hydro}
+    {unit_notes}{units}
+    """
+    sp4['notes'] = ''
+
+    cond1 = sp4.hydro_count > 1
+    sp4.loc[cond1, 'notes'] = note_template.format(begin=front_note, hydro=joint_hydro_notes, unit_notes='', units='')
+
+    cond2 = (sp4.joint_units != '')
+    sp4.loc[cond2, 'notes'] = sp4.loc[cond2, 'joint_units'].apply(lambda x:     note_template.format(begin=front_note, hydro='', unit_notes=joint_units_notes, units=x))
+
+    cond3 = (sp4.hydro_count > 1) & (sp4.joint_units != '')
+    sp4.loc[cond3, 'notes'] = sp4.loc[cond3, 'joint_units'].apply(lambda x:     note_template.format(begin=front_note, hydro=joint_hydro_notes, unit_notes=joint_units_notes, units=x))
+
+    return sp4.drop(['hydro_count', 'joint_units'], axis=1)
 
 
 

@@ -12,6 +12,7 @@ import numpy as np
 from pdsf import sflake as sf
 from datetime import datetime
 import yaml
+from utils import json_filters, geojson_convert, process_limit_data, assign_notes, get_json_from_api
 #from pdsql import create_snowflake_engine
 #from pdsql.util import compare_dfs
 
@@ -36,13 +37,6 @@ try:
 #    with open(args.yaml_path) as param:
 #        param = yaml.safe_load(param)
 
-    ## Integrety checks
-    use_types_check = np.in1d(list(param['misc']['use_types_codes'].keys()), param['misc']['use_types_priorities']).all()
-
-    if not use_types_check:
-        raise ValueError('use_type_priorities parameter does not encompass all of the use type categories. Please fix the parameters file.')
-
-
     #####################################
     ### Read the log
 
@@ -62,16 +56,21 @@ try:
     print('--Reading in source data...')
 
     ## Make object to contain the source data
-    db = types.SimpleNamespace()
+#    db = types.SimpleNamespace()
+#
+#    for t in param['misc']['AllocationProcessing']['tables']:
+#        p = param['source data'][t]
+#        if p['schema'] != 'public':
+#            stmt = 'select * from "{schema}"."{table}"'.format(schema=p['schema'], table=p['table'])
+#        else:
+#            stmt = 'select * from "{table}"'.format(table=p['table'])
+#        setattr(db, t, sf.read_table(p['username'], p['password'], p['account'], p['database'], p['schema'], stmt))
 
-    for t in param['misc']['AllocationProcessing']['tables']:
-        p = param['source data'][t]
-        if p['schema'] != 'public':
-            stmt = 'select * from "{schema}"."{table}"'.format(schema=p['schema'], table=p['table'])
-        else:
-            stmt = 'select * from "{table}"'.format(table=p['table'])
-        setattr(db, t, sf.read_table(p['username'], p['password'], p['account'], p['database'], p['schema'], stmt))
-
+    json_lst = get_json_from_api()
+    json_lst1 = json_filters(json_lst)
+    gjson1, hydro_units, plot_data, sg1 = geojson_convert(json_lst1)
+    l_data1, t_data1, units = process_limit_data(json_lst1)
+    sg = assign_notes(sg1)
 
     ##################################################
     ### Sites
@@ -303,12 +302,12 @@ try:
     rv5 = pd.merge(rv4, permits2[['RecordNumber', 'ConsentStatus', 'FromDate', 'ToDate']], on='RecordNumber')
 
     ## Combine with other Wap data
-    waps1 = waps[['Wap', 'SpatialUnitID', 'Combined']].rename(columns={'SpatialUnitID': 'SpatialUnitId'}).copy()
+    waps1 = waps[['Wap', 'SpatialUnitID', 'Combined']].rename(columns={'SpatialUnitID': 'GwId'})
     rv6 = pd.merge(rv5, waps1, on='Wap')
 
     ## Aggregate to zone (for GW) for active consents
     gw1 = rv6[((rv6.HydroGroup == 'Groundwater') | ((rv6.HydroGroup == 'Surface Water') & (rv6.Combined))) & (rv6.ConsentStatus.isin(['Issued - Active', 'Issued - Inactive', 'Application in Process', 'Issued - s124 Continuance']))].copy()
-    zone1 = gw1.groupby(['SpatialUnitId', 'AllocationBlock', 'ConsentStatus'])[['AllocatedRate', 'AllocatedAnnualVolume']].sum().reset_index()
+    zone1 = gw1.groupby(['GwId', 'AllocationBlock', 'ConsentStatus'])[['AllocatedRate', 'AllocatedAnnualVolume']].sum().reset_index()
 
     ## Save results
     print('Save results')
