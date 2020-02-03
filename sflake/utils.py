@@ -177,23 +177,24 @@ def assign_notes(sg_df):
     sp4.loc[sp4.joint_units.isnull(), 'joint_units'] = ''
 
     ## Create notes
-    front_note = '**Notes:**  '
+#    front_note = '**Notes:**  '
     joint_hydro_notes = 'Allocation limits for this allocation zone are combined between surface water and groundwater.'
     joint_units_notes = 'The allocation limits are shared jointly across these zones: '
-    note_template = """{begin}
-    {hydro}
-    {unit_notes}{units}
-    """
+#    note_template = """{begin}
+#    {hydro}
+#    {unit_notes}{units}
+#    """
+    note_template = """{hydro} {unit_notes}{units}"""
     sp4['notes'] = ''
 
     cond1 = sp4.hydro_count > 1
-    sp4.loc[cond1, 'notes'] = note_template.format(begin=front_note, hydro=joint_hydro_notes, unit_notes='', units='')
+    sp4.loc[cond1, 'notes'] = note_template.format(hydro=joint_hydro_notes, unit_notes='', units='')
 
     cond2 = (sp4.joint_units != '')
-    sp4.loc[cond2, 'notes'] = sp4.loc[cond2, 'joint_units'].apply(lambda x:     note_template.format(begin=front_note, hydro='', unit_notes=joint_units_notes, units=x))
+    sp4.loc[cond2, 'notes'] = sp4.loc[cond2, 'joint_units'].apply(lambda x:     note_template.format(hydro='', unit_notes=joint_units_notes, units=x))
 
     cond3 = (sp4.hydro_count > 1) & (sp4.joint_units != '')
-    sp4.loc[cond3, 'notes'] = sp4.loc[cond3, 'joint_units'].apply(lambda x:     note_template.format(begin=front_note, hydro=joint_hydro_notes, unit_notes=joint_units_notes, units=x))
+    sp4.loc[cond3, 'notes'] = sp4.loc[cond3, 'joint_units'].apply(lambda x:     note_template.format(hydro=joint_hydro_notes, unit_notes=joint_units_notes, units=x))
 
     return sp4.drop(['hydro_count', 'joint_units'], axis=1)
 

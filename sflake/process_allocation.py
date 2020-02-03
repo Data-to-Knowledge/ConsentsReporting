@@ -224,7 +224,7 @@ def process_allo(param):
 
     vols1 = pd.merge(av1, ar3, on=['RecordNumber', 'TakeType'])
 
-    grp3 = vols1.groupby(['RecordNumber', 'TakeType', 'GwAllocationBlock'])
+    grp3 = vols1.groupby(['RecordNumber', 'TakeType'])
     vols1['WapRateAgg'] = grp3['WapRate'].transform('sum')
     vols1['ratio'] = vols1['WapRate'] / vols1['WapRateAgg']
     vols1.loc[vols1['ratio'].isnull(), 'ratio'] = 1
