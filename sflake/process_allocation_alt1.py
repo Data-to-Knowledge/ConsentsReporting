@@ -4,18 +4,58 @@ Created on Thu Jun  7 11:41:44 2018
 
 @author: MichaelEK
 """
+import os
+import argparse
 import types
 import pandas as pd
 import numpy as np
 from pdsf import sflake as sf
+from datetime import datetime
+import yaml
+#from pdsql import create_snowflake_engine
+#from pdsql.util import compare_dfs
+
+pd.options.display.max_columns = 10
+run_time_start = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+print(run_time_start)
+
+try:
+
+    #####################################
+    ### Read parameters file
+
+    base_dir = os.path.realpath(os.path.dirname(__file__))
+
+    with open(os.path.join(base_dir, 'parameters-dev.yml')) as param:
+        param = yaml.safe_load(param)
+
+#    parser = argparse.ArgumentParser()
+#    parser.add_argument('yaml_path')
+#    args = parser.parse_args()
+#
+#    with open(args.yaml_path) as param:
+#        param = yaml.safe_load(param)
+
+    ## Integrety checks
+    use_types_check = np.in1d(list(param['misc']['use_types_codes'].keys()), param['misc']['use_types_priorities']).all()
+
+    if not use_types_check:
+        raise ValueError('use_type_priorities parameter does not encompass all of the use type categories. Please fix the parameters file.')
 
 
-def process_allo(param):
-    """
+    #####################################
+    ### Read the log
 
-    """
-    run_time_start = pd.Timestamp.today().strftime('%Y-%m-%d %H:%M:%S')
-    print(run_time_start)
+#    max_date_stmt = "select max(RunTimeStart) from " + param.log_table + " where HydroTable='" + param.process_name + "' and RunResult='pass' and ExtSystem='" + param.ext_system + "'"
+#
+#    last_date1 = mssql.rd_sql(server=param.hydro_server, database=param.hydro_database, stmt=max_date_stmt).loc[0][0]
+#
+#    if last_date1 is None:
+#        last_date1 = '1900-01-01'
+#    else:
+#        last_date1 = str(last_date1.date())
+#
+#    print('Last sucessful date is ' + last_date1)
 
     #######################################
     ### Read in source data and update accela tables in ConsentsReporting db
@@ -26,7 +66,6 @@ def process_allo(param):
 
     for t in param['misc']['AllocationProcessing']['tables']:
         p = param['source data'][t]
-        print(p['table'])
         if p['schema'] != 'public':
             stmt = 'select * from "{schema}"."{table}"'.format(schema=p['schema'], table=p['table'])
         else:
@@ -45,7 +84,7 @@ def process_allo(param):
 
     ## Check that all Waps exist in the USM sites table
     usm_waps1 = db.waps[db.waps.isin(waps)].copy()
-    #    usm_waps1[['NzTmX', 'NzTmY']] = usm_waps1[['NzTmX', 'NzTmY']].astype(int)
+#    usm_waps1[['NzTmX', 'NzTmY']] = usm_waps1[['NzTmX', 'NzTmY']].astype(int)
 
     if len(wap1) != len(usm_waps1):
         miss_waps = set(wap1).difference(set(usm_waps1.Wap))
@@ -64,7 +103,7 @@ def process_allo(param):
 
     ## Filter data
     permits2 = permits2[permits2.ConsentStatus.notnull() & permits2.RecordNumber.notnull()].copy()
-    #    permits2 = permits2[(permits2['FromDate'] > '1950-01-01') & (permits2['ToDate'] > '1950-01-01') & (permits2['ToDate'] > permits2['FromDate']) & permits2.NzTmX.notnull() & permits2.NzTmY.notnull() & permits2.ConsentStatus.notnull() & permits2.RecordNumber.notnull() & permits2['EcanID'].notnull()].copy()
+#    permits2 = permits2[(permits2['FromDate'] > '1950-01-01') & (permits2['ToDate'] > '1950-01-01') & (permits2['ToDate'] > permits2['FromDate']) & permits2.NzTmX.notnull() & permits2.NzTmY.notnull() & permits2.ConsentStatus.notnull() & permits2.RecordNumber.notnull() & permits2['EcanID'].notnull()].copy()
 
     ## Convert datetimes to date
     permits2.loc[permits2['FromDate'].isnull(), 'FromDate'] = pd.Timestamp('1900-01-01')
@@ -139,28 +178,42 @@ def process_allo(param):
     mon_max = grp1['Month'].max()
     mon_max.name = 'ToMonth'
     wa6 = pd.concat([mean1, mon_min, mon_max, include1], axis=1).reset_index()
-    #    wa6['HydroGroup'] = 'Surface Water'
+    wa6['HydroGroup'] = 'Surface Water'
+
+    ## Allocated Volume
+    av1 = db.allocated_volume.copy()
 
     ## Rename allocation blocks !!!!!! Need to be changed later!!!!
-    #    av1.rename(columns={'GwAllocationBlock': 'AllocationBlock'}, inplace=True)
-    #    wa6.rename(columns={'SwAllocationBlock': 'AllocationBlock'}, inplace=True)
+    av1.rename(columns={'GwAllocationBlock': 'AllocationBlock'}, inplace=True)
+    wa6.rename(columns={'SwAllocationBlock': 'AllocationBlock'}, inplace=True)
 
-    wa6.replace({'SwAllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
+    av1.replace({'AllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
+    wa6.replace({'AllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
 
     ## Combine volumes with rates !!! Needs to be changed later!!!
-    #    wa7 = pd.merge(av1, wa6, on=['RecordNumber', 'TakeType'])
+    wa7 = pd.merge(av1, wa6, on=['RecordNumber', 'TakeType', 'AllocationBlock'])
+
+    ## Distribute the volumes by WapRate
+    wa8 = wa7.copy()
+
+    grp3 = wa8.groupby(['RecordNumber', 'TakeType', 'AllocationBlock'])
+    wa8['WapRateAgg'] = grp3['WapRate'].transform('sum')
+    wa8['ratio'] = wa8['WapRate'] / wa8['WapRateAgg']
+    wa8.loc[wa8['ratio'].isnull(), 'ratio'] = 1
+    wa8['FullAnnualVolume'] = (wa8['FullAnnualVolume'] * wa8['ratio']).round()
+    wa8.drop(['WapRateAgg', 'ratio'], axis=1, inplace=True)
 
     ## Add in stream depletion
     waps = db.waps.drop('EffectiveFromDate', axis=1).copy()
-    wa9 = pd.merge(wa6, waps, on='Wap').drop(['SD1_30Day'], axis=1)
+    wa9 = pd.merge(wa8, waps, on='Wap').drop(['SD1_30Day'], axis=1)
 
-    #    wa9['SD1_7Day'] = pd.to_numeric(wa9['SD1_7Day'], errors='coerce').round(0)
-    #    wa9['SD1_150Day'] = pd.to_numeric(wa9['SD1_150Day'], errors='coerce').round(0)
+#    wa9['SD1_7Day'] = pd.to_numeric(wa9['SD1_7Day'], errors='coerce').round(0)
+#    wa9['SD1_150Day'] = pd.to_numeric(wa9['SD1_150Day'], errors='coerce').round(0)
 
     ## Distribute the rates according to the stream depletion requirements
     ## According to the LWRP!
 
-    allo_rates1 = wa9.drop_duplicates(['RecordNumber', 'SwAllocationBlock', 'Wap']).set_index(['RecordNumber', 'SwAllocationBlock', 'Wap']).copy()
+    allo_rates1 = wa9.drop_duplicates(['RecordNumber', 'AllocationBlock', 'Wap']).set_index(['RecordNumber', 'AllocationBlock', 'Wap']).copy()
 
     # Convert daily, 7-day, and 150-day volumes to rates in l/s
     allo_rates1['RateDaily'] = (allo_rates1['VolumeDaily'] / 24 / 60 / 60) * 1000
@@ -208,31 +261,10 @@ def process_allo(param):
 
     rates2 = rates1[['Groundwater', 'Surface Water']].stack().reset_index()
     rates2.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedRate'}, inplace=True)
-    rates2.rename(columns={'SwAllocationBlock': 'AllocationBlock'}, inplace=True)
-    rates3 = rates2.drop_duplicates(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'Wap']).set_index(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'Wap'])
-
-    ## Allocated Volume
-    av1 = db.allocated_volume.drop('EffectiveFromDate', axis=1).copy()
-    av1.replace({'GwAllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
-
-    # Add in the Wap info
-    ar1 = allo_rates1.reset_index()[['RecordNumber', 'SwAllocationBlock', 'TakeType', 'Wap', 'WapRate', 'Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio']].copy()
-    ar2_grp = ar1.groupby(['RecordNumber', 'TakeType', 'Wap'])
-    ar2_rates = ar2_grp[['WapRate']].sum()
-    ar2_others = ar2_grp[['Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio']].first()
-    ar3 = pd.concat([ar2_rates, ar2_others], axis=1).reset_index()
-
-    vols1 = pd.merge(av1, ar3, on=['RecordNumber', 'TakeType'])
-
-    grp3 = vols1.groupby(['RecordNumber', 'TakeType', 'GwAllocationBlock'])
-    vols1['WapRateAgg'] = grp3['WapRate'].transform('sum')
-    vols1['ratio'] = vols1['WapRate'] / vols1['WapRateAgg']
-    vols1.loc[vols1['ratio'].isnull(), 'ratio'] = 1
-    vols1['FullAnnualVolume'] = (vols1['FullAnnualVolume'] * vols1['ratio']).round()
-    vols1.drop(['WapRateAgg', 'ratio'], axis=1, inplace=True)
+    rates3 = rates2.set_index(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'Wap'])
 
     # Assign volumes with discount exception
-    #    vols1 = allo_rates1.copy()
+    vols1 = allo_rates1.copy()
     vols1['Surface Water'] = vols1['FullAnnualVolume'] * vols1['sw_vol_ratio']
     vols1['Groundwater'] = vols1['FullAnnualVolume']
     vols1.loc[vols1.TakeType == 'Take Surface Water', 'Groundwater'] = 0
@@ -240,17 +272,15 @@ def process_allo(param):
     discount_bool = ((vols1.sd_cat == 'moderate') & (vols1.Storativity)) | ((vols1.sd_cat == 'moderate') & vols1.Combined) | (vols1.sd_cat == 'high') | (vols1.sd_cat == 'direct')
     vols1.loc[discount_bool, 'Groundwater'] = vols1.loc[discount_bool, 'FullAnnualVolume'] - vols1.loc[discount_bool, 'Surface Water']
 
-    vols2 = vols1.set_index(['RecordNumber', 'GwAllocationBlock', 'Wap'])[['Groundwater', 'Surface Water']].stack().reset_index()
+    vols2 = vols1[['Groundwater', 'Surface Water']].stack().reset_index()
     vols2.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedAnnualVolume'}, inplace=True)
-    vols2.rename(columns={'GwAllocationBlock': 'AllocationBlock'}, inplace=True)
-    vols3 = vols2.drop_duplicates(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'Wap']).set_index(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'Wap'])
+    vols3 = vols2.set_index(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'Wap'])
 
     # Join rates and volumes
     rv1 = pd.concat([rates3, vols3], axis=1)
 
     ## Deal with the "Include in Allocation" fields
-    rv1a = pd.merge(rv1.reset_index(), allo_rates1.reset_index()[['RecordNumber', 'Wap', 'FromMonth', 'ToMonth', 'IncludeInSwAllocation']], on=['RecordNumber', 'Wap'])
-    rv2 = pd.merge(rv1a, vols1[['RecordNumber', 'Wap', 'IncludeInGwAllocation']], on=['RecordNumber', 'Wap'])
+    rv2 = pd.merge(rv1.reset_index(), allo_rates1[['FromMonth', 'ToMonth', 'IncludeInGwAllocation', 'IncludeInSwAllocation']].reset_index(), on=['RecordNumber', 'AllocationBlock', 'Wap'])
     rv3 = rv2[(rv2.HydroGroup == 'Surface Water') | (rv2.IncludeInGwAllocation)].drop('IncludeInGwAllocation', axis=1)
     rv4 = rv3[(rv3.HydroGroup == 'Groundwater') | (rv3.IncludeInSwAllocation)].drop('IncludeInSwAllocation', axis=1)
 
@@ -300,8 +330,9 @@ def process_allo(param):
     out_param = param['source data']['gw_zone_allo']
     sf.to_table(zone3, out_param['table'], out_param['username'], out_param['password'], out_param['account'], out_param['database'], out_param['schema'], True)
 
-    ## Return
-    return rv6, zone3
 
+## If failure
 
-
+except Exception as err:
+    err1 = err
+    print(err1)

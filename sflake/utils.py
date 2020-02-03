@@ -4,10 +4,8 @@ Created on Tue Jan 15 15:59:37 2019
 
 @author: MichaelEK
 """
-from pdsql import mssql
 import pandas as pd
 import numpy as np
-import plotly
 #from pyproj import Proj, CRS, Transformer
 import geopandas as gpd
 #from gistools import vector

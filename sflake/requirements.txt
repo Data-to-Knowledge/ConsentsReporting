@@ -1,0 +1,8 @@
+pyyaml
+geopandas
+pandas
+schedule
+pdsf
+requests
+pymssql==2.1.4
+pdsql

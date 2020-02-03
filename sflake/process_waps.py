@@ -4,62 +4,25 @@ Created on Thu Jun  7 11:41:44 2018
 
 @author: MichaelEK
 """
-import os
-import argparse
 import types
 import pandas as pd
 import numpy as np
 from pdsf import sflake as sf
-from datetime import datetime
-import yaml
-#from pdsql import create_snowflake_engine
 from pdsql import mssql
 from gistools import vector
 #from pdsql.util import compare_dfs
 
-pd.options.display.max_columns = 10
-run_time_start = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
-print(run_time_start)
-
-try:
-
-    #####################################
-    ### Read parameters file
-
-    base_dir = os.path.realpath(os.path.dirname(__file__))
-
-    with open(os.path.join(base_dir, 'parameters-dev.yml')) as param:
-        param = yaml.safe_load(param)
-
-#    parser = argparse.ArgumentParser()
-#    parser.add_argument('yaml_path')
-#    args = parser.parse_args()
-#
-#    with open(args.yaml_path) as param:
-#        param = yaml.safe_load(param)
-
-    ## Integrety checks
-    use_types_check = np.in1d(list(param['misc']['use_types_codes'].keys()), param['misc']['use_types_priorities']).all()
-
-    if not use_types_check:
-        raise ValueError('use_type_priorities parameter does not encompass all of the use type categories. Please fix the parameters file.')
+##############################################
+### Function
 
 
-    #####################################
-    ### Read the log
+def process_waps(param):
+    """
 
-#    max_date_stmt = "select max(RunTimeStart) from " + param.log_table + " where HydroTable='" + param.process_name + "' and RunResult='pass' and ExtSystem='" + param.ext_system + "'"
-#
-#    last_date1 = mssql.rd_sql(server=param.hydro_server, database=param.hydro_database, stmt=max_date_stmt).loc[0][0]
-#
-#    if last_date1 is None:
-#        last_date1 = '1900-01-01'
-#    else:
-#        last_date1 = str(last_date1.date())
-#
-#    print('Last sucessful date is ' + last_date1)
+    """
+    run_time_start = pd.Timestamp.today().strftime('%Y-%m-%d %H:%M:%S')
+    print(run_time_start)
 
-    #######################################
     ### Read in source data and update accela tables in ConsentsReporting db
     print('--Reading in source data...')
 
@@ -124,8 +87,5 @@ try:
 
     sf.to_table(waps4, wap_dict['table'], wap_dict['username'], wap_dict['password'], wap_dict['account'], wap_dict['database'], wap_dict['schema'], True)
 
-## If failure
+    return waps4
 
-except Exception as err:
-    err1 = err
-    print(err1)
