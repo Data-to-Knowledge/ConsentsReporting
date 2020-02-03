@@ -83,11 +83,11 @@ def geojson_convert(json_lst):
                 hydro_units[h]['value'].extend([g['id']])
                 hydro_units[h]['label'].extend([g['name']])
 
-    for gj in gjson1:
-        if gj['id'] == 'GWAZ0037':
-            gj['color'] = 'rgb(204, 204, 204)'
-        else:
-            gj['color'] = plotly.colors.qualitative.Vivid[np.random.randint(0, 11)]
+#    for gj in gjson1:
+#        if gj['id'] == 'GWAZ0037':
+#            gj['color'] = 'rgb(204, 204, 204)'
+#        else:
+#            gj['color'] = plotly.colors.qualitative.Vivid[np.random.randint(0, 11)]
 
     gpd1 = pd.DataFrame(gjson1).dropna()
     gpd1['geometry'] = gpd1['wkt'].apply(wkt.loads)

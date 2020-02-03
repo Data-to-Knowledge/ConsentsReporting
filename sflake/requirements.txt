@@ -7,3 +7,4 @@ requests
 pymssql==2.1.4
 pdsql
 gistools
+rtree
