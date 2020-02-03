@@ -60,7 +60,7 @@ def process_waps(param):
     waps2.loc[waps2.Storativity.isnull(), 'Storativity'] = False
 
     ## Add spaital info
-    waps3, poly1 = vector.pts_poly_join(waps2, db.gw_zones, 'SpatialUnitID')
+    waps3, poly1 = vector.pts_poly_join(waps2, db.gw_zones, ['SpatialUnitID', 'Name'])
     waps3.drop_duplicates('Wap', inplace=True)
     waps3['Combined'] = waps3.apply(lambda x: 'CWAZ' in x['SpatialUnitID'], axis=1)
 
@@ -70,6 +70,7 @@ def process_waps(param):
 
     waps4 = pd.DataFrame(waps3.drop('geometry', axis=1))
     waps4[['NzTmX', 'NzTmY']] = waps4[['NzTmX', 'NzTmY']].round().astype(int)
+    waps4.rename(columns={'Name': 'SpatialUnitName', 'SpatialUnitID': 'SpatialUnitId'}, inplace=True)
 
     ## Check for differences
     print('Save results')

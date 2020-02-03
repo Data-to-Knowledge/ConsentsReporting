@@ -273,7 +273,7 @@ def process_allo(param):
     rv5 = pd.merge(rv4, permits2[['RecordNumber', 'ConsentStatus', 'FromDate', 'ToDate']], on='RecordNumber')
 
     ## Combine with other Wap data
-    waps1 = waps[['Wap', 'SpatialUnitID', 'Combined']].rename(columns={'SpatialUnitID': 'SpatialUnitId'}).copy()
+    waps1 = waps[['Wap', 'SpatialUnitId', 'Combined']].copy()
     rv6 = pd.merge(rv5, waps1, on='Wap')
 
     ## Aggregate to zone (for GW) for active consents
