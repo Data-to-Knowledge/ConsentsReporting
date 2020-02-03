@@ -1,0 +1,6 @@
+version: "3.7"
+services:
+  sql-check:
+    image: mullenkamp/sql-server-check:latest
+    volumes:
+      - C:\ecan\git\ConsentsReporting\sflake\sql-checks\parameters-dev.yml:/parameters.yml
