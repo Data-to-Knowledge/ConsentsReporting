@@ -221,8 +221,10 @@ def process_allo(param):
     ar2_rates = ar2_grp[['WapRate']].sum()
     ar2_others = ar2_grp[['Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio']].first()
     ar3 = pd.concat([ar2_rates, ar2_others], axis=1).reset_index()
+#    ar3['WapCount'] = ar3.groupby(['RecordNumber', 'TakeType'])['Wap'].transform('count')
 
     vols1 = pd.merge(av1, ar3, on=['RecordNumber', 'TakeType'])
+#    vols1.groupby(['RecordNumber', 'TakeType', 'Wap'])['GwAllocationBlock'].count()
 
     grp3 = vols1.groupby(['RecordNumber', 'TakeType'])
     vols1['WapRateAgg'] = grp3['WapRate'].transform('sum')
@@ -230,6 +232,8 @@ def process_allo(param):
     vols1.loc[vols1['ratio'].isnull(), 'ratio'] = 1
     vols1['FullAnnualVolume'] = (vols1['FullAnnualVolume'] * vols1['ratio']).round()
     vols1.drop(['WapRateAgg', 'ratio'], axis=1, inplace=True)
+#    vols1['FullAnnualVolume'] = (vols1['FullAnnualVolume'] * vols1['ratio'] / vols1['WapCount']).round()
+#    vols1.drop(['WapRateAgg', 'ratio', 'WapCount'], axis=1, inplace=True)
 
     # Assign volumes with discount exception
     #    vols1 = allo_rates1.copy()
@@ -255,10 +259,10 @@ def process_allo(param):
     rv4 = rv3[(rv3.HydroGroup == 'Groundwater') | (rv3.IncludeInSwAllocation)].drop('IncludeInSwAllocation', axis=1)
 
     ## Calculate missing volumes and rates
-    ann_bool = rv4.AllocatedAnnualVolume == 0
+    ann_bool = rv4.AllocatedAnnualVolume.isnull()
     rv4.loc[ann_bool, 'AllocatedAnnualVolume'] = (rv4.loc[ann_bool, 'AllocatedRate'] * 0.001*60*60*24*30.42* (rv4.loc[ann_bool, 'ToMonth'] - rv4.loc[ann_bool, 'FromMonth'] + 1)).round()
 
-    rate_bool = rv4.AllocatedRate == 0
+    rate_bool = rv4.AllocatedRate.isnull()
     rv4.loc[rate_bool, 'AllocatedRate'] = np.floor((rv4.loc[rate_bool, 'AllocatedAnnualVolume'] / 60/60/24/30.42/ (rv4.loc[rate_bool, 'ToMonth'] - rv4.loc[rate_bool, 'FromMonth'] + 1) * 1000))
 
     rv4 = rv4[(rv4['AllocatedAnnualVolume'] > 0) | (rv4['AllocatedRate'] > 0)].copy()
