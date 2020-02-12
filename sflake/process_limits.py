@@ -33,7 +33,7 @@ def process_limits(param):
     print('--Process GW limits')
 
     combo1 = pd.merge(sg, t_data1.drop(['fromMonth', 'toMonth'], axis=1), on='id')
-    combo1.rename(columns={'id': 'ManagementGroupId', 'spatialId': 'SpatialUnitId', 'Allocation Block': 'AllocationBlock', 'name': 'Name', 'planName': 'PlanName', 'planSection': 'PlanSection', 'planTable': 'PlanTable', 'limit': 'AllocationLimit', 'units': 'Units', 'notes': 'Notes'}, inplace=True)
+    combo1.rename(columns={'id': 'ManagementGroupId', 'spatialId': 'GwSpatialUnitId', 'Allocation Block': 'AllocationBlock', 'name': 'Name', 'planName': 'PlanName', 'planSection': 'PlanSection', 'planTable': 'PlanTable', 'limit': 'AllocationLimit', 'units': 'Units', 'notes': 'Notes'}, inplace=True)
 
     ## Save results
     print('Save results')

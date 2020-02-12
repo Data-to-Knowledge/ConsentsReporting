@@ -10,6 +10,8 @@ import numpy as np
 from pdsf import sflake as sf
 from pdsql import mssql
 from gistools import vector
+from shapely.geometry import Point
+import geopandas as gpd
 #from pdsql.util import compare_dfs
 
 ##############################################
@@ -39,6 +41,10 @@ def process_waps(param):
 
     setattr(db, 'gw_zones', mssql.rd_sql(gw_dict['server'], gw_dict['database'], gw_dict['table'], gw_dict['col_names'], username=gw_dict['username'], password=gw_dict['password'], geo_col=True, rename_cols=gw_dict['rename_cols']))
 
+    sw_dict = param['source data']['sw_reaches']
+
+    setattr(db, 'sw_reaches', mssql.rd_sql(sw_dict['server'], sw_dict['database'], sw_dict['table'], sw_dict['col_names'], username=gw_dict['username'], password=gw_dict['password'], geo_col=True))
+
     ##################################################
     ### Waps
     print('--Process Waps')
@@ -60,17 +66,34 @@ def process_waps(param):
     waps2.loc[waps2.Storativity.isnull(), 'Storativity'] = False
 
     ## Add spaital info
-    waps3, poly1 = vector.pts_poly_join(waps2, db.gw_zones, 'SpatialUnitID')
+    # GW
+    gw_zones = db.gw_zones.copy()
+    gw_zones.rename(columns={'SpatialUnitID': 'GwSpatialUnitId'}, inplace=True)
+
+    waps3, poly1 = vector.pts_poly_join(waps2, gw_zones, 'GwSpatialUnitId')
     waps3.drop_duplicates('Wap', inplace=True)
-    waps3['Combined'] = waps3.apply(lambda x: 'CWAZ' in x['SpatialUnitID'], axis=1)
+    waps3['Combined'] = waps3.apply(lambda x: 'CWAZ' in x['GwSpatialUnitId'], axis=1)
+
+    # SW
+    sw1 = db.sw_reaches.copy()
+    sw1.rename(columns={'SpatialUnitID': 'SwSpatialUnitId'}, inplace=True)
+
+    lst1 = []
+    for index, row in sw1.iterrows():
+        for j in list(row['geometry'].coords):
+            lst1.append([row['SwSpatialUnitId'], Point(j)])
+    df1 = pd.DataFrame(lst1, columns=['SwSpatialUnitId', 'geometry'])
+    sw2 = gpd.GeoDataFrame(df1, geometry='geometry')
+
+    waps3b = vector.kd_nearest(waps3, sw2, 'SwSpatialUnitId')
 
     ## prepare output
-    waps3['NzTmX'] = waps3.geometry.x
-    waps3['NzTmY'] = waps3.geometry.y
+    waps3b['NzTmX'] = waps3b.geometry.x
+    waps3b['NzTmY'] = waps3b.geometry.y
 
-    waps4 = pd.DataFrame(waps3.drop('geometry', axis=1))
+    waps4 = pd.DataFrame(waps3b.drop(['geometry'], axis=1))
     waps4[['NzTmX', 'NzTmY']] = waps4[['NzTmX', 'NzTmY']].round().astype(int)
-    waps4.rename(columns={'Name': 'SpatialUnitName', 'SpatialUnitID': 'SpatialUnitId'}, inplace=True)
+    waps4.rename(columns={'Name': 'SpatialUnitName', 'distance': 'DistanceToSw'}, inplace=True)
 
     ## Check for differences
     print('Save results')

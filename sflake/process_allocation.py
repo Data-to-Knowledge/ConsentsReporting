@@ -33,7 +33,6 @@ def process_allo(param):
             stmt = 'select * from "{table}"'.format(table=p['table'])
         setattr(db, t, sf.read_table(p['username'], p['password'], p['account'], p['database'], p['schema'], stmt))
 
-
     ##################################################
     ### Sites
     print('--Process Waps')
@@ -277,14 +276,14 @@ def process_allo(param):
     rv5 = pd.merge(rv4, permits2[['RecordNumber', 'ConsentStatus', 'FromDate', 'ToDate']], on='RecordNumber')
 
     ## Combine with other Wap data
-    waps1 = waps[['Wap', 'SpatialUnitId', 'Combined']].copy()
+    waps1 = waps[['Wap', 'GwSpatialUnitId', 'SwSpatialUnitId', 'Combined']].copy()
     rv6 = pd.merge(rv5, waps1, on='Wap')
 
     ## Aggregate to zone (for GW) for active consents
     gw1 = rv6[((rv6.HydroGroup == 'Groundwater') | ((rv6.HydroGroup == 'Surface Water') & (rv6.Combined))) & (rv6.ConsentStatus.isin(['Issued - Active', 'Issued - Inactive', 'Application in Process', 'Issued - s124 Continuance']))].copy()
     gw2 = rv6[((rv6.HydroGroup == 'Groundwater') | ((rv6.HydroGroup == 'Surface Water') & (rv6.Combined))) & (rv6.ConsentStatus.isin(['Application in Process']))].copy()
-    zone1 = gw1.groupby(['SpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
-    zone2 = gw2.groupby(['SpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
+    zone1 = gw1.groupby(['GwSpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
+    zone2 = gw2.groupby(['GwSpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
 
     zone1.rename(columns={'AllocatedAnnualVolume': 'AllocatedVolume'}, inplace=True)
     zone2.rename(columns={'AllocatedAnnualVolume': 'NewAllocationInProgress'}, inplace=True)
