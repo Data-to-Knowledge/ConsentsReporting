@@ -8,6 +8,7 @@ import types
 import pandas as pd
 import numpy as np
 from pdsf import sflake as sf
+from utils import split_months
 
 
 def process_allo(param):
@@ -279,16 +280,45 @@ def process_allo(param):
     waps1 = waps[['Wap', 'GwSpatialUnitId', 'SwSpatialUnitId', 'Combined']].copy()
     rv6 = pd.merge(rv5, waps1, on='Wap')
 
-    ## Aggregate to zone (for GW) for active consents
-    gw1 = rv6[((rv6.HydroGroup == 'Groundwater') | ((rv6.HydroGroup == 'Surface Water') & (rv6.Combined))) & (rv6.ConsentStatus.isin(['Issued - Active', 'Issued - Inactive', 'Application in Process', 'Issued - s124 Continuance']))].copy()
-    gw2 = rv6[((rv6.HydroGroup == 'Groundwater') | ((rv6.HydroGroup == 'Surface Water') & (rv6.Combined))) & (rv6.ConsentStatus.isin(['Application in Process']))].copy()
-    zone1 = gw1.groupby(['GwSpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
-    zone2 = gw2.groupby(['GwSpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
+    gw_bool = (rv6.HydroGroup == 'Groundwater') | (rv6.Combined)
+    sw_bool = (rv6.HydroGroup == 'Surface Water') & (~rv6.Combined)
+
+    rv6['SpatialUnitId'] = None
+
+    rv6.loc[gw_bool, 'SpatialUnitId'] = rv6.loc[gw_bool, 'GwSpatialUnitId']
+    rv6.loc[sw_bool, 'SpatialUnitId'] = rv6.loc[sw_bool, 'SwSpatialUnitId']
+
+    ## Filter for active consents
+    active_bool = rv6.ConsentStatus.isin(['Issued - Active', 'Issued - Inactive', 'Issued - s124 Continuance'])
+    in_process_bool = rv6.ConsentStatus.isin(['Application in Process'])
+
+    # GW
+    gw1 = rv6[gw_bool & active_bool].copy()
+    gw2 = rv6[gw_bool & in_process_bool].copy()
+    zone1 = gw1.groupby(['SpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
+    zone2 = gw2.groupby(['SpatialUnitId', 'AllocationBlock'])[['AllocatedAnnualVolume']].sum()
 
     zone1.rename(columns={'AllocatedAnnualVolume': 'AllocatedVolume'}, inplace=True)
     zone2.rename(columns={'AllocatedAnnualVolume': 'NewAllocationInProgress'}, inplace=True)
 
     zone3 = pd.concat([zone1, zone2], axis=1).reset_index()
+#    zone3.rename(columns={'GwSpatialUnitId': 'SpatialUnitId'}, inplace=True)
+
+    # SW
+    sw_active1 = rv6[sw_bool & active_bool].copy()
+    sw_process1 = rv6[sw_bool & in_process_bool].copy()
+
+    index1 = ['SpatialUnitId', 'AllocationBlock', 'FromMonth']
+    #df = sw_active1.copy()
+    month_col = 'FromMonth'
+    calc_col = 'AllocatedRate'
+
+    sw_active2 = split_months(sw_active1, index1, month_col, calc_col)
+    sw_process2 = split_months(sw_process1, index1, month_col, calc_col)
+    sw_process2.rename(columns={'AllocatedRate': 'NewAllocationInProgress'}, inplace=True)
+
+    sw2 = pd.merge(sw_active2, sw_process2, on=['SpatialUnitId', 'AllocationBlock', 'Month'], how='left')
+#    sw2.rename(columns={'SwSpatialUnitId': 'SpatialUnitId'}, inplace=True)
 
     ## Save results
     print('Save results')
@@ -298,10 +328,15 @@ def process_allo(param):
     out_param = param['source data']['allo_calc']
     sf.to_table(rv6, out_param['table'], out_param['username'], out_param['password'], out_param['account'], out_param['database'], out_param['schema'], True)
 
-    # Zone summary
+    # GW summary
     zone3['EffectiveFromDate'] = run_time_start
     out_param = param['source data']['gw_zone_allo']
     sf.to_table(zone3, out_param['table'], out_param['username'], out_param['password'], out_param['account'], out_param['database'], out_param['schema'], True)
+
+    # SW summary
+    sw2['EffectiveFromDate'] = run_time_start
+    out_param = param['source data']['sw_zone_allo']
+    sf.to_table(sw2, out_param['table'], out_param['username'], out_param['password'], out_param['account'], out_param['database'], out_param['schema'], True)
 
     ## Return
     return rv6, zone3
