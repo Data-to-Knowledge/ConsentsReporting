@@ -1,0 +1,53 @@
+Id: CRC11111
+ConsentStatus: Issued - Active
+FromDate: 2011-11-11
+ToDate: 2021-11-11
+EcNumber: ttrr00000
+HolderName: Bob Smith
+Consented:
+  Take:
+    Groundwater:
+      L35/3333:
+        FromMonth: 1
+        ToMonth: 12
+        Rate: 100
+        MultiDayVolume: 1000
+        MultiDayPeriod: 7
+        AnnualVolume: 1000000
+      L35/3334:
+        FromMonth: 1
+        ToMonth: 12
+        Rate: 50
+        MultiDayVolume: 500
+        MultiDayPeriod: 7
+        AnnualVolume: 500000
+  Use:
+    Groundwater:
+      L35/3334:
+        FromMonth: 1
+        ToMonth: 12
+        Rate: 50
+        MultiDayVolume: 500
+        MultiDayPeriod: 7
+        AnnualVolume: 500000
+        UseType: Irrigation
+        IrrigatedArea: 100
+Allocated:
+  Groundwater:
+    A:
+      L35/3333:
+        FromMonth: 1
+        ToMonth: 12
+        Rate: 100
+        AnnualVolume: 1000000
+  Surface Water:
+    A:
+      L35/3334:
+        FromMonth: 1
+        ToMonth: 12
+        Rate: 50
+        AnnualVolume: 500000
+Parent:
+  - CRC11110
+Linked:
+  - CRC11112

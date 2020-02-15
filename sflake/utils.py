@@ -199,7 +199,30 @@ def assign_notes(sg_df):
     return sp4.drop(['hydro_count', 'joint_units'], axis=1)
 
 
+def split_months(df, index, month_col, calc_col):
+    """
 
+    """
+    index1 = index.copy()
+    if not month_col in index1:
+        index1.extend([month_col])
+
+    sum1 = df.groupby(index1)[calc_col].sum()
+
+    ldata0 = sum1.unstack(len(index1) - 1)
+    col1 = set(ldata0.columns)
+    col2 = col1.copy()
+    col2.update(range(1, 13))
+    new_cols = list(col2.difference(col1))
+    ldata0 = ldata0.reindex(columns=ldata0.columns.tolist() + new_cols)
+    ldata0.sort_index(axis=1, inplace=True)
+
+    l_data1 = ldata0.ffill(axis=1).stack()
+    l_data1.name = calc_col
+    l_data1 = l_data1.reset_index()
+    l_data1.rename(columns={month_col: 'Month'}, inplace=True)
+
+    return l_data1
 
 
 
