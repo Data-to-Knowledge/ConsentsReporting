@@ -367,10 +367,10 @@ try:
     # clean data
     av1['RecordNumber'] = av1['RecordNumber'].str.strip().str.upper()
     av1['take_type'] = av1['take_type'].str.strip().str.title()
-    av1['IncludeInAllocation'] = av1['IncludeInAllocation'].str.strip().str.title()
-    av1.loc[av1['IncludeInAllocation'] == 'No', 'IncludeInAllocation'] = False
-    av1.loc[av1['IncludeInAllocation'] == 'Yes', 'IncludeInAllocation'] = True
-    av1['IncludeInAllocation'] = av1['IncludeInAllocation'].astype(bool)
+    av1['IncludeInGwAllocation'] = av1['IncludeInGwAllocation'].str.strip().str.title()
+    av1.loc[av1['IncludeInGwAllocation'] == 'No', 'IncludeInGwAllocation'] = False
+    av1.loc[av1['IncludeInGwAllocation'] == 'Yes', 'IncludeInGwAllocation'] = True
+    av1['IncludeInGwAllocation'] = av1['IncludeInGwAllocation'].astype(bool)
 #    av1['AllocatedAnnualVolume'] = pd.to_numeric(av1['AllocatedAnnualVolume'], errors='coerce').astype(int)
     av1['FullAnnualVolume'] = pd.to_numeric(av1['FullAnnualVolume'], errors='coerce').astype(int)
 #    av1.loc[av1['AllocatedAnnualVolume'] <= 0, 'AllocatedAnnualVolume'] = 0
@@ -380,7 +380,7 @@ try:
 #    av1.replace({'AllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
 
     ## Combine volumes with rates
-    wa7 = pd.merge(av1, wa6, on=['RecordNumber', 'take_type'])
+    wa7 = pd.merge(av1, wa6, on=['RecordNumber', 'take_type', 'AllocationBlock'])
 
     ## Distribute the volumes by WapRate
     wa8 = wa7.copy()
@@ -477,8 +477,8 @@ try:
     rv1 = pd.concat([rates3, vols3], axis=1)
 
     ## Deal with the "Include in Allocation" fields
-    rv2 = pd.merge(rv1.reset_index(), allo_rates1[['FromMonth', 'ToMonth', 'IncludeInAllocation', 'IncludeInSwAllocation']].reset_index(), on=['RecordNumber', 'AllocationBlock', 'WAP'])
-    rv3 = rv2[(rv2.HydroGroup == 'Surface Water') | (rv2.IncludeInAllocation)].drop('IncludeInAllocation', axis=1)
+    rv2 = pd.merge(rv1.reset_index(), allo_rates1[['FromMonth', 'ToMonth', 'IncludeInGwAllocation', 'IncludeInSwAllocation']].reset_index(), on=['RecordNumber', 'AllocationBlock', 'WAP'])
+    rv3 = rv2[(rv2.HydroGroup == 'Surface Water') | (rv2.IncludeInGwAllocation)].drop('IncludeInGwAllocation', axis=1)
     rv4 = rv3[(rv3.HydroGroup == 'Groundwater') | (rv3.IncludeInSwAllocation)].drop('IncludeInSwAllocation', axis=1)
 
     ## Calculate missing volumes and rates

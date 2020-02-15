@@ -4,6 +4,7 @@ Created on Tue Jun 25 11:07:27 2019
 
 @author: michaelek
 """
+import os
 import argparse
 import pandas as pd
 from pdsql import mssql
