@@ -7,6 +7,7 @@ Created on Thu Jun  7 11:41:44 2018
 import types
 import pandas as pd
 import numpy as np
+import json
 from pdsf import sflake as sf
 from utils import split_months
 
@@ -29,9 +30,9 @@ def process_allo(param):
         p = param['source data'][t]
         print(p['table'])
         if p['schema'] != 'public':
-            stmt = 'select * from "{schema}"."{table}"'.format(schema=p['schema'], table=p['table'])
+            stmt = 'select {cols} from "{schema}"."{table}"'.format(schema=p['schema'], table=p['table'], cols=json.dumps(p['col_names'])[1:-1])
         else:
-            stmt = 'select * from "{table}"'.format(table=p['table'])
+            stmt = 'select {cols} from "{table}"'.format(table=p['table'], cols=json.dumps(p['col_names'])[1:-1])
         setattr(db, t, sf.read_table(p['username'], p['password'], p['account'], p['database'], p['schema'], stmt))
 
     ##################################################
@@ -152,15 +153,19 @@ def process_allo(param):
 
     ## Add in stream depletion
     waps = db.waps.drop('EffectiveFromDate', axis=1).copy()
-    wa9 = pd.merge(wa6, waps, on='Wap').drop(['SD1_30Day'], axis=1)
+    wa7 = pd.merge(wa6, waps, on='Wap').drop(['SD1_30Day'], axis=1)
 
     #    wa9['SD1_7Day'] = pd.to_numeric(wa9['SD1_7Day'], errors='coerce').round(0)
     #    wa9['SD1_150Day'] = pd.to_numeric(wa9['SD1_150Day'], errors='coerce').round(0)
 
+    ## Add in the lowflow bool
+    wa8 = pd.merge(wa7, db.consented_takes.drop('EffectiveFromDate', axis=1), on=['RecordNumber', 'TakeType'], how='left')
+    wa8.loc[wa8.LowflowCondition.isnull(), 'LowflowCondition'] = False
+
     ## Distribute the rates according to the stream depletion requirements
     ## According to the LWRP!
 
-    allo_rates1 = wa9.drop_duplicates(['RecordNumber', 'SwAllocationBlock', 'Wap']).set_index(['RecordNumber', 'SwAllocationBlock', 'Wap']).copy()
+    allo_rates1 = wa8.drop_duplicates(['RecordNumber', 'SwAllocationBlock', 'Wap']).set_index(['RecordNumber', 'SwAllocationBlock', 'Wap']).copy()
 
     # Convert daily, 7-day, and 150-day volumes to rates in l/s
     allo_rates1['RateDaily'] = (allo_rates1['VolumeDaily'] / 24 / 60 / 60) * 1000
@@ -194,11 +199,14 @@ def process_allo(param):
     high_bool = rates1.sd_cat == 'high'
     direct_bool = rates1.sd_cat == 'direct'
 
+    lf_cond_bool = rates1.LowflowCondition
+
     rates1['Surface Water'] = 0
     rates1['Groundwater'] = 0
 
     rates1.loc[gw_bool, 'Groundwater'] = rates1.loc[gw_bool, 'Rate150Day']
     rates1.loc[mod_bool | high_bool, 'Surface Water'] = rates1.loc[mod_bool | high_bool, 'Rate150Day'] * (rates1.loc[mod_bool | high_bool, 'SD1_150Day'] * 0.01)
+
     alt_bool = (mod_bool & rates1.Storativity) | high_bool | (mod_bool & rates1.Combined)
     rates1.loc[alt_bool, 'Groundwater'] = rates1.loc[alt_bool, 'Rate150Day']  - rates1.loc[alt_bool, 'Surface Water']
 

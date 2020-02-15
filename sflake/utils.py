@@ -39,7 +39,7 @@ def get_json_from_api():
     return r.json()
 
 
-def json_filters(json_lst, only_operative=True, only_gw=True):
+def json_filters(json_lst, only_operative=True, only_gw=False):
     """
 
     """
