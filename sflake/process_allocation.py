@@ -207,7 +207,7 @@ def process_allo(param):
     rates1.loc[gw_bool, 'Groundwater'] = rates1.loc[gw_bool, 'Rate150Day']
     rates1.loc[mod_bool | high_bool, 'Surface Water'] = rates1.loc[mod_bool | high_bool, 'Rate150Day'] * (rates1.loc[mod_bool | high_bool, 'SD1_150Day'] * 0.01)
 
-    alt_bool = (mod_bool & rates1.Storativity) | high_bool | (mod_bool & rates1.Combined)
+    alt_bool = ((rates1.Storativity | lf_cond_bool) & (mod_bool | high_bool)) | rates1.Combined
     rates1.loc[alt_bool, 'Groundwater'] = rates1.loc[alt_bool, 'Rate150Day']  - rates1.loc[alt_bool, 'Surface Water']
 
     rates1.loc[direct_bool & gw_bool, 'Surface Water'] = rates1.loc[direct_bool & gw_bool, 'RateDaily']
@@ -224,10 +224,10 @@ def process_allo(param):
     av1.replace({'GwAllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
 
     # Add in the Wap info
-    ar1 = allo_rates1.reset_index()[['RecordNumber', 'SwAllocationBlock', 'TakeType', 'Wap', 'WapRate', 'Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio']].copy()
+    ar1 = allo_rates1.reset_index()[['RecordNumber', 'SwAllocationBlock', 'TakeType', 'Wap', 'WapRate', 'Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio', 'LowflowCondition']].copy()
     ar2_grp = ar1.groupby(['RecordNumber', 'TakeType', 'Wap'])
     ar2_rates = ar2_grp[['WapRate']].sum()
-    ar2_others = ar2_grp[['Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio']].first()
+    ar2_others = ar2_grp[['Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio', 'LowflowCondition']].first()
     ar3 = pd.concat([ar2_rates, ar2_others], axis=1).reset_index()
 #    ar3['WapCount'] = ar3.groupby(['RecordNumber', 'TakeType'])['Wap'].transform('count')
 
@@ -249,7 +249,9 @@ def process_allo(param):
     vols1['Groundwater'] = vols1['FullAnnualVolume']
     vols1.loc[vols1.TakeType == 'Take Surface Water', 'Groundwater'] = 0
 
-    discount_bool = ((vols1.sd_cat == 'moderate') & (vols1.Storativity)) | ((vols1.sd_cat == 'moderate') & vols1.Combined) | (vols1.sd_cat == 'high') | (vols1.sd_cat == 'direct')
+#    discount_bool = ((vols1.sd_cat == 'moderate') & (vols1.Storativity)) | ((vols1.sd_cat == 'moderate') & vols1.Combined) | (vols1.sd_cat == 'high') | (vols1.sd_cat == 'direct')
+    discount_bool = ((vols1.Storativity | vols1.LowflowCondition) & ((vols1.sd_cat == 'moderate') | (vols1.sd_cat == 'high') | (vols1.sd_cat == 'direct'))) | vols1.Combined
+
     vols1.loc[discount_bool, 'Groundwater'] = vols1.loc[discount_bool, 'FullAnnualVolume'] - vols1.loc[discount_bool, 'Surface Water']
 
     vols2 = vols1.set_index(['RecordNumber', 'GwAllocationBlock', 'Wap'])[['Groundwater', 'Surface Water']].stack().reset_index()
