@@ -224,9 +224,9 @@ def process_allo(param):
     av1.replace({'GwAllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
 
     # Add in the Wap info
-    ar1 = allo_rates1.reset_index()[['RecordNumber', 'SwAllocationBlock', 'TakeType', 'Wap', 'WapRate', 'Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio', 'LowflowCondition']].copy()
+    ar1 = allo_rates1.reset_index()[['RecordNumber', 'SwAllocationBlock', 'TakeType', 'Wap', 'Rate150Day', 'Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio', 'LowflowCondition']].copy()
     ar2_grp = ar1.groupby(['RecordNumber', 'TakeType', 'Wap'])
-    ar2_rates = ar2_grp[['WapRate']].sum()
+    ar2_rates = ar2_grp[['Rate150Day']].sum()
     ar2_others = ar2_grp[['Storativity', 'Combined', 'sd_cat', 'sw_vol_ratio', 'LowflowCondition']].first()
     ar3 = pd.concat([ar2_rates, ar2_others], axis=1).reset_index()
 #    ar3['WapCount'] = ar3.groupby(['RecordNumber', 'TakeType'])['Wap'].transform('count')
@@ -235,11 +235,11 @@ def process_allo(param):
 #    vols1.groupby(['RecordNumber', 'TakeType', 'Wap'])['GwAllocationBlock'].count()
 
     grp3 = vols1.groupby(['RecordNumber', 'TakeType'])
-    vols1['WapRateAgg'] = grp3['WapRate'].transform('sum')
-    vols1['ratio'] = vols1['WapRate'] / vols1['WapRateAgg']
-    vols1.loc[vols1['ratio'].isnull(), 'ratio'] = 1
+    vols1['Rate150DayAgg'] = grp3['Rate150Day'].transform('sum')
+    vols1['ratio'] = vols1['Rate150Day'] / vols1['Rate150DayAgg']
+    vols1.loc[vols1['ratio'].isnull(), 'ratio'] = 0
     vols1['FullAnnualVolume'] = (vols1['FullAnnualVolume'] * vols1['ratio']).round()
-    vols1.drop(['WapRateAgg', 'ratio'], axis=1, inplace=True)
+    vols1.drop(['Rate150DayAgg', 'ratio'], axis=1, inplace=True)
 #    vols1['FullAnnualVolume'] = (vols1['FullAnnualVolume'] * vols1['ratio'] / vols1['WapCount']).round()
 #    vols1.drop(['WapRateAgg', 'ratio', 'WapCount'], axis=1, inplace=True)
 
