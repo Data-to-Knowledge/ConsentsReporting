@@ -25,17 +25,17 @@ try:
     #####################################
     ### Read parameters file
 
-#    base_dir = os.path.realpath(os.path.dirname(__file__))
-#
-#    with open(os.path.join(base_dir, 'parameters-dev.yml')) as param:
-#        param = yaml.safe_load(param)
+    base_dir = os.path.realpath(os.path.dirname(__file__))
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('yaml_path')
-    args = parser.parse_args()
-
-    with open(args.yaml_path) as param:
+    with open(os.path.join(base_dir, 'parameters-test.yml')) as param:
         param = yaml.safe_load(param)
+
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('yaml_path')
+    # args = parser.parse_args()
+    #
+    # with open(args.yaml_path) as param:
+    #     param = yaml.safe_load(param)
 
     ## Integrety checks
     use_types_check = np.in1d(list(param['misc']['use_types_codes'].keys()), param['misc']['use_types_priorities']).all()

@@ -32,19 +32,20 @@ try:
     crc_attr_table = 'ConsentedAttributes'
     attr_table = 'Attributes'
     act_table = 'Activity'
+    crc_rates_table = 'ConsentedRateVolume'
 #    wap_table = 'SiteStreamDepletion'
 
-#    base_dir = os.path.realpath(os.path.dirname(__file__))
-#
-#    with open(os.path.join(base_dir, 'parameters.yml')) as param:
-#        param = yaml.safe_load(param)
+    base_dir = os.path.realpath(os.path.dirname(__file__))
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('yaml_path')
-    args = parser.parse_args()
-
-    with open(args.yaml_path) as param:
+    with open(os.path.join(base_dir, 'parameters-test.yml')) as param:
         param = yaml.safe_load(param)
+
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument('yaml_path')
+    # args = parser.parse_args()
+    #
+    # with open(args.yaml_path) as param:
+    #     param = yaml.safe_load(param)
 
     #####################################
     ### CrcAlloSiteSumm
@@ -99,8 +100,64 @@ try:
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm', 'pass', '{} rows updated'.format(len(both1)), username=param['output']['username'], password=param['output']['password'])
 
+
+    #####################################
+    ### CrcAlloSiteSumm
+    print('--Update CrcActSiteSumm table')
+
+    ## Read base data
+    crc_rates1 = mssql.rd_sql(param['output']['server'], param['output']['database'], crc_rates_table, ['CrcActSiteID', 'ConsentedRate', 'ConsentedMultiDayVolume', 'ConsentedMultiDayPeriod', 'ConsentedAnnualVolume', 'FromMonth', 'ToMonth'], username=param['output']['username'], password=param['output']['password'])
+    act1 = mssql.rd_sql(param['output']['server'], param['output']['database'], act_table, ['ActivityID', 'ActivityType', 'HydroGroupID'], where_in={'ActivityType': ['Take']}, username=param['output']['username'], password=param['output']['password'])
+    crc_act_id1 = mssql.rd_sql(param['output']['server'], param['output']['database'], crc_act_table, ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'], where_in={'ActivityID': act1.ActivityID.tolist()}, username=param['output']['username'], password=param['output']['password'])
+
+    ## Create estimates when NA
+    bool_vol = crc_rates1['ConsentedMultiDayVolume'].isnull()
+
+    crc_rates1.loc[bool_vol, 'ConsentedMultiDayPeriod'] = 1
+    crc_rates1.loc[bool_vol, 'ConsentedMultiDayVolume'] = ((crc_rates1.loc[bool_vol, 'ConsentedRate'] * 60 * 60 * 24) * 0.001).round().astype(int)
+
+    bool_ann2 = crc_rates1['ConsentedAnnualVolume'].isnull()
+
+    crc_rates1.loc[bool_ann2, 'ConsentedAnnualVolume'] = ((crc_rates1.loc[bool_ann2, 'ConsentedRate'] * 60 * 60 * 24 * 365) * 0.001).round()
+
+    bool_ann1 = crc_rates1['ConsentedAnnualVolume'].isnull() & (~bool_vol)
+
+    crc_rates1.loc[bool_ann1, 'ConsentedAnnualVolume'] = (crc_rates1.loc[bool_ann1, 'ConsentedMultiDayVolume'] / crc_rates1.loc[bool_ann1, 'ConsentedMultiDayPeriod'] * 365).round()
+
+    crc_rates1['ConsentedAnnualVolume'] = crc_rates1['ConsentedAnnualVolume'].astype(int)
+
+    ## Consented stuff
+    crc_act2 = pd.merge(crc_act_id1, crc_rates1, on='CrcActSiteID').drop('CrcActSiteID', axis=1).drop_duplicates(['RecordNumber', 'ActivityID', 'SiteID'])
+    crc_act3 = pd.merge(act1, crc_act2, on='ActivityID').drop('ActivityID', axis=1).rename(columns={'ActivityType': 'Activity'})
+    crc_act4 = pd.merge(hf1, crc_act3, on='HydroGroupID').drop('HydroGroupID', axis=1)
+    crc_act5 = pd.merge(sites1, crc_act4, on='SiteID').drop('SiteID', axis=1)
+    crc_act6 = pd.merge(permit1, crc_act5, on='RecordNumber')
+    crc_act7 = pd.merge(crc_act6, crc_attr3, on='RecordNumber')
+
+    ## Determine which rows should be updated
+    old_act = mssql.rd_sql(param['output']['server'], param['output']['database'], schema1 + '.CrcActSiteSumm')
+
+    diff_dict = mssql.compare_dfs(old_act.drop(['ModifiedDate'], axis=1), crc_act7, on=['RecordNumber', 'Activity', 'HydroGroup', 'ExtSiteID'])
+
+    both1 = pd.concat([diff_dict['new'], diff_dict['diff']])
+
+    rem1 = diff_dict['remove']
+
+    ## Update data if needed
+    if not both1.empty:
+        both1['ModifiedDate'] = run_time_start
+        mssql.update_table_rows(both1, param['output']['server'], param['output']['database'], schema1 + '.CrcActSiteSumm', on=['RecordNumber', 'Activity', 'HydroGroup', 'ExtSiteID'], username=param['output']['username'], password=param['output']['password'])
+
+    if not rem1.empty:
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], schema1 + '.CrcActSiteSumm', rem1, username=param['output']['username'], password=param['output']['password'])
+
+#    new_allo, rem_allo = mssql.update_from_difference(crc_allo7, param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', on=['RecordNumber', 'AllocationBlock', 'HydroGroup', 'ExtSiteID'], mod_date_col='ModifiedDate', remove_rows=True, username=param['output']['username'], password=param['output']['password'])
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSiteSumm', 'pass', '{} rows updated'.format(len(both1)), username=param['output']['username'], password=param['output']['password'])
+
 except Exception as err:
     err1 = err
     print(err1)
-    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm', 'fail', str(err1)[:299], username=param['output']['username'], password=param['output']['password'])
+    log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm/CrcActSiteSumm', 'fail', str(err1)[:299], username=param['output']['username'], password=param['output']['password'])
 
