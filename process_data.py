@@ -217,12 +217,17 @@ try:
 
     ## Clean data
     permits1 = db.permit.copy()
-    permits1['FromDate'] = pd.to_datetime(permits1['FromDate'], infer_datetime_format=True, errors='coerce')
-    permits1['ToDate'] = pd.to_datetime(permits1['ToDate'], infer_datetime_format=True, errors='coerce')
-    permits1[['NZTMX', 'NZTMY']] = permits1[['NZTMX', 'NZTMY']].round()
     permits1['RecordNumber'] = permits1['RecordNumber'].str.strip().str.upper()
     permits1['ConsentStatus'] = permits1['ConsentStatus'].str.strip()
     permits1['EcanID'] = permits1['EcanID'].str.strip().str.upper()
+
+    permits1['FromDate'] = pd.to_datetime(permits1['FromDate'], infer_datetime_format=True, errors='coerce')
+    permits1['ToDate'] = pd.to_datetime(permits1['ToDate'], infer_datetime_format=True, errors='coerce')
+
+    permits1.loc[permits1['ConsentStatus'] == 'Issued - s124 Continuance', 'ToDate'] = permits1.loc[permits1['ConsentStatus'] == 'Issued - s124 Continuance', 'FromDate'] + pd.DateOffset(years=30)
+
+    permits1[['NZTMX', 'NZTMY']] = permits1[['NZTMX', 'NZTMY']].round()
+
     permits1.loc[(permits1['FromDate'] < '1950-01-01'), 'FromDate'] = np.nan
     permits1.loc[(permits1['ToDate'] < '1950-01-01'), 'ToDate'] = np.nan
 
@@ -359,7 +364,7 @@ try:
     mon_max = grp1['Month'].max()
     mon_max.name = 'ToMonth'
     wa6 = pd.concat([mean1, mon_min, mon_max, include1], axis=1).reset_index()
-    wa6['HydroGroup'] = 'Surface Water'
+    # wa6['HydroGroup'] = 'Surface Water'
 
     ## Allocated Volume
     av1 = allo_vol1.copy()
@@ -390,107 +395,70 @@ try:
     wa8['ratio'] = wa8['WapRate'] / wa8['WapRateAgg']
     wa8.loc[wa8['ratio'].isnull(), 'ratio'] = 1
     wa8['FullAnnualVolume'] = (wa8['FullAnnualVolume'] * wa8['ratio']).round()
-    wa8.drop(['WapRateAgg', 'ratio'], axis=1, inplace=True)
+    wa8.drop(['WapRateAgg', 'ratio', 'VolumeDaily', 'VolumeWeekly', 'Volume30Day', 'Volume150Day', 'SD2', 'WapRate'], axis=1, inplace=True)
+    wa8 = wa8[wa8.FullAnnualVolume >= 0].copy()
 
     ## Add in stream depletion
-    wa9 = pd.merge(wa8, db.wap_sd.rename(columns={'ExtSiteID': 'WAP'}), on='WAP').drop(['SD1_NZTMX', 'SD1_NZTMY', 'SD1_30Day', 'SD2_NZTMX', 'SD2_NZTMY', 'SD2_7Day', 'SD2_30Day', 'SD2_150Day', 'SD1', 'SD2'], axis=1)
-
-    wa9['SD1_7Day'] = pd.to_numeric(wa9['SD1_7Day'], errors='coerce').round(0)
-    wa9['SD1_150Day'] = pd.to_numeric(wa9['SD1_150Day'], errors='coerce').round(0)
+    # wa9 = pd.merge(wa8, db.wap_sd.rename(columns={'ExtSiteID': 'WAP'}), on='WAP').drop(['SD1_NZTMX', 'SD1_NZTMY', 'SD1_30Day', 'SD2_NZTMX', 'SD2_NZTMY', 'SD2_7Day', 'SD2_30Day', 'SD2_150Day', 'SD1', 'SD2'], axis=1)
+    #
+    # wa9['SD1_7Day'] = pd.to_numeric(wa9['SD1_7Day'], errors='coerce').round(0)
+    # wa9['SD1_150Day'] = pd.to_numeric(wa9['SD1_150Day'], errors='coerce').round(0)
 
     ## Combine with aquifer test storativity
-    aq1 = db.wap_aquifer_test.dropna(subset=['storativity']).copy()
-    aq1.rename(columns={'ExtSiteID': 'WAP'}, inplace=True)
-    aq2 = aq1.groupby('WAP')['storativity'].mean().dropna().reset_index()
-    aq2.storativity = True
+    # aq1 = db.wap_aquifer_test.dropna(subset=['storativity']).copy()
+    # aq1.rename(columns={'ExtSiteID': 'WAP'}, inplace=True)
+    # aq2 = aq1.groupby('WAP')['storativity'].mean().dropna().reset_index()
+    # aq2.storativity = True
+    #
+    # wa9 = pd.merge(wa9, aq2, on='WAP', how='left')
+    # wa9.loc[wa9.storativity.isnull(), 'storativity'] = False
 
-    wa9 = pd.merge(wa9, aq2, on='WAP', how='left')
-    wa9.loc[wa9.storativity.isnull(), 'storativity'] = False
+    ## Distribute the rates and volumes by allocation hydro group
+    wa8['sw_rate'] = 0
+    wa8['gw_rate'] = 0
+    wa8['sw_vol'] = 0
+    wa8['gw_vol'] = 0
 
-    ## Distribute the rates according to the stream depletion requirements
-    ## According to the LWRP!
+    wa8.loc[wa8.take_type == 'Take Surface Water', 'sw_rate'] = wa8.loc[wa8.take_type == 'Take Surface Water', 'AllocatedRate']
+    wa8.loc[wa8.take_type == 'Take Groundwater', 'sw_rate'] = wa8.loc[wa8.take_type == 'Take Groundwater', 'SD1']
+    wa8.loc[wa8.take_type == 'Take Groundwater', 'gw_rate'] = wa8.loc[wa8.take_type == 'Take Groundwater', 'AllocatedRate'] - wa8.loc[wa8.take_type == 'Take Groundwater', 'SD1']
+    wa8.loc[wa8.take_type == 'Take Surface Water', 'sw_vol'] = wa8.loc[wa8.take_type == 'Take Surface Water', 'FullAnnualVolume']
+    wa8.loc[wa8.take_type == 'Take Groundwater', 'sw_vol'] = (wa8.loc[wa8.take_type == 'Take Groundwater', 'SD1']/wa8.loc[wa8.take_type == 'Take Groundwater', 'AllocatedRate']) * wa8.loc[wa8.take_type == 'Take Groundwater', 'FullAnnualVolume']
+    wa8.loc[wa8.take_type == 'Take Groundwater', 'gw_vol'] = (wa8.loc[wa8.take_type == 'Take Groundwater', 'gw_rate']/wa8.loc[wa8.take_type == 'Take Groundwater', 'AllocatedRate']) * wa8.loc[wa8.take_type == 'Take Groundwater', 'FullAnnualVolume']
 
-    allo_rates1 = wa9.drop_duplicates(['RecordNumber', 'AllocationBlock', 'WAP']).set_index(['RecordNumber', 'AllocationBlock', 'WAP']).copy()
+    allo_list = []
+    for k, row in wa8.iterrows():
+        # print(k)
+        if row['IncludeInSwAllocation']:
+            sw1 = row[['RecordNumber', 'AllocationBlock', 'WAP', 'FromMonth', 'ToMonth', 'sw_rate', 'sw_vol']].rename({'sw_rate': 'AllocatedRate', 'sw_vol': 'AllocatedAnnualVolume'})
+            sw1['HydroGroup'] = 'Surface Water'
+            allo_list.append(sw1.to_frame().T)
+        if row['IncludeInGwAllocation']:
+            gw1 = row[['RecordNumber', 'AllocationBlock', 'WAP', 'FromMonth', 'ToMonth', 'gw_rate', 'gw_vol']].rename({'gw_rate': 'AllocatedRate', 'gw_vol': 'AllocatedAnnualVolume'})
+            gw1['HydroGroup'] = 'Groundwater'
+            allo_list.append(gw1.to_frame().T)
 
-    # Convert daily, 7-day, and 150-day volumes to rates in l/s
-    allo_rates1['RateDaily'] = (allo_rates1['VolumeDaily'] / 24 / 60 / 60) * 1000
-    allo_rates1['RateWeekly'] = (allo_rates1['VolumeWeekly'] / 7 / 24 / 60 / 60) * 1000
-    allo_rates1['Rate150Day'] = (allo_rates1['Volume150Day'] / 150 / 24 / 60 / 60) * 1000
+    rv1 = pd.concat(allo_list)
 
-    # SD categories - According to the LWRP!
-    rate_bool = (allo_rates1['Rate150Day'] * (allo_rates1['SD1_150Day'] * 0.01)) > 5
+    rv1['AllocatedAnnualVolume'] = pd.to_numeric(rv1['AllocatedAnnualVolume'])
+    rv1['AllocatedRate'] = pd.to_numeric(rv1['AllocatedRate'])
+    rv1['FromMonth'] = pd.to_numeric(rv1['FromMonth'], downcast='integer')
+    rv1['ToMonth'] = pd.to_numeric(rv1['ToMonth'], downcast='integer')
 
-    allo_rates1['sd_cat'] = 'low'
-#    allo_rates1.loc[(rate_bool | (allo_rates1['SD1_150Day'] >= 40)) & allo_rates1.storativity, 'sd_cat'] = 'moderate'
-    allo_rates1.loc[(rate_bool | (allo_rates1['SD1_150Day'] >= 40)), 'sd_cat'] = 'moderate'
-    allo_rates1.loc[(allo_rates1['SD1_150Day'] >= 60), 'sd_cat'] = 'high'
-    allo_rates1.loc[(allo_rates1['SD1_7Day'] >= 90), 'sd_cat'] = 'direct'
-    allo_rates1.loc[(allo_rates1['take_type'] == 'Take Surface Water'), 'sd_cat'] = 'direct'
+    rv1.loc[rv1['AllocatedAnnualVolume'].isnull(), 'AllocatedAnnualVolume'] = 0
+    rv1.loc[rv1['AllocatedAnnualVolume'] == np.inf, 'AllocatedAnnualVolume'] = 0
+    rv1.loc[rv1['AllocatedRate'].isnull(), 'AllocatedRate'] = 0
+    rv1.loc[rv1['AllocatedRate'] == np.inf, 'AllocatedRate'] = 0
 
-    # Assign volume ratios
-    allo_rates1['sw_vol_ratio'] = 1
-    allo_rates1.loc[allo_rates1.sd_cat == 'low', 'sw_vol_ratio'] = 0
-    allo_rates1.loc[allo_rates1.sd_cat == 'moderate', 'sw_vol_ratio'] = 0.5
-    allo_rates1.loc[allo_rates1.sd_cat == 'high', 'sw_vol_ratio'] = 0.75
-    allo_rates1.loc[allo_rates1.sd_cat == 'direct', 'sw_vol_ratio'] = 1
-
-    # Assign Rates
-    rates1 = allo_rates1.copy()
-
-    gw_bool = rates1['take_type'] == 'Take Groundwater'
-    sw_bool = rates1['take_type'] == 'Take Surface Water'
-
-    low_bool = rates1.sd_cat == 'low'
-    mod_bool = rates1.sd_cat == 'moderate'
-    high_bool = rates1.sd_cat == 'high'
-    direct_bool = rates1.sd_cat == 'direct'
-
-    rates1['Surface Water'] = 0
-    rates1['Groundwater'] = 0
-
-    rates1.loc[:, 'Groundwater'] = rates1.loc[:, 'Rate150Day']
-    rates1.loc[mod_bool | high_bool, 'Surface Water'] = rates1.loc[mod_bool | high_bool, 'Rate150Day'] * (rates1.loc[mod_bool | high_bool, 'SD1_150Day'] * 0.01)
-    rates1.loc[(mod_bool & rates1.storativity) | high_bool, 'Groundwater'] = rates1.loc[(mod_bool & rates1.storativity) | high_bool, 'Rate150Day']  - rates1.loc[(mod_bool & rates1.storativity) | high_bool, 'Surface Water']
-
-#    allo_rates1.loc[gw_bool, 'Surface Water'] = allo_rates1.loc[gw_bool, 'Rate150Day'] - allo_rates1.loc[gw_bool, 'Groundwater']
-    rates1.loc[direct_bool & gw_bool, 'Surface Water'] = rates1.loc[direct_bool & gw_bool, 'RateDaily']
-
-    rates1.loc[sw_bool, 'Surface Water'] = rates1.loc[sw_bool, 'AllocatedRate']
-
-    rates2 = rates1[['Groundwater', 'Surface Water']].stack().reset_index()
-    rates2.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedRate'}, inplace=True)
-    rates3 = rates2.set_index(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'WAP'])
-
-    # Assign volumes with discount exception
-    vols1 = allo_rates1.copy()
-    vols1['Surface Water'] = vols1['FullAnnualVolume'] * vols1['sw_vol_ratio']
-    vols1['Groundwater'] = vols1['FullAnnualVolume']
-
-    discount_bool = (vols1.sd_cat == 'moderate') & (vols1.storativity)
-    vols1.loc[discount_bool, 'Groundwater'] = vols1.loc[discount_bool, 'FullAnnualVolume'] - vols1.loc[discount_bool, 'Surface Water']
-
-    vols2 = vols1[['Groundwater', 'Surface Water']].stack().reset_index()
-    vols2.rename(columns={'level_3': 'HydroGroup', 0: 'AllocatedAnnualVolume'}, inplace=True)
-    vols3 = vols2.set_index(['RecordNumber', 'HydroGroup', 'AllocationBlock', 'WAP'])
-
-    # Join rates and volumes
-    rv1 = pd.concat([rates3, vols3], axis=1)
-
-    ## Deal with the "Include in Allocation" fields
-    rv2 = pd.merge(rv1.reset_index(), allo_rates1[['FromMonth', 'ToMonth', 'IncludeInGwAllocation', 'IncludeInSwAllocation']].reset_index(), on=['RecordNumber', 'AllocationBlock', 'WAP'])
-    rv3 = rv2[(rv2.HydroGroup == 'Surface Water') | (rv2.IncludeInGwAllocation)].drop('IncludeInGwAllocation', axis=1)
-    rv4 = rv3[(rv3.HydroGroup == 'Groundwater') | (rv3.IncludeInSwAllocation)].drop('IncludeInSwAllocation', axis=1)
+    # Cut out the fat
+    rv4 = rv1[(rv1['AllocatedAnnualVolume'] > 0) | (rv1['AllocatedRate'] > 0)].copy()
 
     ## Calculate missing volumes and rates
     ann_bool = rv4.AllocatedAnnualVolume == 0
-    rv4.loc[ann_bool, 'AllocatedAnnualVolume'] = (rv4.loc[ann_bool, 'AllocatedRate'] * 0.001*60*60*24*30.42* (rv4.loc[ann_bool, 'ToMonth'] - rv4.loc[ann_bool, 'FromMonth'] + 1)).round()
+    rv4.loc[ann_bool, 'AllocatedAnnualVolume'] = (rv4.loc[ann_bool, 'AllocatedRate'] * 0.001*60*60*24*30.42* (rv4.loc[ann_bool, 'ToMonth'] - rv4.loc[ann_bool, 'FromMonth'] + 1))
 
     rate_bool = rv4.AllocatedRate == 0
-    rv4.loc[rate_bool, 'AllocatedRate'] = np.floor((rv4.loc[rate_bool, 'AllocatedAnnualVolume'] / 60/60/24/30.42/ (rv4.loc[rate_bool, 'ToMonth'] - rv4.loc[rate_bool, 'FromMonth'] + 1) * 1000))
-
-    rv4 = rv4[(rv4['AllocatedAnnualVolume'] > 0) | (rv4['AllocatedRate'] > 0)].copy()
-    rv4.loc[rv4['AllocatedAnnualVolume'].isnull(), 'AllocatedAnnualVolume'] = 0
-    rv4.loc[rv4['AllocatedRate'].isnull(), 'AllocatedRate'] = 0
+    rv4.loc[rate_bool, 'AllocatedRate'] = (rv4.loc[rate_bool, 'AllocatedAnnualVolume'] / 60/60/24/30.42/ (rv4.loc[rate_bool, 'ToMonth'] - rv4.loc[rate_bool, 'FromMonth'] + 1) * 1000)
 
     ## Convert the rates and volumes to integers
     rv4['AllocatedAnnualVolume'] = rv4['AllocatedAnnualVolume'].round().astype(int)
@@ -533,7 +501,7 @@ try:
         allo_site0 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
 
     ## Update AllocatedRateVolume table
-    avr7 = pd.merge(allo_site0, avr6, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
+    avr7 = pd.merge(allo_site0, avr6, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1).drop_duplicates('CrcAlloSiteID')
 
     # Save results
     new_avr, _ = mssql.update_from_difference(avr7, param['output']['server'], param['output']['database'], 'AllocatedRateVolume', on='CrcAlloSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])

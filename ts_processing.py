@@ -4,6 +4,7 @@ Created on Tue Jun 18 10:21:48 2019
 
 @author: michaelek
 """
+import os
 import argparse
 import pandas as pd
 import lowflows as lf
@@ -25,17 +26,17 @@ permit_table = 'Permit'
 max_date_stmt = "select max(RestrDate) from {table}"
 min_date_stmt = "select min(RestrDate) from {table}"
 
-#base_dir = os.path.realpath(os.path.dirname(__file__))
+base_dir = os.path.realpath(os.path.dirname(__file__))
+
+with open(os.path.join(base_dir, 'parameters-test.yml')) as param:
+   param = yaml.safe_load(param)
+
+# parser = argparse.ArgumentParser()
+# parser.add_argument('yaml_path')
+# args = parser.parse_args()
 #
-#with open(os.path.join(base_dir, 'parameters-dev.yml')) as param:
-#    param = yaml.safe_load(param)
-
-parser = argparse.ArgumentParser()
-parser.add_argument('yaml_path')
-args = parser.parse_args()
-
-with open(args.yaml_path) as param:
-    param = yaml.safe_load(param)
+# with open(args.yaml_path) as param:
+#     param = yaml.safe_load(param)
 
 ## Assign database parameters to the lowflows module
 lf.read_data.lf_server = param['misc']['lowflows']['server']

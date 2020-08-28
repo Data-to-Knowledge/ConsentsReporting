@@ -5,6 +5,7 @@ Created on Tue Jun 25 11:07:27 2019
 @author: michaelek
 """
 import os
+import numpy as np
 import argparse
 import pandas as pd
 from pdsql import mssql
@@ -111,18 +112,29 @@ try:
     crc_act_id1 = mssql.rd_sql(param['output']['server'], param['output']['database'], crc_act_table, ['CrcActSiteID', 'RecordNumber', 'ActivityID', 'SiteID'], where_in={'ActivityID': act1.ActivityID.tolist()}, username=param['output']['username'], password=param['output']['password'])
 
     ## Create estimates when NA
+    crc_rates1 = crc_rates1[crc_rates1['ConsentedRate'].notnull() | crc_rates1['ConsentedMultiDayVolume'].isnull()].copy()
+
+    bool_rate1 = crc_rates1['ConsentedRate'].isnull()
+
+    crc_rates1.loc[bool_rate1, 'ConsentedRate'] = (crc_rates1.loc[bool_rate1, 'ConsentedAnnualVolume']/12/30.42/24/60/60 * 1000).round()
+
+    bool_rate2 = crc_rates1['ConsentedRate'].isnull()
+
+    crc_rates1.loc[bool_rate2, 'ConsentedRate'] = 0
+
     bool_vol = crc_rates1['ConsentedMultiDayVolume'].isnull()
 
     crc_rates1.loc[bool_vol, 'ConsentedMultiDayPeriod'] = 1
     crc_rates1.loc[bool_vol, 'ConsentedMultiDayVolume'] = ((crc_rates1.loc[bool_vol, 'ConsentedRate'] * 60 * 60 * 24) * 0.001).round().astype(int)
 
-    bool_ann2 = crc_rates1['ConsentedAnnualVolume'].isnull()
+    bool_ann2 = (crc_rates1['ConsentedAnnualVolume'].isnull() | (crc_rates1['ConsentedAnnualVolume'] == np.inf))
 
     crc_rates1.loc[bool_ann2, 'ConsentedAnnualVolume'] = ((crc_rates1.loc[bool_ann2, 'ConsentedRate'] * 60 * 60 * 24 * 365) * 0.001).round()
 
-    bool_ann1 = crc_rates1['ConsentedAnnualVolume'].isnull() & (~bool_vol)
+    bool_ann1 = (crc_rates1['ConsentedAnnualVolume'].isnull() | (crc_rates1['ConsentedAnnualVolume'] == np.inf)) & (~bool_vol) & crc_rates1['ConsentedMultiDayPeriod'].notnull()
 
     crc_rates1.loc[bool_ann1, 'ConsentedAnnualVolume'] = (crc_rates1.loc[bool_ann1, 'ConsentedMultiDayVolume'] / crc_rates1.loc[bool_ann1, 'ConsentedMultiDayPeriod'] * 365).round()
+    crc_rates1
 
     crc_rates1['ConsentedAnnualVolume'] = crc_rates1['ConsentedAnnualVolume'].astype(int)
 
@@ -160,4 +172,3 @@ except Exception as err:
     err1 = err
     print(err1)
     log_err = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcAlloSiteSumm/CrcActSiteSumm', 'fail', str(err1)[:299], username=param['output']['username'], password=param['output']['password'])
-

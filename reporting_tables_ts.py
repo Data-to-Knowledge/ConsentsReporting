@@ -4,6 +4,7 @@ Created on Tue Jun 25 11:07:58 2019
 
 @author: michaelek
 """
+import os
 import argparse
 import pandas as pd
 import lowflows as lf
@@ -36,17 +37,17 @@ lowflow_alloblock_table = 'AlloBlock'
 
 
 ## Read parameters file
-#base_dir = os.path.realpath(os.path.dirname(__file__))
+base_dir = os.path.realpath(os.path.dirname(__file__))
+
+with open(os.path.join(base_dir, 'parameters-test.yml')) as param:
+   param = yaml.safe_load(param)
+
+# parser = argparse.ArgumentParser()
+# parser.add_argument('yaml_path')
+# args = parser.parse_args()
 #
-#with open(os.path.join(base_dir, 'parameters.yml')) as param:
-#    param = yaml.safe_load(param)
-
-parser = argparse.ArgumentParser()
-parser.add_argument('yaml_path')
-args = parser.parse_args()
-
-with open(args.yaml_path) as param:
-    param = yaml.safe_load(param)
+# with open(args.yaml_path) as param:
+#     param = yaml.safe_load(param)
 
 try:
     #####################################
