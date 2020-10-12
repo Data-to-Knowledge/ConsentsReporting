@@ -382,7 +382,8 @@ try:
 #    av1 = av1.loc[av1['AllocatedAnnualVolume'] > 0]
     av1.rename(columns={'allo_block': 'AllocationBlock'}, inplace=True)
     av1.drop('AllocatedAnnualVolume', axis=1, inplace=True)
-#    av1.replace({'AllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
+    av1.replace({'AllocationBlock': {'In Waitaki': 'A'}}, inplace=True)
+    av1.drop_duplicates(subset=['RecordNumber', 'take_type', 'AllocationBlock'], inplace=True)
 
     ## Combine volumes with rates
     wa7 = pd.merge(av1, wa6, on=['RecordNumber', 'take_type', 'AllocationBlock'])
