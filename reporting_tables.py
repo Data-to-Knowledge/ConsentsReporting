@@ -34,6 +34,7 @@ try:
     attr_table = 'Attributes'
     act_table = 'Activity'
     crc_rates_table = 'ConsentedRateVolume'
+    lowflow_cond_table = 'LowFlowConditions'
 #    wap_table = 'SiteStreamDepletion'
 
     base_dir = os.path.realpath(os.path.dirname(__file__))
@@ -167,6 +168,45 @@ try:
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'CrcActSiteSumm', 'pass', '{} rows updated'.format(len(both1)), username=param['output']['username'], password=param['output']['password'])
+
+    #####################################
+    ### LowFlowConditions
+    print('--Update LowFlowConditions table')
+
+    ## Read base data
+    lf_cond1 = mssql.rd_sql(param['output']['server'], param['output']['database'], lowflow_cond_table, username=param['output']['username'], password=param['output']['password'])
+    crc_allo_id1 = mssql.rd_sql(param['output']['server'], param['output']['database'], crc_allo_table, ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], username=param['output']['username'], password=param['output']['password'])
+    allo_block1 = mssql.rd_sql(param['output']['server'], param['output']['database'], allo_block_table, ['AlloBlockID', 'AllocationBlock', 'HydroGroupID'], username=param['output']['username'], password=param['output']['password'])
+    hf1 = mssql.rd_sql(param['output']['server'], param['output']['database'], hydro_feature_table, ['HydroGroupID', 'HydroGroup'], username=param['output']['username'], password=param['output']['password'])
+    sites1 = mssql.rd_sql(param['output']['server'], param['output']['database'], sites_table, ['SiteID', 'ExtSiteID'], username=param['output']['username'], password=param['output']['password'])
+
+    ## Combine tables
+    lf_cond2 = pd.merge(crc_allo_id1, lf_cond1, on='CrcAlloSiteID').drop('CrcAlloSiteID', axis=1)
+    lf_cond3 = pd.merge(allo_block1, lf_cond2, on='AlloBlockID').drop(['AlloBlockID', 'HydroGroupID'], axis=1)
+    lf_cond4 = pd.merge(sites1, lf_cond3, on='SiteID').drop(['SiteID', 'ModifiedDate'], axis=1)
+
+    ## Determine which rows should be updated
+    old_act = mssql.rd_sql(param['output']['server'], param['output']['database'], schema1 + '.LowFlowConditions')
+
+    diff_dict = mssql.compare_dfs(old_act.drop(['ModifiedDate'], axis=1), lf_cond4, on=['RecordNumber', 'AllocationBlock', 'ExtSiteID'])
+
+    both1 = pd.concat([diff_dict['new'], diff_dict['diff']])
+
+    rem1 = diff_dict['remove']
+
+    ## Update data if needed
+    if not both1.empty:
+        both1['ModifiedDate'] = run_time_start
+        mssql.update_table_rows(both1, param['output']['server'], param['output']['database'], schema1 + '.LowFlowConditions', on=['RecordNumber', 'AllocationBlock', 'ExtSiteID'], username=param['output']['username'], password=param['output']['password'])
+
+    if not rem1.empty:
+        mssql.del_table_rows(param['output']['server'], param['output']['database'], schema1 + '.LowFlowConditions', rem1, username=param['output']['username'], password=param['output']['password'])
+
+#    new_allo, rem_allo = mssql.update_from_difference(crc_allo7, param['output']['server'], param['output']['database'], schema1 + '.CrcAlloSiteSumm', on=['RecordNumber', 'AllocationBlock', 'HydroGroup', 'ExtSiteID'], mod_date_col='ModifiedDate', remove_rows=True, username=param['output']['username'], password=param['output']['password'])
+
+    # Log
+    log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LowFlowConditions', 'pass', '{} rows updated'.format(len(both1)), username=param['output']['username'], password=param['output']['password'])
+
 
 except Exception as err:
     err1 = err

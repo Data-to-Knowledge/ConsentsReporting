@@ -111,15 +111,18 @@ try:
 
         # Read in the required data
         restr1 = mssql.rd_sql(param['output']['server'], param['output']['database'], lowflow_restr_table, ['CrcAlloSiteID', 'RestrDate', 'Allocation'], from_date=str(last_date2), to_date=run_time_start, date_col='RestrDate', username=param['output']['username'], password=param['output']['password'])
-        crc_allo1 = mssql.rd_sql(param['output']['server'], param['output']['database'], lowflow_crcallosite_table, ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID'], where_in={'SiteType': ['Lowflow', 'Residual']}, username=param['output']['username'], password=param['output']['password'])
+        crc_allo1 = mssql.rd_sql(param['output']['server'], param['output']['database'], lowflow_crcallosite_table, ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteType': ['Lowflow', 'Residual']}, username=param['output']['username'], password=param['output']['password'])
         allo_block1 = mssql.rd_sql(param['output']['server'], param['output']['database'], lowflow_alloblock_table, ['AlloBlockID', 'AllocationBlock'], username=param['output']['username'], password=param['output']['password'])
+        site1 = mssql.rd_sql(param['output']['server'], param['output']['database'], 'ConsentsSites', ['SiteID', 'ExtSiteID'], username=param['output']['username'], password=param['output']['password'])
+        site2 = site1[site1.SiteID.isin(crc_allo1.SiteID.unique())].copy()
 
         # Table merges
         restr2 = pd.merge(crc_allo1, restr1, on='CrcAlloSiteID').drop('CrcAlloSiteID', axis=1)
         restr3 = pd.merge(allo_block1, restr2, on='AlloBlockID').drop('AlloBlockID', axis=1)
+        restr3a = pd.merge(restr3, site2, on='SiteID').drop('SiteID', axis=1)
 
         # Take the min of crc, block combo
-        restr4 = restr3.groupby(['RecordNumber', 'AllocationBlock', 'RestrDate']).min().reset_index()
+        restr4 = restr3a.groupby(['RecordNumber', 'AllocationBlock', 'ExtSiteID', 'RestrDate']).min().reset_index()
 
         # Save results
         print('Save results')
