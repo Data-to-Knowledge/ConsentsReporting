@@ -54,13 +54,13 @@ try:
     ## Determine last restriction date run
 
     stmt1 = max_date_stmt.format(table=table1)
-    last_date1 = pd.Timestamp(mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt1, username=param['output']['username'], password=param['output']['password']).loc[0][0])
+    last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt1, username=param['output']['username'], password=param['output']['password']).loc[0][0]
 
     if last_date1 is None:
         last_date1 = pd.Timestamp(1900, 1, 1)
-        last_date2 = last_date1
+        last_date2 = pd.Timestamp(last_date1)
     else:
-        last_date2 = last_date1 + pd.Timedelta(days=1)
+        last_date2 = pd.Timestamp(last_date1) + pd.Timedelta(days=1)
 
     print('Last sucessful date is ' + str(last_date1), ', New data to query will be ' + str(last_date2))
 

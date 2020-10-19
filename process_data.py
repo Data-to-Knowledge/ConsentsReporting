@@ -835,7 +835,7 @@ try:
 
     trigs3 = pd.merge(sites1, trigs2, on=['ExtSiteID']).drop('ExtSiteID', axis=1)
 
-    sw_blocks = ab_types1[ab_types1.HydroGroup == 'Surface Water']
+    sw_blocks = ab_types1[(ab_types1.HydroGroup == 'Surface Water') & (ab_types1.AllocationBlock != 'In Waitaki')]
     allo_site1 = allo_site0[['RecordNumber', 'AlloBlockID']].drop_duplicates()
     allo_site2 = allo_site1[allo_site1.AlloBlockID.isin(sw_blocks.AlloBlockID)]
 
@@ -866,22 +866,38 @@ try:
     allo_site_trig = mssql.rd_sql(param['output']['server'], param['output']['database'], 'CrcAlloSite', ['CrcAlloSiteID', 'RecordNumber', 'AlloBlockID', 'SiteID'], where_in={'SiteType': ['LowFlow', 'Residual']}, username=param['output']['username'], password=param['output']['password'])
 
     # Remove old data if needed
-#    if not rem_trigs_allo.empty:
-#        rem_trigs_allo1 = pd.merge(allo_site_trig, rem_trigs_allo, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
-#
-#        del_stmt = "delete from {table} where {col} in ({val})"
-#
-#        del_stmt1 = del_stmt.format(table='TSLowFlowRestr', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
-#        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt1)
-#
-#        del_stmt2 = del_stmt.format(table='LowFlowConditions', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
-#        mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2)
+    # if not rem_trigs_allo.empty:
+    #     rem_trigs_allo1 = pd.merge(allo_site_trig, rem_trigs_allo, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
+    #
+    #     del_stmt = "delete from {table} where {col} in ({val})"
+    #
+    #     del_stmt1 = del_stmt.format(table='TSLowFlowRestr', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
+    #     mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt1)
+    #
+    #     del_stmt2 = del_stmt.format(table='LowFlowConditions', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
+    #     mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2)
 
     ## Update LowFlowConditions
     trigs5 = pd.merge(allo_site_trig, trigs4, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID', 'SiteType'], axis=1)
 
     # Save results
-    new_trigs, _ = mssql.update_from_difference(trigs5, param['output']['server'], param['output']['database'], 'LowFlowConditions', on='CrcAlloSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
+    new_trigs, rem_cond = mssql.update_from_difference(trigs5, param['output']['server'], param['output']['database'], 'LowFlowConditions', on='CrcAlloSiteID', mod_date_col='ModifiedDate', username=param['output']['username'], password=param['output']['password'])
+
+    # Remove old data if needed - Cannot do this because of time series table's dependencies
+    # if not rem_trigs_allo.empty:
+    #     rem_trigs_allo1 = pd.merge(allo_site_trig, rem_trigs_allo, on=['RecordNumber', 'AlloBlockID', 'SiteID']).drop(['RecordNumber', 'AlloBlockID', 'SiteID'], axis=1)
+    #
+    #     del_stmt = "delete from {table} where {col} in ({val})"
+    #
+    #     del_stmt1 = del_stmt.format(table='TSLowFlowRestr', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
+    #     mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt1)
+    #
+    #     del_stmt2 = del_stmt.format(table='LowFlowConditions', col='CrcAlloSiteID', val=', '.join(rem_trigs_allo1.CrcAlloSiteID.astype(str).tolist()))
+    #     mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt2)
+    #
+    # if not rem_cond.empty:
+    #     del_stmt3 = del_stmt.format(table='LowFlowConditions', col='CrcAlloSiteID', val=', '.join(rem_cond.CrcAlloSiteID.astype(str).tolist()))
+    #     mssql.del_table_rows(param['output']['server'], param['output']['database'], stmt=del_stmt3)
 
     # Log
     log1 = util.log(param['output']['server'], param['output']['database'], 'log', run_time_start, '1900-01-01', 'LowFlowConditions', 'pass', '{} rows updated'.format(len(new_trigs)), username=param['output']['username'], password=param['output']['password'])
