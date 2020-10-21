@@ -4,6 +4,7 @@ Created on Tue Jun 18 10:21:48 2019
 
 @author: michaelek
 """
+import os
 import argparse
 import pandas as pd
 import lowflows as lf
@@ -25,17 +26,22 @@ permit_table = 'Permit'
 max_date_stmt = "select max(RestrDate) from {table}"
 min_date_stmt = "select min(RestrDate) from {table}"
 
-#base_dir = os.path.realpath(os.path.dirname(__file__))
+base_dir = os.path.realpath(os.path.dirname(__file__))
+
+with open(os.path.join(base_dir, 'parameters-test.yml')) as param:
+   param = yaml.safe_load(param)
+
+# parser = argparse.ArgumentParser()
+# parser.add_argument('yaml_path')
+# args = parser.parse_args()
 #
-#with open(os.path.join(base_dir, 'parameters-dev.yml')) as param:
-#    param = yaml.safe_load(param)
+# with open(args.yaml_path) as param:
+#     param = yaml.safe_load(param)
 
-parser = argparse.ArgumentParser()
-parser.add_argument('yaml_path')
-args = parser.parse_args()
-
-with open(args.yaml_path) as param:
-    param = yaml.safe_load(param)
+## Assign database parameters to the lowflows module
+lf.read_data.lf_server = param['misc']['lowflows']['server']
+lf.read_data.hydrotel_server = param['misc']['hydrotel']['server']
+lf.read_data.usm_server = param['source data']['sites']['server']
 
 try:
     ######################################
@@ -48,13 +54,13 @@ try:
     ## Determine last restriction date run
 
     stmt1 = max_date_stmt.format(table=table1)
-    last_date1 = pd.Timestamp(mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt1, username=param['output']['username'], password=param['output']['password']).loc[0][0])
+    last_date1 = mssql.rd_sql(param['output']['server'], param['output']['database'], stmt=stmt1, username=param['output']['username'], password=param['output']['password']).loc[0][0]
 
     if last_date1 is None:
         last_date1 = pd.Timestamp(1900, 1, 1)
-        last_date2 = last_date1
+        last_date2 = pd.Timestamp(last_date1)
     else:
-        last_date2 = last_date1 + pd.Timedelta(days=1)
+        last_date2 = pd.Timestamp(last_date1) + pd.Timedelta(days=1)
 
     print('Last sucessful date is ' + str(last_date1), ', New data to query will be ' + str(last_date2))
 

@@ -1,4 +1,4 @@
-pdsql==1.2.22
+pdsql==1.2.32
 pymssql==2.1.4
 pyyaml
 lowflows==0.1.2

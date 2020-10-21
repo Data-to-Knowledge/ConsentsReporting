@@ -1,0 +1,20 @@
+version: "2"
+
+services:
+    tasker:
+        image: strm/tasker
+        volumes:
+            - "//var//run//docker.sock:/var/run/docker.sock"
+        environment:
+             configuration: |
+                 schedule:
+                     - every: 10 minutes
+                       task: consents
+                 tasks:
+                     docker:
+                         - name: consents
+                           image: mullenkamp/consents-reporting:latest
+                           script:
+                               - python main.py parameters.yml
+                           volumes:
+                               - C:\ecan\git\ConsentsReporting\docker\parameters-dev.yml:/parameters.yml
