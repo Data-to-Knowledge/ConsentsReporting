@@ -19,3 +19,5 @@ scripts/__pycache__/
 param*.yml
 sql-checks/param*.yml
 old_scripts/param*.yml
+/.project
+/.pydevproject
